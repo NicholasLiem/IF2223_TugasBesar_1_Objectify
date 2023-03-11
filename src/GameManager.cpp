@@ -1,4 +1,5 @@
 #include "lib/GameManager.hpp"
+#include "lib/entities/Player.hpp"
 
 GameManager::GameManager()
 {
@@ -8,7 +9,7 @@ GameManager::GameManager()
     pot = 0;
 }
 
-void GameManager::registerPlayer(Player<Card> player)
+void GameManager::registerPlayer(Player player)
 {
     players.push_back(player);
 }
@@ -35,4 +36,8 @@ void GameManager::nextPlayer()
     } else {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
+}
+
+Player& GameManager::getCurrentPlayer() {
+    return players[currentPlayerIndex];
 }
