@@ -1,19 +1,27 @@
-#ifndef __PLAYER_HPP__
-#define __PLAYER_HPP__
-#include <iostream>
+#ifndef __PLAYER_
+#define __PLAYER_
 
-class Player: {
+#include "Card.hpp"
+#include "InventoryHolder.hpp"
+
+#include <string>
+
+class Player : public InventoryHolder<Card>
+{
+  private:
+    const std::string nickname;
+    long points;
+
   public:
-    Player(string name, string nickname, int points);
-    void Double();
-    void Next();
-    void Half();
-    void Ability();
-  protected:
-    string name;
-    string nickname;
-    int points;
-    // Cards* abilityCards;
+    Player(std::string nickname);
+
+    void setPoints(long points);
+    void put(Card card) override;
+    Card take(Card card) override;
+    std::vector<Card> takeAll();
+
+    std::string getNickname() const;
+    int getPoints() const;
 };
 
-#endif
+#endif // !__PLAYER_

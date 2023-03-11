@@ -3,4 +3,5 @@ TabWidth: 4
 IncludeBlocks: Regroup
 PointerAlignment: Left
 AllowShortFunctionsOnASingleLine: Empty
+AlwaysBreakTemplateDeclarations: Yes
 BreakBeforeBraces: Linux
