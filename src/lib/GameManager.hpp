@@ -29,6 +29,7 @@ class GameManager
   public:
     GameManager();
 
+    Player& getCurrentPlayer();
     std::vector<Player>& getPlayers();
     Ability& getAbility(std::string playerNickname);
     uint getPot();
