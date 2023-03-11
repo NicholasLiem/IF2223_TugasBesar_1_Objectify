@@ -6,7 +6,7 @@
 
 #include <string>
 
-class Player : InventoryHolder<Card>
+class Player : public InventoryHolder<Card>
 {
   private:
     const std::string nickname;
@@ -18,6 +18,7 @@ class Player : InventoryHolder<Card>
     void setPoints(long points);
     void put(Card card) override;
     Card take(Card card) override;
+    std::vector<Card> takeAll();
 
     std::string getNickname() const;
     int getPoints() const;

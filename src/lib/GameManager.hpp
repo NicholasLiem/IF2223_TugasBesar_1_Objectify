@@ -2,7 +2,9 @@
 #define __GAMEMANAGER_
 
 #include "entities/Card.hpp"
+#include "entities/Deck.hpp"
 #include "entities/Player.hpp"
+#include "entities/Table.hpp"
 
 #include <map>
 #include <vector>
@@ -16,6 +18,7 @@ class GameManager
     std::vector<Player> players;
     std::vector<int> playedPlayers;
     std::map<std::string, Ability> playerAbilities;
+    Deck<Card> deck;
 
     uint currentPlayerIndex;
     uint currentRound;
@@ -35,6 +38,8 @@ class GameManager
     void reverseDirection();
     void nextPlayer();
     void setPot(uint value);
+
+    Table table;
 };
 
 #endif // !__GAMEMANAGER_

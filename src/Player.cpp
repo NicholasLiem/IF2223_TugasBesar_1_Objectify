@@ -1,6 +1,7 @@
 #include "lib/entities/Player.hpp"
 
 #include <algorithm>
+#include <vector>
 
 Player::Player(std::string nickname) : nickname(nickname) {}
 
@@ -32,4 +33,11 @@ std::string Player::getNickname() const
 int Player::getPoints() const
 {
     return points;
+}
+
+std::vector<Card> Player::takeAll()
+{
+    std::vector<Card> ret(inventory);
+    clear();
+    return ret;
 }
