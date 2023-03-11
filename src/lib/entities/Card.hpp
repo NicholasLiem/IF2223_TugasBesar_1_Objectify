@@ -6,53 +6,37 @@
 enum class CardColor { Green, Blue, Yellow, Red };
 enum class CardNumber {
     One = 1,
-    Two,
-    Three,
-    Four,
-    Five,
-    Six,
-    Seven,
-    Eight,
-    Nine,
-    Ten,
-    Eleven,
-    Twelve,
-    Thirteen
+    Two = 2,
+    Three = 3,
+    Four = 4,
+    Five = 5,
+    Six = 6,
+    Seven = 7,
+    Eight = 8,
+    Nine = 9,
+    Ten = 10,
+    Eleven = 11,
+    Twelve = 12,
+    Thirteen=13,
 };
 
 class Card : public Valuable
 {
   public:
-    Card(const CardColor color, const CardNumber number)
-        : color(color), number(number){};
-    Card(const Card& other) : Card(other.color, other.number) {}
+    Card(const CardColor color, const CardNumber number);
+    Card(const Card& other);
 
-    float value() const
-    {
-        return int(number) + int(color) * 0.003;
-    }
+    float value() const;
+    CardColor getColor() const;
 
-    CardColor getColor() const
-    {
-        return color;
-    }
+    CardNumber getNumber() const;
+    Card& operator=(const Card& other);
 
-    CardNumber getNumber() const
-    {
-        return number;
-    }
+    friend bool operator==(const Card& card1, const Card& card2);
 
-    friend bool operator==(const Card& card1, const Card& card2)
-    {
-        return card1.value() == card2.value();
-    }
+    friend bool operator<(const Card& card1,const Card& card2);
 
-    Card& operator=(const Card& other)
-    {
-        this->color = other.color;
-        this->number = other.number;
-        return *this;
-    }
+    friend bool operator>(const Card& card1, const Card& card2);
 
   private:
     CardColor color;
