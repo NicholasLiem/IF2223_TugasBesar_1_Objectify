@@ -1,9 +1,9 @@
-#include "lib/GameManager.hpp"
-#include "lib/GameState.hpp"
-#include "lib/entities/Card.hpp"
-#include "lib/entities/Combo.hpp"
-#include "lib/states/Next.hpp"
-#include "lib/states/PlayerTurn.hpp"
+#include "Card.hpp"
+#include "Combo.hpp"
+#include "GameManager.hpp"
+#include "GameState.hpp"
+#include "Next.hpp"
+#include "PlayerTurn.hpp"
 
 #include <map>
 #include <string>

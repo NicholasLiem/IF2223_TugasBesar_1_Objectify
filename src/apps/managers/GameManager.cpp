@@ -1,5 +1,6 @@
-#include "../../lib/GameManager.hpp"
-#include "../../lib/entities/Player.hpp"
+#include "GameManager.hpp"
+
+#include "Player.hpp"
 
 GameManager::GameManager()
 {
@@ -38,6 +39,7 @@ void GameManager::nextPlayer()
     }
 }
 
-Player& GameManager::getCurrentPlayer() {
+Player& GameManager::getCurrentPlayer()
+{
     return players[currentPlayerIndex];
 }

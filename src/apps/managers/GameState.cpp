@@ -1,6 +1,6 @@
-#include "../../lib/GameState.hpp"
+#include "GameState.hpp"
 
-#include "../../lib/Exceptions.hpp"
+#include "Exceptions.hpp"
 
 std::map<std::string, GameState*> GameState::states;
 

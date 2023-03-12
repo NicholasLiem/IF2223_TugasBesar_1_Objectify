@@ -1,4 +1,4 @@
-#include "../../lib/entities/Player.hpp"
+#include "Player.hpp"
 
 #include <algorithm>
 #include <vector>

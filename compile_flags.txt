@@ -1,0 +1,6 @@
+-std=c++17
+-ggdb
+-Isrc/lib
+-Isrc/lib/states
+-Isrc/lib/entities
+-Isrc/lib/entities/combos

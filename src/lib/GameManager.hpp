@@ -1,10 +1,10 @@
 #ifndef __GAMEMANAGER_
 #define __GAMEMANAGER_
 
-#include "entities/Card.hpp"
-#include "entities/Deck.hpp"
-#include "entities/Player.hpp"
-#include "entities/Table.hpp"
+#include "Card.hpp"
+#include "Deck.hpp"
+#include "Player.hpp"
+#include "Table.hpp"
 
 #include <map>
 #include <vector>
