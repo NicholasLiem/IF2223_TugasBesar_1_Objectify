@@ -1,4 +1,4 @@
-#include "../Card.cpp"
+#include "../apps/entities/Card.cpp"
 #include <iostream>
 #include <vector>
 using namespace std;
