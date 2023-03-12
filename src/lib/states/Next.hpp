@@ -1,8 +1,8 @@
 #ifndef __NEXT_
 #define __NEXT_
 
-#include "../GameManager.hpp"
-#include "../GameState.hpp"
+#include "GameManager.hpp"
+#include "GameState.hpp"
 #include "Action.hpp"
 #include "PlayerTurn.hpp"
 

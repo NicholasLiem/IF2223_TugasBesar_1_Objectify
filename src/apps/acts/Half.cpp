@@ -1,8 +1,8 @@
-#include "../../lib/states/Half.hpp"
+#include "Half.hpp"
 
-#include "../../lib/GameManager.hpp"
-#include "../../lib/entities/Player.hpp"
-#include "../../lib/states/Action.hpp"
+#include "Action.hpp"
+#include "GameManager.hpp"
+#include "Player.hpp"
 
 #include <iostream>
 

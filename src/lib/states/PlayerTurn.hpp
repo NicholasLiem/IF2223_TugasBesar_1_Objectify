@@ -1,7 +1,7 @@
 #ifndef __PLAYERTURN_
 #define __PLAYERTURN_
 
-#include "../GameState.hpp"
+#include "GameState.hpp"
 
 class PlayerTurn : public GameState
 {

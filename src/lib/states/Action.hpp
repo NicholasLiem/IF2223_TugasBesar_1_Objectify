@@ -1,8 +1,8 @@
 #ifndef __ACTION_
 #define __ACTION_
 
-#include "../GameManager.hpp"
-#include "../GameState.hpp"
+#include "GameManager.hpp"
+#include "GameState.hpp"
 
 class Action : public GameState
 {

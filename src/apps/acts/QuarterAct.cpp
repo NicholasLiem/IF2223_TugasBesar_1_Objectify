@@ -1,9 +1,9 @@
-#include "../../lib/states/QuarterAct.hpp"
+#include "QuarterAct.hpp"
 
-#include "../../lib/GameManager.hpp"
-#include "../../lib/entities/Ability.hpp"
-#include "../../lib/entities/Player.hpp"
-#include "../../lib/states/Action.hpp"
+#include "Ability.hpp"
+#include "Action.hpp"
+#include "GameManager.hpp"
+#include "Player.hpp"
 
 #include <iostream>
 
