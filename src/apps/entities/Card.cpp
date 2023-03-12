@@ -3,6 +3,8 @@
 #include <iostream>
 using namespace std;
 
+
+
 Card::Card(const CardColor color, const CardNumber number)
 {
     this->color = color;
@@ -35,10 +37,21 @@ CardNumber Card::getNumber() const
 {
     return number;
 }
+int Card::getNumberInt()const{
+    return (int)number;
+}
+
+int Card::getColorString()const{
+    return (int)color;
+}
+
+bool Card::operator==(const Card& card1){
+    return (this->getNumber() == card1.getNumber());
+}
 
 bool operator==(const Card& card1, const Card& card2)
 {
-    return card1.value() == card2.value();
+    return (card1.getNumber() == card2.getNumber());
 }
 
 Card& Card::operator=(const Card& other)
@@ -50,12 +63,12 @@ Card& Card::operator=(const Card& other)
 
 bool operator<(const Card& card1, const Card& card2)
 {
-    return (card1.value() < card2.value());
+    return (card1.getNumber() < card2.getNumber());
 }
 
 bool operator>(const Card& card1, const Card& card2)
 {
-    return (card1.value() > card2.value());
+    return (card1.getNumber() > card2.getNumber());
 }
 
 ostream& operator<<(ostream& os, const Card& card)
@@ -80,3 +93,15 @@ ostream& operator<<(ostream& os, const Card& card)
     os << " " << int(card_num) << endl;
     return os;
 }
+
+// int main(){
+//     Card c1(0,1);
+   
+//     Card c2(1,1);
+//     if(c1 == c2){
+//         cout << "Pair" << endl;
+//     }else{
+//         cout << "Not a pair!" << endl;
+//     }
+//     return 0;
+// }

@@ -31,9 +31,12 @@ class Card : public Valuable
 
     float value() const;
     CardColor getColor() const;
-
     CardNumber getNumber() const;
+    int getNumberInt() const;
+    int getColorString() const;
     Card& operator=(const Card& other);
+
+    bool operator==(const Card& card1);
 
     friend bool operator==(const Card& card1, const Card& card2);
 
