@@ -78,10 +78,10 @@ ostream& operator<<(ostream& os, const Card& card){
         os << "Card: ";
         switch(card_color)
           {
-              case CardColor::Red  : std::cout << "red";   break;
-              case CardColor::Green : std::cout << "green"; break;
-              case CardColor::Blue : std::cout << "blue";  break;
-              case CardColor::Yellow : std::cout << "yellow";  break;
+              case CardColor::Red  : std::cout << "RED";   break;
+              case CardColor::Green : std::cout << "GREEN"; break;
+              case CardColor::Blue : std::cout << "BLUE";  break;
+              case CardColor::Yellow : std::cout << "YELLOW";  break;
           }
         os << " " << int(card_num) << endl;
         return os;

@@ -1,5 +1,4 @@
 #include "../../lib/entities/Deck.hpp"
-#include <iostream>
 
 template<class T>
 Deck<T>::Deck(): InventoryHolder<T>(){
@@ -48,8 +47,7 @@ template<class T>
 void Deck<T>::fillDeck(){
     for(int i = 1; i <= 4;i++){
         for(int j = 1; j <= 13;j++){
-            putCard(Card(i, j));
+            putCard(T(i, j));
         }
     }
-    std::cout << this->inventory.size() << std::endl;
 }
