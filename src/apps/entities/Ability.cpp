@@ -10,6 +10,11 @@ Ability::Ability(GameManager& game, Player& owner) : name("Ability Card")
 
 void Ability::useAbility() = 0;
 
+void Ability::mute()
+{
+    this->muted = false;
+}
+
 ReRollCard::ReRollCard(GameManager& game, Player& owner) : name("ReRoll Card")
 {
     this->game = game;
@@ -24,11 +29,6 @@ void ReRollCard::useAbility()
     owner.put(this->game.deck.takeCard());
     owner.put(this->game.deck.takeCard());
     this->used = true;
-}
-
-void ReRoll::mute()
-{
-    this->muted = true;
 }
 
 QuadrupleCard::QuadrupleCard(GameManager& game, Player& owner)
@@ -46,11 +46,6 @@ void QuadrupleCard::useAbility()
     this->used = true;
 }
 
-void QuadrupleCard::mute()
-{
-    this->muted = true;
-}
-
 QuarterCard::QuarterCard(GameManager& game, Player& owner)
     : name("Quarter Card")
 {
@@ -64,11 +59,6 @@ void QuarterCard::useAbility()
 {
     game.setPot(game.getPot() * 0.25);
     this->used = true;
-}
-
-void QuarterCard::mute()
-{
-    this->muted = true;
 }
 
 ReverseDirCard::ReverseDirCard(GameManager& game, Player& owner)
@@ -85,12 +75,6 @@ void ReverseDirCard::useAbility()
     this->game.reverseDirection();
     this->used = true;
 }
-
-void ReverseDirCard::mute()
-{
-    this->muted = true;
-}
-
 SwapCard::SwapCard(GameManager& game, Player& owner) : name("Swap Card")
 {
     this->game = game;
@@ -101,8 +85,8 @@ SwapCard::SwapCard(GameManager& game, Player& owner) : name("Swap Card")
 
 void SwapCard::useAbility(Player& target, int CardIdx1, int CardIdx2)
 {
-    Card ownCard = this->owner.InventoryHolder::take(CardIdx1);
-    Card targetCard = target.InventoryHolder::take(CardIdx2);
+    Card ownCard = this->owner.get(CardIdx1);
+    Card targetCard = target.get(CardIdx2);
 
     target.take(targetCard);
     target.put(ownCard);
@@ -111,11 +95,6 @@ void SwapCard::useAbility(Player& target, int CardIdx1, int CardIdx2)
     this->owner.put(targetCard);
     this->used = true;
 } // maybe right (?)
-
-void SwapCard::mute()
-{
-    this->muted = true;
-}
 
 SwitchCard::SwitchCard(GameManager& game, Player& owner) : name("Switch Card")
 {
@@ -140,11 +119,6 @@ void SwitchCard::useAbility(Player& target)
     this->used = true;
 }
 
-void SwitchCard::mute()
-{
-    this->muted = true;
-}
-
 AbilitylessCard::AbilitylessCard(GameManager& game, Player& owner)
     : name("Abilityless Card")
 {
@@ -158,9 +132,4 @@ void AbilitylessCard::useAbility(Player& target)
 {
     this->game.getAbility(target.getNickname()).mute();
     this->used = true;
-}
-
-void AbilitylessCard::mute()
-{
-    this->muted = true;
 }

@@ -22,7 +22,7 @@ class Ability
   public:
     Ability(GameManager& game, Player& owner);
     virtual void useAbility() = 0;
-    virtual void mute();
+    void mute();
 };
 
 class ReRollCard : public Ability
@@ -30,7 +30,6 @@ class ReRollCard : public Ability
   public:
     ReRollCard(GameManager&, Player&);
     void useAbility();
-    void mute();
 };
 
 class QuadrupleCard : public Ability
@@ -38,7 +37,6 @@ class QuadrupleCard : public Ability
   public:
     QuadrupleCard(GameManager&, Player&);
     void useAbility();
-    void mute();
 };
 
 class QuarterCard : public Ability
@@ -46,7 +44,6 @@ class QuarterCard : public Ability
   public:
     QuarterCard(GameManager&, Player&);
     void useAbility();
-    void mute();
 };
 
 class ReverseDirCard : public Ability
@@ -54,15 +51,13 @@ class ReverseDirCard : public Ability
   public:
     ReverseDirCard(GameManager&, Player&);
     void useAbility();
-    void mute();
 };
 
 class SwapCard : public Ability
 {
   public:
     SwapCard(GameManager&, Player&);
-    void useAbility(Player&);
-    void mute();
+    void useAbility(Player&, int, int);
 };
 
 class SwitchCard : public Ability
@@ -70,15 +65,13 @@ class SwitchCard : public Ability
   public:
     SwitchCard(GameManager&, Player&);
     void useAbility(Player&);
-    void mute();
 };
 
 class AbilitylessCard : public Ability
 {
   public:
     AbilitylessCard(GameManager&, Player&);
-    void useAbility();
-    void mute();
+    void useAbility(Player&);
 };
 
 #endif // !__ABILITY_
