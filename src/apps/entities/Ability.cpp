@@ -1,6 +1,6 @@
 #include "Ability.hpp"
 
-Ability::Ability(GameManager& game, Player& owner)
+Ability::Ability(GameManager& game, Player& owner) : name("Ability Card")
 {
     this->game = game;
     this->owner = owner;
@@ -10,7 +10,7 @@ Ability::Ability(GameManager& game, Player& owner)
 
 void Ability::useAbility() = 0;
 
-ReRollCard::ReRollCard(GameManager& game, Player& owner)
+ReRollCard::ReRollCard(GameManager& game, Player& owner) : name("ReRoll Card")
 {
     this->game = game;
     this->owner = owner;
@@ -23,9 +23,16 @@ void ReRollCard::useAbility()
     vector<Card> oldCards = this->owner.takeAll();
     owner.put(this->game.deck.takeCard());
     owner.put(this->game.deck.takeCard());
+    this->used = true;
+}
+
+void ReRoll::mute()
+{
+    this->muted = true;
 }
 
 QuadrupleCard::QuadrupleCard(GameManager& game, Player& owner)
+    : name("Quadruple Card")
 {
     this->game = game;
     this->owner = owner;
@@ -36,9 +43,16 @@ QuadrupleCard::QuadrupleCard(GameManager& game, Player& owner)
 void QuadrupleCard::useAbility()
 {
     game.setPot(game.getPot() * 4);
+    this->used = true;
+}
+
+void QuadrupleCard::mute()
+{
+    this->muted = true;
 }
 
 QuarterCard::QuarterCard(GameManager& game, Player& owner)
+    : name("Quarter Card")
 {
     this->game = game;
     this->owner = owner;
@@ -49,9 +63,16 @@ QuarterCard::QuarterCard(GameManager& game, Player& owner)
 void QuarterCard::useAbility()
 {
     game.setPot(game.getPot() * 0.25);
+    this->used = true;
+}
+
+void QuarterCard::mute()
+{
+    this->muted = true;
 }
 
 ReverseDirCard::ReverseDirCard(GameManager& game, Player& owner)
+    : name("Reverse Direction Card")
 {
     this->game = game;
     this->owner = owner;
@@ -62,9 +83,15 @@ ReverseDirCard::ReverseDirCard(GameManager& game, Player& owner)
 void ReverseDirCard::useAbility()
 {
     this->game.reverseDirection();
+    this->used = true;
 }
 
-SwapCard::SwapCard(GameManager& game, Player& owner)
+void ReverseDirCard::mute()
+{
+    this->muted = true;
+}
+
+SwapCard::SwapCard(GameManager& game, Player& owner) : name("Swap Card")
 {
     this->game = game;
     this->owner = owner;
@@ -72,9 +99,25 @@ SwapCard::SwapCard(GameManager& game, Player& owner)
     this->muted = false;
 }
 
-void SwapCard::useAbility() {} // Need implementation
+void SwapCard::useAbility(Player& target, int CardIdx1, int CardIdx2)
+{
+    Card ownCard = this->owner.InventoryHolder::take(CardIdx1);
+    Card targetCard = target.InventoryHolder::take(CardIdx2);
 
-SwitchCard::SwitchCard(GameManager& game, Player& owner)
+    target.take(targetCard);
+    target.put(ownCard);
+
+    this->owner.take(ownCard);
+    this->owner.put(targetCard);
+    this->used = true;
+} // maybe right (?)
+
+void SwapCard::mute()
+{
+    this->muted = true;
+}
+
+SwitchCard::SwitchCard(GameManager& game, Player& owner) : name("Switch Card")
 {
     this->game = game;
     this->owner = owner;
@@ -87,16 +130,23 @@ void SwitchCard::useAbility(Player& target)
     vector<Card> Player1 = this->owner.takeAll();
     vector<Card> Player2 = target.takeAll();
 
-    for (int i = 0; i < Player2.size(); i++) {
+    for (int i : Player2) {
         this->owner.put(Player2[i]);
     }
 
-    for (int i = 0; i < Player1.size(); i++) {
+    for (int i : Player1) {
         target.put(Player1[i]);
     }
+    this->used = true;
 }
 
-AbilityLessCard::AbilityLessCard(GameManager& game, Player& owner)
+void SwitchCard::mute()
+{
+    this->muted = true;
+}
+
+AbilitylessCard::AbilitylessCard(GameManager& game, Player& owner)
+    : name("Abilityless Card")
 {
     this->game = game;
     this->owner = owner;
@@ -104,6 +154,13 @@ AbilityLessCard::AbilityLessCard(GameManager& game, Player& owner)
     this->muted = false;
 }
 
-void AbilityLessCard::useAbility(vector<Player>& players) {
+void AbilitylessCard::useAbility(Player& target)
+{
+    this->game.getAbility(target.getNickname()).mute();
+    this->used = true;
+}
 
-} // Need implementation
+void AbilitylessCard::mute()
+{
+    this->muted = true;
+}
