@@ -21,8 +21,8 @@ build: $(FILES)
 	@mkdir -p bin
 	@$(CXX) $(CFLAGS) $(CINCLUDES) $(MAIN) $^ -o $(OUTPUT_FOLDER)/main
 
-driver:
-	@$(CXX) $(CFLAGS) $(CINCLUDES) $(DRIVER_FOLDER)/$(DRIVER_SRC) -o $(DRIVER_SRC:%.c=%)
+driver: $(FILES)
+	@$(CXX) $(CFLAGS) $(CINCLUDES) $(DRIVER_FOLDER)/$(DRIVER_SRC) $^ -o $(OUTPUT_FOLDER)/$(DRIVER_SRC:%.cpp=%)
 
 clean:
 	@rm -rf bin/*
