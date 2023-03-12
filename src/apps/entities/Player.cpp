@@ -41,3 +41,7 @@ std::vector<Card> Player::takeAll()
     clear();
     return ret;
 }
+
+bool operator==(const Player& a, const Player& b) {
+    return a.getNickname() == b.getNickname();
+}

@@ -17,9 +17,6 @@ class Next : public Action
     Next(GameManager& gameManager);
 
     GameState* updateState() override;
-
-  private:
-    void doAction() override;
 };
 
 #endif // !__NEXT

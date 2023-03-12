@@ -1,13 +1,6 @@
 #include "Deck.hpp"
 
 template <class T>
-Deck<T>::Deck() : InventoryHolder<T>()
-{
-    fillDeck();
-    shuffle();
-}
-
-template <class T>
 T Deck<T>::takeCard()
 {
     T card = this->inventory.back();
@@ -47,14 +40,4 @@ template <class T>
 void Deck<T>::putCard(T card)
 {
     this->inventory.push_back(card);
-}
-
-template <class T>
-void Deck<T>::fillDeck()
-{
-    for (int i = 1; i <= 4; i++) {
-        for (int j = 1; j <= 13; j++) {
-            putCard(T(i, j));
-        }
-    }
 }

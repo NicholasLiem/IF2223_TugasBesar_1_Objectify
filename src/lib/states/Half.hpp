@@ -9,9 +9,6 @@ class Half : public Action
     Half(GameManager& gameManager);
 
     GameState* updateState() override;
-
-  private:
-    void doAction() override;
 };
 
 #endif // !__HALF_
