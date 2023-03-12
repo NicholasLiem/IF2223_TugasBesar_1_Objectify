@@ -6,8 +6,8 @@ using namespace std;
 
 int main()
 {
-    Card c1(CardColor::Green,CardNumber::Three);
-    Card c2(CardColor::Blue, CardNumber::One);
+    Card c1(CardColor::Red,CardNumber::Three);
+    Card c2(CardColor::Green, CardNumber::Three);
     if(c1 == c2){
         cout << "Pair!" << endl;
     }

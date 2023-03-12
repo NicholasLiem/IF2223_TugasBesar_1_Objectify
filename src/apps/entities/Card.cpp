@@ -3,8 +3,6 @@
 #include <iostream>
 using namespace std;
 
-
-
 Card::Card(const CardColor color, const CardNumber number)
 {
     this->color = color;
@@ -63,12 +61,12 @@ Card& Card::operator=(const Card& other)
 
 bool operator<(const Card& card1, const Card& card2)
 {
-    return (card1.getNumber() < card2.getNumber());
+    return (card1.value() < card2.value());
 }
 
 bool operator>(const Card& card1, const Card& card2)
 {
-    return (card1.getNumber() > card2.getNumber());
+    return (card1.value() > card2.value());
 }
 
 ostream& operator<<(ostream& os, const Card& card)

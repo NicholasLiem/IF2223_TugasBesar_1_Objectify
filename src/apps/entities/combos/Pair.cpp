@@ -16,3 +16,14 @@ bool Pair::isThereCombo(vector<Card>& cards){
     }
     return false;
 }
+
+Combo* Pair::clone(){
+    for(int i = 0;i < this->getCombos().size();i++){
+        this->registerCombo(this->getCombos()[i]);
+    }
+    return this;
+}
+
+float Pair::value()const{
+    // Rumus menghitung Pair
+}
