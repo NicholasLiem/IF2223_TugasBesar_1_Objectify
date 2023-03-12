@@ -35,7 +35,7 @@ class GameManager
 
     Player& getCurrentPlayer();
     std::vector<Player>& getPlayers();
-    Ability& getAbility(std::string playerNickname);
+    Ability* getAbility(std::string playerNickname);
     int getPot() const;
     int getCurrentRound() const;
 

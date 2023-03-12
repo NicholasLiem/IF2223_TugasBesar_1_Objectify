@@ -1,9 +1,6 @@
-#include "../../lib/entities/Table.hpp"
+#include "Table.hpp"
 #include <iostream>
 
-Table::Table()
-{
-}
 
 std::vector<Card> Table::takeAll()
 {

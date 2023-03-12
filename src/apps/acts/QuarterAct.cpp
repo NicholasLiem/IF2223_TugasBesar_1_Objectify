@@ -12,11 +12,11 @@ QuarterAct::QuarterAct(GameManager& gameManager) : Action(gameManager) {}
 GameState* QuarterAct::updateState()
 {
     Player& player = gameManager.getCurrentPlayer();
-    Ability& ability = gameManager.getAbility(player.getNickname());
-    if (ability.getName() == "quarter") {
+    Ability* ability = gameManager.getAbility(player.getNickname());
+    if (ability->getName() == "quarter") {
         std::cout << player.getNickname() << " melakukan QUARTER!";
         std::cout << " Poin hadiah turun dari " << gameManager.getPot();
-        ability.useAbility();
+        ability->useAbility();
         std::cout << " menjadi " << gameManager.getPot() << "!\n";
         gameManager.nextPlayer();
     } else {

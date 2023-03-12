@@ -26,6 +26,7 @@ class Ability
 
   public:
     Ability(GameManager& game, Player& owner, std::string name);
+    virtual ~Ability() = default;
     std::string getName() const;
     const Player& getOwner() const;
     virtual void useAbility() = 0;

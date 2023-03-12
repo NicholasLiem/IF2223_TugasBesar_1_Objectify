@@ -1,10 +1,26 @@
 #include "Ability.hpp"
 
+#include "Deck.hpp"
+
+#include <vector>
+
+Deck<Ability*> Ability::abilities;
+
 Ability::Ability(GameManager& game, Player& owner, std::string name)
     : game(game), owner(owner), name(name)
 {
     this->used = false;
     this->muted = false;
+}
+
+std::string Ability::getName() const
+{
+    return name;
+}
+
+Deck<Ability*>& Ability::getAbilities()
+{
+    return abilities;
 }
 
 void Ability::mute()
@@ -103,6 +119,6 @@ AbilitylessCard::AbilitylessCard(GameManager& game, Player& owner)
 
 void AbilitylessCard::useAbility(Player& target)
 {
-    this->game.getAbility(target.getNickname()).mute();
+    this->game.getAbility(target.getNickname())->mute();
     this->used = true;
 }
