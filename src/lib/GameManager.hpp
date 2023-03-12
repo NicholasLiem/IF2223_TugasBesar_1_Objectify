@@ -18,7 +18,6 @@ class GameManager
     std::vector<Player> players;
     std::vector<int> playedPlayers;
     std::map<std::string, Ability*> playerAbilities;
-    Deck<Card> deck;
 
     int currentPlayerIndex;
     int currentRound;
@@ -31,6 +30,7 @@ class GameManager
     void distributeAbilities();
 
   public:
+    Deck<Card> deck;
     GameManager();
 
     Player& getCurrentPlayer();
