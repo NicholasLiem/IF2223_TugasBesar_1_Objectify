@@ -14,6 +14,7 @@ class Deck : InventoryHolder<T>
   public:
     void shuffle();
     void putCard(T card);
+    void fillDeck();
     T takeCard();
 
   private:
