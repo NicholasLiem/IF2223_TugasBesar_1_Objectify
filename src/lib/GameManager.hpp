@@ -20,11 +20,14 @@ class GameManager
     std::map<std::string, Ability> playerAbilities;
     Deck<Card> deck;
 
-    uint currentPlayerIndex;
-    uint currentRound;
-    uint pot;
+    int currentPlayerIndex;
+    int currentRound;
+    int nextRoundFirstPlayerIndex;
+    int pot;
 
     bool reversedDirection;
+
+    void setupRound();
 
   public:
     GameManager();
@@ -32,13 +35,13 @@ class GameManager
     Player& getCurrentPlayer();
     std::vector<Player>& getPlayers();
     Ability& getAbility(std::string playerNickname);
-    uint getPot();
-    uint getCurrentRound();
+    int getPot();
+    int getCurrentRound();
 
     void registerPlayer(Player player);
     void reverseDirection();
     void nextPlayer();
-    void setPot(uint value);
+    void setPot(int value);
 
     Table table;
 };
