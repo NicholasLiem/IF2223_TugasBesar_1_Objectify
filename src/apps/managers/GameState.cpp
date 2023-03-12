@@ -26,8 +26,8 @@ GameState* GameState::getState(std::string name)
 
 void GameState::clearStates()
 {
-    for (auto it = states.begin(); it != states.end(); it++) {
-        delete it->second;
-        states.clear();
+    for (auto x : states) {
+        delete x.second;
     }
+    states.clear();
 }

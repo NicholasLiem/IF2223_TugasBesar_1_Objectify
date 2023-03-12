@@ -1,5 +1,8 @@
 #include "Deck.hpp"
 
+#include "Ability.hpp"
+#include "Card.hpp"
+
 template <class T>
 T Deck<T>::takeCard()
 {
@@ -41,3 +44,6 @@ void Deck<T>::putCard(T card)
 {
     this->inventory.push_back(card);
 }
+
+template class Deck<Card>;
+template class Deck<Ability*>;

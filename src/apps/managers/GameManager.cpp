@@ -72,6 +72,10 @@ Player& GameManager::getCurrentPlayer()
     return players[currentPlayerIndex];
 }
 
+Ability* GameManager::getAbility(std::string playerNickname) {
+    return playerAbilities[playerNickname];
+}
+
 void GameManager::setPot(int value)
 {
     pot = value;

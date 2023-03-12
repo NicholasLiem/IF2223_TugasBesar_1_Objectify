@@ -11,6 +11,8 @@ DIRS := apps/acts apps/entities apps/managers apps/states
 FILES := $(foreach DIR,$(DIRS),$(wildcard $(SOURCE_FOLDER)/$(DIR)/*.cpp))
 MAIN := $(SOURCE_FOLDER)/main.cpp
 
+DRIVER_FOLDER := src/driver
+
 .PHONY: all
 
 all: build
@@ -18,6 +20,9 @@ all: build
 build: $(FILES)
 	@mkdir -p bin
 	@$(CXX) $(CFLAGS) $(CINCLUDES) $(MAIN) $^ -o $(OUTPUT_FOLDER)/main
+
+driver:
+	@$(CXX) $(CFLAGS) $(CINCLUDES) $(DRIVER_FOLDER)/$(DRIVER_SRC) -o $(DRIVER_SRC:%.c=%)
 
 clean:
 	@rm -rf bin/*
