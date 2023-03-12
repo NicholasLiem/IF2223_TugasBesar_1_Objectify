@@ -20,7 +20,7 @@ class Ability
   protected:
     GameManager& game;
     Player& owner;
-    std::string name;
+    const std::string name;
     bool used;
     bool muted;
 
