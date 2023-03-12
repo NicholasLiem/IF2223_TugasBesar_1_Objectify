@@ -1,10 +1,8 @@
 #include "Ability.hpp"
 
-Ability::Ability(GameManager& game, Player& owner)
+Ability::Ability(GameManager& game, Player& owner, std::string name)
+    : game(game), owner(owner), name(name)
 {
-    this->game = game;
-    this->owner = owner;
-    this->name = "Ability Card";
     this->used = false;
     this->muted = false;
 }
@@ -15,12 +13,8 @@ void Ability::mute()
 }
 
 ReRollCard::ReRollCard(GameManager& game, Player& owner)
+    : Ability(game, owner, "ReRoll Card")
 {
-    this->game = game;
-    this->owner = owner;
-    this->name = "ReRoll Card";
-    this->used = false;
-    this->muted = false;
 }
 
 void ReRollCard::useAbility()
@@ -32,12 +26,8 @@ void ReRollCard::useAbility()
 }
 
 QuadrupleCard::QuadrupleCard(GameManager& game, Player& owner)
+    : Ability(game, owner, "Quadruple Card")
 {
-    this->game = game;
-    this->owner = owner;
-    this->name = "Quadruple Card";
-    this->used = false;
-    this->muted = false;
 }
 
 void QuadrupleCard::useAbility()
@@ -47,12 +37,8 @@ void QuadrupleCard::useAbility()
 }
 
 QuarterCard::QuarterCard(GameManager& game, Player& owner)
+    : Ability(game, owner, "Quarter Card")
 {
-    this->game = game;
-    this->owner = owner;
-    this->name = "Quarter Card";
-    this->used = false;
-    this->muted = false;
 }
 
 void QuarterCard::useAbility()
@@ -62,12 +48,8 @@ void QuarterCard::useAbility()
 }
 
 ReverseDirCard::ReverseDirCard(GameManager& game, Player& owner)
+    : Ability(game, owner, "Reverse Direction Card")
 {
-    this->game = game;
-    this->owner = owner;
-    this->name = "Reverse Direction Card";
-    this->used = false;
-    this->muted = false;
 }
 
 void ReverseDirCard::useAbility()
@@ -77,12 +59,8 @@ void ReverseDirCard::useAbility()
 }
 
 SwapCard::SwapCard(GameManager& game, Player& owner)
+    : Ability(game, owner, "Swap Card")
 {
-    this->game = game;
-    this->owner = owner;
-    this->name = "Swap Card";
-    this->used = false;
-    this->muted = false;
 }
 
 void SwapCard::useAbility(Player& target, int CardIdx1, int CardIdx2)
@@ -99,12 +77,8 @@ void SwapCard::useAbility(Player& target, int CardIdx1, int CardIdx2)
 } // maybe right (?)
 
 SwitchCard::SwitchCard(GameManager& game, Player& owner)
+    : Ability(game, owner, "Switch Card")
 {
-    this->game = game;
-    this->owner = owner;
-    this->name = "Switch Card";
-    this->used = false;
-    this->muted = false;
 }
 
 void SwitchCard::useAbility(Player& target)
@@ -123,12 +97,8 @@ void SwitchCard::useAbility(Player& target)
 }
 
 AbilitylessCard::AbilitylessCard(GameManager& game, Player& owner)
+    : Ability(game, owner, "Abilityless Card")
 {
-    this->game = game;
-    this->owner = owner;
-    this->name = "Abilityless Card";
-    this->used = false;
-    this->muted = false;
 }
 
 void AbilitylessCard::useAbility(Player& target)

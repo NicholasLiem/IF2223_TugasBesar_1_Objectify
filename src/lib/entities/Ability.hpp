@@ -25,7 +25,7 @@ class Ability
     bool muted;
 
   public:
-    Ability(GameManager& game, Player& owner);
+    Ability(GameManager& game, Player& owner, std::string name);
     std::string getName() const;
     const Player& getOwner() const;
     virtual void useAbility() = 0;
