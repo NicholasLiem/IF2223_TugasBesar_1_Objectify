@@ -9,13 +9,11 @@
 #include <vector>
 
 template<class T>
-class Deck : InventoryHolder<T>
+class Deck : public InventoryHolder<T>
 {
   public:
-    Deck();
     void shuffle();
     void putCard(T card);
-    void fillDeck();
     T takeCard();
 
   private:

@@ -9,9 +9,6 @@ class Double : public Action
     Double(GameManager& gameManager);
 
     GameState* updateState() override;
-
-  private:
-    void doAction() override;
 };
 
 #endif // !__DOUBLE_

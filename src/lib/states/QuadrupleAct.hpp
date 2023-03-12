@@ -9,9 +9,6 @@ class QuadrupleAct : public Action
     QuadrupleAct(GameManager& gameManager);
 
     GameState* updateState() override;
-
-  private:
-    void doAction() override;
 };
 
 #endif // !__QUADRUPLEACT_

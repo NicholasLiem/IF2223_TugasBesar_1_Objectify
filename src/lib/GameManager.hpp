@@ -17,13 +17,18 @@ class GameManager
   private:
     std::vector<Player> players;
     std::vector<int> playedPlayers;
-    std::map<std::string, Ability> playerAbilities;
+    std::map<std::string, Ability*> playerAbilities;
+    Deck<Card> deck;
 
-    uint currentPlayerIndex;
-    uint currentRound;
-    uint pot;
+    int currentPlayerIndex;
+    int currentRound;
+    int nextRoundFirstPlayerIndex;
+    int pot;
 
     bool reversedDirection;
+
+    void setupRound();
+    void distributeAbilities();
 
   public:
     Deck<Card> deck;
@@ -32,13 +37,13 @@ class GameManager
     Player& getCurrentPlayer();
     std::vector<Player>& getPlayers();
     Ability& getAbility(std::string playerNickname);
-    uint getPot();
-    uint getCurrentRound();
+    int getPot() const;
+    int getCurrentRound() const;
 
     void registerPlayer(Player player);
     void reverseDirection();
     void nextPlayer();
-    void setPot(uint value);
+    void setPot(int value);
 
     Table table;
 };

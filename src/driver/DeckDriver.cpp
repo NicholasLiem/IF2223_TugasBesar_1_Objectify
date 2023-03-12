@@ -1,11 +1,13 @@
-#include "../apps/entities/Deck.cpp"
-#include "../apps/entities/Card.cpp"
+#include "Card.hpp"
+#include "Deck.hpp"
+
 #include <iostream>
 using namespace std;
 
-int main(){
+int main()
+{
     Deck<Card> deck;
-    for(int i = 0; i < 52; i++){
+    for (int i = 0; i < 52; i++) {
         Card card = deck.takeCard();
         cout << card << endl;
     }

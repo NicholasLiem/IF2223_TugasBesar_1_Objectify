@@ -1,7 +1,7 @@
 #ifndef __PAIR_
 #define __PAIR_
 
-#include "Combo.hpp"
+#include "../Combo.hpp"
 
 #include <vector>
 using namespace std;

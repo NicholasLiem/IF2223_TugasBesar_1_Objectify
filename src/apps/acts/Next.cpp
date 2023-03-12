@@ -15,5 +15,3 @@ GameState* Next::updateState()
     gameManager.nextPlayer();
     return GameState::getState("player turn");
 }
-
-void Next::doAction() {}

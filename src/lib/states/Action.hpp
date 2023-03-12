@@ -13,7 +13,6 @@ class Action : public GameState
     }
 
   protected:
-    virtual void doAction() = 0;
     GameManager& gameManager;
 };
 
