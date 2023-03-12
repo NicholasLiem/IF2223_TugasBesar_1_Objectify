@@ -1,9 +1,9 @@
-#include "lib/states/QuadrupleAct.hpp"
+#include "../../lib/states/QuadrupleAct.hpp"
 
-#include "lib/GameManager.hpp"
-#include "lib/entities/Ability.hpp"
-#include "lib/entities/Player.hpp"
-#include "lib/states/Action.hpp"
+#include "../../lib/GameManager.hpp"
+#include "../../lib/entities/Ability.hpp"
+#include "../../lib/entities/Player.hpp"
+#include "../../lib/states/Action.hpp"
 
 #include <iostream>
 

@@ -1,8 +1,8 @@
-#include "lib/states/Double.hpp"
+#include "../../lib/states/Double.hpp"
 
-#include "lib/GameManager.hpp"
-#include "lib/entities/Player.hpp"
-#include "lib/states/Action.hpp"
+#include "../../lib/GameManager.hpp"
+#include "../../lib/entities/Player.hpp"
+#include "../../lib/states/Action.hpp"
 
 #include <iostream>
 

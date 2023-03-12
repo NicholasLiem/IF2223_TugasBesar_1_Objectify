@@ -1,9 +1,9 @@
-#include "lib/states/Next.hpp"
+#include "../../lib/states/Next.hpp"
 
-#include "lib/GameManager.hpp"
-#include "lib/GameState.hpp"
-#include "lib/states/Action.hpp"
-#include "lib/states/PlayerTurn.hpp"
+#include "../../lib/GameManager.hpp"
+#include "../../lib/GameState.hpp"
+#include "../../lib/states/Action.hpp"
+#include "../../lib/states/PlayerTurn.hpp"
 
 #include <iostream>
 
