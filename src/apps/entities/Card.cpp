@@ -1,4 +1,4 @@
-#include "./lib/entities/Card.hpp"
+#include "../../lib/entities/Card.hpp"
 #include <iostream>
 using namespace std;
 

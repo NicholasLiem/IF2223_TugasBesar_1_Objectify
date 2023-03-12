@@ -1,7 +1,7 @@
-#include "lib/states/PlayerTurn.hpp"
+#include "../../lib/states/PlayerTurn.hpp"
 
-#include "lib/Exceptions.hpp"
-#include "lib/states/Action.hpp"
+#include "../../lib/Exceptions.hpp"
+#include "../../lib/states/Action.hpp"
 
 #include <cctype>
 #include <iostream>
