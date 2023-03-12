@@ -12,6 +12,7 @@ template<class T>
 class Deck : InventoryHolder<T>
 {
   public:
+    Deck();
     void shuffle();
     void putCard(T card);
     void fillDeck();

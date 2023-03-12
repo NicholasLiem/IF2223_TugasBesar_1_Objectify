@@ -72,7 +72,20 @@ bool operator>(const Card& card1, const Card& card2){
     return (card1.value() > card2.value());
 }
 
-
+ostream& operator<<(ostream& os, const Card& card){
+        CardNumber card_num = card.getNumber();
+        CardColor card_color = card.getColor();
+        os << "Card: ";
+        switch(card_color)
+          {
+              case CardColor::Red  : std::cout << "red";   break;
+              case CardColor::Green : std::cout << "green"; break;
+              case CardColor::Blue : std::cout << "blue";  break;
+              case CardColor::Yellow : std::cout << "yellow";  break;
+          }
+        os << " " << int(card_num) << endl;
+        return os;
+    }
 
 
 
