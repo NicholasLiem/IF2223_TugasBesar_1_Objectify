@@ -10,7 +10,7 @@ class InventoryHolder
   public:
     virtual void put(T item) = 0;
     virtual T take(T item) = 0;
-    virtual T take(int index)
+    virtual T get(int index)
     {
         return inventory[index];
     };
