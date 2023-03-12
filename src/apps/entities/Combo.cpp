@@ -1,8 +1,12 @@
 #include "../../lib/entities/Combo.hpp"
 
+vector<Combo*> Combo::combos;
+
 Combo::Combo(string name) : name(name) {}
 
-Combo::Combo(Combo& other) : name(other.name) {}
+Combo::Combo(Combo& other) : name(other.name) {
+    cards = other.cards;
+}
 
 void Combo::registerCombo(Combo* combo){
     combos.push_back(combo);
@@ -26,7 +30,8 @@ bool HighCard::isThereCombo(vector<Card>& cards){
 }
 
 Combo* HighCard::clone() {
-    
+    HighCard *clone = this;
+    return clone;
 }
 
 Pair::Pair(vector<Card> _cards) : Combo("Pair") {}
