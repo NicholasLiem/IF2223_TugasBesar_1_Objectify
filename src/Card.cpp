@@ -7,6 +7,36 @@ Card::Card(const CardColor color, const CardNumber number){
     this->number = number;
 }
 
+Card::Card(const int color, const int number){
+    switch (color)
+    {
+    case 1:this->color = CardColor::Green;break;
+    case 2 : this->color = CardColor::Blue;break;
+    case 3 : this->color = CardColor::Yellow;break;
+    case 4 : this->color = CardColor::Red;break;
+    default:
+        break;
+    }
+
+    switch (number)
+    {
+    case 1:this->number = CardNumber::One;break;
+    case 2:this->number = CardNumber::Two;break;
+    case 3 : this->number = CardNumber::Three;break;
+    case 4 : this->number = CardNumber::Four;break;
+    case 5 : this->number = CardNumber::Five;break;
+    case 6 : this->number = CardNumber::Six;break;
+    case 7 : this->number = CardNumber::Seven;break;
+    case 8 : this->number = CardNumber::Eight;break;
+    case 9 : this->number = CardNumber::Nine;break;
+    case 10 : this->number = CardNumber::Ten;break;
+    case 11 : this->number = CardNumber::Eleven;break;
+    case 12 : this->number = CardNumber::Twelve;break;
+    case 13 : this->number = CardNumber::Thirteen;break;
+    default:break;
+    }
+}
+
 Card::Card(const Card& other){
     this->color = other.color;
     this->number = other.number;
@@ -43,12 +73,6 @@ bool operator>(const Card& card1, const Card& card2){
 }
 
 
-
-// int main(){
-//     Card *c1 = new Card(CardColor GREEN, CardNumber ONE);
-//     cout << "Hello World" << endl;
-//     return 0;
-// }
 
 
 

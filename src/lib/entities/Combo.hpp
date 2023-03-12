@@ -4,30 +4,32 @@
 #include "Card.hpp"
 #include "Valuable.hpp"
 
-#include <string>
+// #include <string>
+#include <iostream>
 #include <vector>
+using namespace std;
 
 class Combo : public Valuable
 {
   public:
-    Combo(std::string name);
+    Combo(string name);
     Combo(Combo& other);
     virtual ~Combo() = default;
 
-    virtual bool isThereCombo(std::vector<Card>& cards) = 0;
+    virtual bool isThereCombo(vector<Card>& cards) = 0;
     virtual Combo* clone() = 0;
 
     static void registerCombo(Combo* combo);
     static void clearCombos();
-    static std::vector<Combo*>& getCombos();
+    static vector<Combo*>& getCombos();
 
   protected:
     std::vector<Card> cards;
 
   private:
-    const std::string name;
+    const string name;
 
-    static std::vector<Combo*> combos;
+    static vector<Combo*> combos;
 };
 
 #endif // !__COMBO_

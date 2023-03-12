@@ -4,6 +4,7 @@
 #include "Combo.hpp"
 
 #include <vector>
+using namespace std;
 
 class Pair : public Combo
 {
@@ -11,7 +12,7 @@ class Pair : public Combo
     Pair();
     Pair(Pair& other);
 
-    bool isThereCombo(std::vector<Card>& cards) override;
+    bool isThereCombo(vector<Card>& cards) override;
     Combo* clone() override;
     float value() const override;
 };

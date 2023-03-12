@@ -24,6 +24,7 @@ class Card : public Valuable
 {
   public:
     Card(const CardColor color, const CardNumber number);
+    Card(const int color, const int number);
     Card(const Card& other);
 
     float value() const;
