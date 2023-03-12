@@ -13,13 +13,8 @@ GameState* Double::updateState()
     Player& player = gameManager.getCurrentPlayer();
     std::cout << player.getNickname() << " melakukan DOUBLE!";
     std::cout << " Poin hadiah naik dari " << gameManager.getPot();
-    doAction();
+    gameManager.setPot(gameManager.getPot() * 2);
     std::cout << " menjadi " << gameManager.getPot() << "!\n";
     gameManager.nextPlayer();
     return GameState::getState("player turn");
-}
-
-void Double::doAction()
-{
-    gameManager.setPot(gameManager.getPot() * 2);
 }

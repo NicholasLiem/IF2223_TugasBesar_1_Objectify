@@ -25,5 +25,3 @@ GameState* QuadrupleAct::updateState()
     }
     return GameState::getState("player turn");
 }
-
-void QuadrupleAct::doAction() {}
