@@ -18,7 +18,6 @@ class GameManager
     std::vector<Player> players;
     std::vector<int> playedPlayers;
     std::map<std::string, Ability> playerAbilities;
-    Deck<Card> deck;
 
     uint currentPlayerIndex;
     uint currentRound;
@@ -27,6 +26,7 @@ class GameManager
     bool reversedDirection;
 
   public:
+    Deck<Card> deck;
     GameManager();
 
     Player& getCurrentPlayer();
