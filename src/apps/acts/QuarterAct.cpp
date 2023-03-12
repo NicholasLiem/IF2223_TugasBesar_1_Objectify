@@ -25,5 +25,3 @@ GameState* QuarterAct::updateState()
     }
     return GameState::getState("player turn");
 }
-
-void QuarterAct::doAction() {}

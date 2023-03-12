@@ -9,9 +9,6 @@ class QuarterAct : public Action
     QuarterAct(GameManager& gameManager);
 
     GameState* updateState() override;
-
-  private:
-    void doAction() override;
 };
 
 #endif // !__QUARTERACT_

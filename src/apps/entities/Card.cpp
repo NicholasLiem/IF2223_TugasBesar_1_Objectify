@@ -23,7 +23,7 @@ Card::Card(const Card& other)
 
 float Card::value() const
 {
-    return int(number) + int(color) * 0.003;
+    return int(number) + int(color) * 0.03;
 }
 
 CardColor Card::getColor() const
