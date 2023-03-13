@@ -219,6 +219,7 @@ bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table)
             num--;
         }
         if (straight){
+
             return true;
         }
     }
@@ -295,6 +296,39 @@ FourOfAKind::FourOfAKind(const FourOfAKind& other) : Combo(other) {}
 
 bool FourOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
+    if (player.size() > 1){
+        if (player[0] == player[1]){
+            int count = 0;
+            for(int i = 0; i < table.size(); i++){
+                if(table[i] == player[0]){
+                    count++;
+                }
+            }
+            if (count == 2){
+                int num = int(player[0].getNumber());
+                for (int i = 0; i < 4; i++){
+                    cards.push_back(Card(i,num));
+                }
+                return true;
+            }
+        } else {
+            for (int j = 0; j < 2; j++){
+                int count = 0;
+                for(int i = 0; i < table.size(); i++){
+                    if(table[i] == player[j]){
+                        count++;
+                    }
+                }
+                if (count == 3){
+                    int num = int(player[j].getNumber());
+                    for (int i = 0; i < 4; i++){
+                        cards.push_back(Card(i,num));
+                    }
+                    return true;
+                }
+            }
+        }
+    }
     return false;
 }
 
