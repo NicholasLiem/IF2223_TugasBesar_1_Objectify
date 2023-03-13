@@ -168,7 +168,7 @@ bool ThreeOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
         for (int h = 0; h < player.size(); h++){
             for (int i = 0; i < table.size(); i++){
                 if (player[h] == table[i]){
-                    for (int j = i; j < table.size(); j++){
+                    for (int j = i + 1; j < table.size(); j++){
                         if (player[h] == table[j]){
                             cards.push_back(player[h]);
                             cards.push_back(table[i]);
@@ -205,6 +205,21 @@ bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table)
         vector<Card> temp;
         for (int i = 0; i < player.size(); i++){
             temp.push_back(player[i]);
+        }
+        for (int i = 0; i < table.size(); i++){
+            temp.push_back(table[i]);
+        }
+        sort(temp.begin(),temp.end(),compareCards);
+        int num = int(temp[0].getNumber()) - 1;
+        bool straight = true;
+        for (int i = 1; i < temp.size(); i++){
+            if(int(temp[i].getNumber()) != num){
+                straight = false;
+            }
+            num--;
+        }
+        if (straight){
+            return true;
         }
     }
     return false;
