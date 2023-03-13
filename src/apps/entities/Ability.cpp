@@ -18,6 +18,14 @@ std::string Ability::getName() const
     return name;
 }
 
+bool Ability::isUsed() const {
+    return used;
+}
+
+bool Ability::isMuted() const {
+    return muted;
+}
+
 Deck<Ability*>& Ability::getAbilities()
 {
     return abilities;

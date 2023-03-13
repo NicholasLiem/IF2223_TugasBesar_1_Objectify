@@ -35,6 +35,8 @@ class Ability
     static void registerAbility(Ability* ability);
     static void clearAbilities();
     void mute();
+    bool isMuted() const;
+    bool isUsed() const;
 };
 
 class ReRollCard : public Ability
