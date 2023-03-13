@@ -59,12 +59,17 @@ bool compareCards(const Card& a,const Card& b){
 
 bool Pair::isThereCombo(vector<Card>& player, vector<Card>& table) {
     sort(player.begin(),player.end(),compareCards);
+    if (player[0] == player[1]){
+        cards.push_back(player[0]);
+        cards.push_back(player[1]);
+        return true;
+    }
     for(int i = 0; i < player.size(); i++){
         for(int j = 0; j < table.size(); j++){
             if(player[i] == table[j]){
-                this->cards.push_back(player[i]);
-                this->cards.push_back(table[j]);
-                sort(this->cards.begin(),this->cards.end(),compareCards);
+                cards.push_back(player[i]);
+                cards.push_back(table[j]);
+                sort(cards.begin(),cards.end(),compareCards);
                 return true;
             }
         }
@@ -91,6 +96,20 @@ TwoPair::TwoPair(const TwoPair& other) : Combo(other) {}
 bool TwoPair::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
     if (table.size() > 1) {
+        if (player[0] == player[1]){
+            for (int i = 0; i < table.size(); i++){
+                for (int j = 0; j < table.size(); j++){
+                    if (table[i] == table[j]){
+                        cards.push_back(player[0]);
+                        cards.push_back(player[1]);
+                        cards.push_back(table[i]);
+                        cards.push_back(table[j]);
+                        sort(cards.begin(),cards.end(),compareCards);
+                        return true;
+                    }
+                }
+            }
+        }
         for (int i = 0; i < table.size(); i++){
             if (player[0] == table[i]){
                 for (int j = 0; j < table.size(); j++){
@@ -98,7 +117,7 @@ bool TwoPair::isThereCombo(vector<Card>& player, vector<Card>& table)
                         cards.push_back(player[0]);
                         cards.push_back(table[i]);
                         cards.push_back(player[1]);
-                        cards.push_back(player[j]);
+                        cards.push_back(table[j]);
                         sort(cards.begin(),cards.end(),compareCards);
                         return true;
                     }
