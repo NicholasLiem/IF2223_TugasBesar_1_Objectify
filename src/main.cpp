@@ -14,6 +14,10 @@ void contohPerhitunganKartu(GameManager& gameManager)
     std::vector<Player>& players = gameManager.getPlayers();
     float highestScore = 0;
     int winnerIndex = 0;
+    bool isStraightFlush = false;
+    // Cek table cards ada bentuk combo apa ga, cek dlu ada straight flush ato engga, kalo iya, isStraightFlush = true
+    std::vector<Card> tableCards(gameManager.table.takeAll());
+
     for (int i = 0; i < players.size(); i++) {
         Player& player = players[i];
         float score = 0;
@@ -21,8 +25,12 @@ void contohPerhitunganKartu(GameManager& gameManager)
         auto playerCards = player.takeAll();
         cards.insert(cards.end(), playerCards.begin(), playerCards.end());
         Combo* combo;
+        // Looping sebanyak 12 jenis kombo yang ada
         for (Combo* c : Combo::getCombos()) {
+            // Kalau misalnya dari si player ada kombo masuk ke sini, misalnya ada kombo pair
             if (c->isThereCombo(cards)) {
+                // Cek di table udah ada belom straight flush, kalo ada, gausah diclone dan gausah di ganti scorenya
+                // simpen semua susunan kartu combo ke si combo
                 combo = c->clone();
                 score = combo->value();
             } else {
