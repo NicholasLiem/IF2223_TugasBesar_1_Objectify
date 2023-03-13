@@ -86,7 +86,7 @@ Combo* Pair::clone()
 float Pair::value() const
 {
     // max value = 13131.3996
-    float val = 1.39 + int(cards[0].getNumber()) * 10 + int(cards[0].getColor()) * 0.003 + int(cards[1].getNumber()) * 1000 + int(cards[1].getColor()) * 0.0003;
+    float val = 1.39 + int(cards[0].getNumber()) * 1000 + int(cards[0].getColor()) * 0.003 + int(cards[1].getNumber()) * 10 + int(cards[1].getColor()) * 0.0003;
     return val;
 }
 
@@ -137,8 +137,8 @@ float TwoPair::value() const
 {
     // max value = 26261.39969696
     float val = 13131.3996;
-    val += int(cards[0].getNumber()) * 10 + int(cards[0].getColor()) * 0.00003 + int(cards[1].getColor()) * 0.000003;
-    val += int(cards[2].getNumber()) * 1000 + int(cards[2].getColor()) * 0.0000003 + int(cards[3].getColor()) * 0.00000003;
+    val += int(cards[0].getNumber()) * 1000 + int(cards[0].getColor()) * 0.00003 + int(cards[1].getColor()) * 0.000003;
+    val += int(cards[2].getNumber()) * 10 + int(cards[2].getColor()) * 0.0000003 + int(cards[3].getColor()) * 0.00000003;
     return val;
 }
 
