@@ -1,12 +1,11 @@
 #include "../../lib/entities/Combo.hpp"
 
+// Implementation of Class Combo
 vector<Combo*> Combo::combos;
 
 Combo::Combo(string name) : name(name) {}
 
-Combo::Combo(Combo& other) : name(other.name) {
-    cards = other.cards;
-}
+Combo::Combo(Combo& other) : name(other.name), cards(other.cards) {}
 
 void Combo::registerCombo(Combo* combo){
     combos.push_back(combo);
@@ -20,7 +19,8 @@ vector<Combo*>& Combo::getCombos(){
     return combos;
 }
 
-HighCard::HighCard(Card c): Combo("HighCard"){}
+// Implementation of Class HighCard
+HighCard::HighCard(): Combo("HighCard"){}
 
 bool HighCard::isThereCombo(vector<Card>& cards){
     if (cards.size() > 0){
@@ -30,38 +30,56 @@ bool HighCard::isThereCombo(vector<Card>& cards){
 }
 
 Combo* HighCard::clone() {
-    HighCard *clone = this;
-    return clone;
+    return new HighCard(*this);
 }
 
-Pair::Pair(vector<Card> _cards) : Combo("Pair") {}
+float HighCard::value() {
+    return cards[0].value();
+}
+
+
+//Implementation of Class Pair
+Pair::Pair() : Combo("Pair") {}
 bool Pair::isThereCombo(vector<Card>& cards) {}
-Combo* Pair::clone() {}
+Pair* Pair::clone() {
 
-TwoPair::TwoPair(vector<Card> _cards) : Combo("TwoPair") {}
+}
+float Pair::value() {
+    float val = 1.39;
+    float val1 = cards[0].value();
+    float val2 = cards[1].value();
+    if(val1 > val2){
+        val += val1;
+    } else {
+        val += val2;
+    }
+    return val;
+}
+
+TwoPair::TwoPair() : Combo("TwoPair") {}
 bool TwoPair::isThereCombo(vector<Card>& cards) {}
-Combo* TwoPair::clone() {}
+TwoPair* TwoPair::clone() {}
 
-ThreeOfAKind::ThreeOfAKind(vector<Card> _cards) : Combo("ThreeOfAKind"){}
+ThreeOfAKind::ThreeOfAKind() : Combo("ThreeOfAKind"){}
 bool ThreeOfAKind::isThereCombo(vector<Card>& cards) {}
-Combo* ThreeOfAKind::clone() {}
+ThreeOfAKind* ThreeOfAKind::clone() {}
 
-Straight::Straight(vector<Card> _cards) : Combo("Straight"){}
+Straight::Straight() : Combo("Straight"){}
 bool Straight::isThereCombo(vector<Card>& cards) {}
-Combo* Straight::clone() {}
+Straight* Straight::clone() {}
 
-Flush::Flush(vector<Card> _cards) : Combo("Flush") {}
+Flush::Flush() : Combo("Flush") {}
 bool Flush::isThereCombo(vector<Card>& cards) {}
-Combo* Flush::clone() {}
+Flush* Flush::clone() {}
 
-FullHouse::FullHouse(vector<Card> _cards) : Combo("FullHouse"){}
+FullHouse::FullHouse() : Combo("FullHouse"){}
 bool FullHouse::isThereCombo(vector<Card>& cards) {}
-Combo* FullHouse::clone() {}
+FullHouse* FullHouse::clone() {}
 
-FourOfAKind::FourOfAKind(vector<Card> _cards) : Combo("FourOfAKind") {}
+FourOfAKind::FourOfAKind() : Combo("FourOfAKind") {}
 bool FourOfAKind::isThereCombo(vector<Card>& cards) {}
-Combo* FourOfAKind::clone() {}
+FourOfAKind* FourOfAKind::clone() {}
 
-StraightFlush::StraightFlush(vector<Card> _cards) : Combo("StraightFlush") {}
+StraightFlush::StraightFlush() : Combo("StraightFlush") {}
 bool StraightFlush::isThereCombo(vector<Card>& cards) {}
-Combo* StraightFlush::clone() {}
+StraightFlush* StraightFlush::clone() {}
