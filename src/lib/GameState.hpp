@@ -18,7 +18,7 @@ class GameState
      * @brief Method yang mengindikasikan state akhir dari game.
      * @return true jika state ini adalah penanda akhir dari game.
      */
-    bool isEnd();
+    bool isEnd() const;
 
     /**
      * @brief Method abstrak untuk mengeksekusi logic dalam sebuah state.
@@ -55,7 +55,7 @@ class GameState
     /**
      * @brief Flag penanda state terakhir dari game.
      */
-    bool end;
+    const bool end;
 
   private:
     /**
