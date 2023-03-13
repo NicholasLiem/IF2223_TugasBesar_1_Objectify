@@ -7,9 +7,9 @@ int main(){
     Card c1(2,1);
     Card c2(0,12);
     Card c3(3,14);
-    Card c4(1,1);
+    Card c4(1,8);
     Card c5(3,9);
-    Card c6(3,9);
+    Card c6(3,12);
     Card c7(3,4);
     vector <Card> playerCards;
     vector <Card> tableCards;
@@ -17,12 +17,17 @@ int main(){
     playerCards.push_back(c6);playerCards.push_back(c7);
     Pair *p2;
     p2 = new Pair();
+    ThreeOfAKind *t;
+    t = new ThreeOfAKind();
     Combo *c;
     c->registerCombo(p2);
+    c->registerCombo(t);
     Combo* combo;
+    float value = 0;
     for (Combo* c : Combo::getCombos()) {
         if(c->isThereCombo(playerCards,tableCards)){
-            cout << "Ada combo!"<<endl;
+            cout << "Ada Combo!" << endl;
+            cout << c->value() <<endl;
         }        
     }
     

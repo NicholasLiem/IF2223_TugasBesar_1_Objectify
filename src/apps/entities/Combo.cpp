@@ -154,6 +154,7 @@ ThreeOfAKind::ThreeOfAKind(const ThreeOfAKind& other) : Combo(other) {}
 
 bool ThreeOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
+    
     return false;
 }
 
