@@ -14,6 +14,10 @@ class InventoryHolder
     {
         return inventory[index];
     };
+    virtual const std::vector<T>& getAll() const
+    {
+        return inventory;
+    }
     virtual void clear()
     {
         inventory.clear();
