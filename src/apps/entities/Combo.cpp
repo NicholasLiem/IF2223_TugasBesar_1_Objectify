@@ -2,9 +2,6 @@
 
 // Implementation of Class Combo
 vector<Combo*> Combo::combos;
-bool compareCards(const Card& a,const Card& b){
-    return a.value() > b.value();
-}
 
 Combo::Combo(string name) : name(name) {}
 
@@ -27,6 +24,10 @@ string Combo::getName(){
 
 vector<Combo*>& Combo::getCombos(){
     return combos;
+}
+
+bool compareCards(const Card& a,const Card& b){
+    return a > b;
 }
 
 // Implementation of Class HighCard
@@ -60,20 +61,22 @@ float HighCard::value() const
 Pair::Pair() : Combo("Pair") {}
 Pair::Pair(const Pair& other) : Combo(other) {}
 
+
 bool Pair::isThereCombo(vector<Card>& player, vector<Card>& table) {
     sort(player.begin(),player.end(),compareCards);
     if (player[0] == player[1]){
         cards.push_back(player[0]);
         cards.push_back(player[1]);
         return true;
-    }
-    for(int i = 0; i < player.size(); i++){
-        for(int j = 0; j < table.size(); j++){
-            if(player[i] == table[j]){
-                cards.push_back(player[i]);
-                cards.push_back(table[j]);
-                sort(cards.begin(),cards.end(),compareCards);
-                return true;
+    } else {
+        for(int i = 0; i < player.size(); i++){
+            for(int j = 0; j < table.size(); j++){
+                if(player[i] == table[j]){
+                    cards.push_back(player[i]);
+                    cards.push_back(table[j]);
+                    sort(cards.begin(),cards.end(),compareCards);
+                    return true;
+                }
             }
         }
     }
@@ -116,17 +119,18 @@ bool TwoPair::isThereCombo(vector<Card>& player, vector<Card>& table)
                     }
                 }
             }
-        }
-        for (int i = 0; i < table.size(); i++){
-            if (player[0] == table[i]){
-                for (int j = 0; j < table.size(); j++){
-                    if (player[1] == table[j]){
-                        cards.push_back(player[0]);
-                        cards.push_back(table[i]);
-                        cards.push_back(player[1]);
-                        cards.push_back(table[j]);
-                        sort(cards.begin(),cards.end(),compareCards);
-                        return true;
+        } else {
+            for (int i = 0; i < table.size(); i++){
+                if (player[0] == table[i]){
+                    for (int j = 0; j < table.size(); j++){
+                        if (player[1] == table[j]){
+                            cards.push_back(player[0]);
+                            cards.push_back(table[i]);
+                            cards.push_back(player[1]);
+                            cards.push_back(table[j]);
+                            sort(cards.begin(),cards.end(),compareCards);
+                            return true;
+                        }
                     }
                 }
             }
@@ -154,7 +158,33 @@ ThreeOfAKind::ThreeOfAKind(const ThreeOfAKind& other) : Combo(other) {}
 
 bool ThreeOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
-    
+    if (player[0] == player[1]){
+        for (int i = 0; i < table.size(); i++){
+            if (table[i] == player[0]){
+                cards.push_back(player[0]);
+                cards.push_back(player[1]);
+                cards.push_back(table[i]);
+                sort(cards.begin(),cards.end(),compareCards);
+                return true;
+            }
+        }
+    } else {
+        for (int h = 0; h < player.size(); h++){
+            for (int i = 0; i < table.size(); i++){
+                if (player[h] == table[i]){
+                    for (int j = 0; j < table.size(); j++){
+                        if (player[h] == table[j]){
+                            cards.push_back(player[h]);
+                            cards.push_back(table[i]);
+                            cards.push_back(table[j]);
+                            sort(cards.begin(),cards.end(),compareCards);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
     return false;
 }
 
@@ -166,8 +196,8 @@ Combo* ThreeOfAKind::clone()
 
 float ThreeOfAKind::value() const
 {
-    // val maks = 2615.7832
-    return int(cards[0].getNumber()) * 100 + 1315.7832;
+    // val maks = 1326261.39969696963
+    return 26261.39969696 + int(cards[0].getNumber()) * 100000 + int(cards[0].getColor()) * 0.000000003 + int(cards[1].getColor()) * 0.0000000003 + int(cards[2].getColor()) * 0.00000000003;
 }
 
 Straight::Straight() : Combo("Straight") {}
@@ -185,8 +215,14 @@ Combo* Straight::clone()
 
 float Straight::value() const
 {
-    // val maks = 3915.7832
-    return int(cards[0].getNumber()) * 100 + 2615.7832;
+    // val maks = 2626261.3996969696399996
+    float val = 1326261.39969696963 + int(cards[0].getNumber()) * 100000;
+    float constant = 0.000000000003 ;
+    for (int i = 0; i < 5; i++){
+        val += int(cards[i].getColor())*constant;
+        constant /= 10;
+    }
+    return val;
 }
 
 Flush::Flush() : Combo("Flush") {}
@@ -198,7 +234,14 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
 }
 
 float Flush::value() const {
-    return 0;
+    // max value = 13133939391.39969696963999969
+    float val = 2626261.3996969696399996 + int(cards[0].getColor())*0.00000000000000003;
+    int constant = 10;
+    for (int i = 4; i >= 0; i--){
+        val += int(cards[i].getNumber())*constant;
+        constant *= 100;
+    }
+    return val;
 }
 
 Combo* Flush::clone()
@@ -216,7 +259,14 @@ bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
 }
 
 float FullHouse::value() const {
-    return 0;
+    // max value = 26263939391.3996969696399996996396
+    float val = 13133939391.39969696963999969 + int(cards[0].getNumber())*1000000000 + int(cards[3].getNumber())*10000000;
+    float constant = 0.000000000000000003;
+    for (int i = 0; i < 5; i++){
+        val += int(cards[i].getColor())*constant;
+        constant /= 10;
+    }
+    return val;
 }
 Combo* FullHouse::clone()
 {
@@ -232,7 +282,9 @@ bool FourOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
 }
 
 float FourOfAKind::value() const {
-    return 0;
+    // max value = 26393939391.3996969696399996996396
+    float val = 26263939391.3996969696399996996396 + int(cards[0].getNumber())*1000000;
+    return val;
 }
 
 Combo* FourOfAKind::clone()
@@ -247,11 +299,14 @@ StraightFlush::StraightFlush(const StraightFlush& other) : Combo(other) {}
 
 bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
+    vector<Card> temp;
     return false;
 }
 
 float StraightFlush::value() const {
-    return 0;
+    // max value = 39393939391.39969696963999969963969
+    float val = 26393939391.3996969696399996996396 + int(cards[0].getNumber())*100000000 + int(cards[0].getColor())*0.00000000000000000000003;
+    return val;
 }
 
 Combo* StraightFlush::clone()
