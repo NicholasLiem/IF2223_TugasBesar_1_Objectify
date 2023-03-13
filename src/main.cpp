@@ -1,10 +1,9 @@
+#include "Action.hpp"
 #include "Card.hpp"
 #include "Combo.hpp"
 #include "GameManager.hpp"
 #include "GameState.hpp"
-#include "Next.hpp"
-#include "PlayerRegistration.hpp"
-#include "PlayerTurn.hpp"
+#include "State.hpp"
 
 #include <map>
 #include <string>
