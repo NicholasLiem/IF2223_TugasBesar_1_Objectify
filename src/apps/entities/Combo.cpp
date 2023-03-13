@@ -30,7 +30,8 @@ bool HighCard::isThereCombo(vector<Card>& cards){
 }
 
 Combo* HighCard::clone() {
-    return new HighCard(*this);
+    HighCard *clone = this;
+    return clone;
 }
 
 float HighCard::value() {
@@ -40,8 +41,20 @@ float HighCard::value() {
 
 //Implementation of Class Pair
 Pair::Pair() : Combo("Pair") {}
-bool Pair::isThereCombo(vector<Card>& cards) {}
+bool Pair::isThereCombo(vector<Card>& cards) {
+    for(int i = 0; i < cards.size();i++){
+        for(int j = i; j < cards.size();j++){
+            if(cards[i] == cards[j]){
+                return true;
+            }
+        }
+    }
+    return false;
+}
 Pair* Pair::clone() {
+    Pair *clone = this;
+    return clone;
+
 
 }
 float Pair::value() {
@@ -57,29 +70,64 @@ float Pair::value() {
 }
 
 TwoPair::TwoPair() : Combo("TwoPair") {}
-bool TwoPair::isThereCombo(vector<Card>& cards) {}
-TwoPair* TwoPair::clone() {}
+bool TwoPair::isThereCombo(vector<Card>& cards) {
+    return false;
+}
+TwoPair* TwoPair::clone() {
+    TwoPair *clone = this;
+    return this;
+}
 
 ThreeOfAKind::ThreeOfAKind() : Combo("ThreeOfAKind"){}
-bool ThreeOfAKind::isThereCombo(vector<Card>& cards) {}
-ThreeOfAKind* ThreeOfAKind::clone() {}
+bool ThreeOfAKind::isThereCombo(vector<Card>& cards) {
+    return false;
+}
+ThreeOfAKind* ThreeOfAKind::clone() {
+    ThreeOfAKind *clone = this;
+    return this;
+}
 
 Straight::Straight() : Combo("Straight"){}
-bool Straight::isThereCombo(vector<Card>& cards) {}
-Straight* Straight::clone() {}
+bool Straight::isThereCombo(vector<Card>& cards) {
+    return false;
+}
+Straight* Straight::clone() {
+    Straight *clone = this;
+    return this;
+}
 
 Flush::Flush() : Combo("Flush") {}
-bool Flush::isThereCombo(vector<Card>& cards) {}
-Flush* Flush::clone() {}
+bool Flush::isThereCombo(vector<Card>& cards) {
+    return false;
+}
+Flush* Flush::clone() {
+    Flush *clone = this;
+    return this;
+}
 
 FullHouse::FullHouse() : Combo("FullHouse"){}
-bool FullHouse::isThereCombo(vector<Card>& cards) {}
-FullHouse* FullHouse::clone() {}
+bool FullHouse::isThereCombo(vector<Card>& cards) {
+    return false;
+}
+FullHouse* FullHouse::clone() {
+    FullHouse *clone = this;
+    return this;
+}
 
 FourOfAKind::FourOfAKind() : Combo("FourOfAKind") {}
-bool FourOfAKind::isThereCombo(vector<Card>& cards) {}
-FourOfAKind* FourOfAKind::clone() {}
+bool FourOfAKind::isThereCombo(vector<Card>& cards) {
+    return false;
+}
+FourOfAKind* FourOfAKind::clone() {
+    FourOfAKind *clone = this;
+    return this;
+}
 
 StraightFlush::StraightFlush() : Combo("StraightFlush") {}
-bool StraightFlush::isThereCombo(vector<Card>& cards) {}
-StraightFlush* StraightFlush::clone() {}
+bool StraightFlush::isThereCombo(vector<Card>& cards) {
+    return false;
+}
+StraightFlush* StraightFlush::clone() {
+    StraightFlush *clone = this;
+    return this;
+}

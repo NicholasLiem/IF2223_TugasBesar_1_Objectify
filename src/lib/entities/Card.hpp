@@ -33,15 +33,17 @@ class Card : public Valuable
     CardColor getColor() const;
 
     CardNumber getNumber() const;
+  
     Card& operator=(const Card& other);
 
+    bool operator==(const Card& other);
     friend bool operator==(const Card& card1, const Card& card2);
 
     friend bool operator<(const Card& card1, const Card& card2);
 
     friend bool operator>(const Card& card1, const Card& card2);
 
-    friend std::ostream& operator<<(const std::ostream& out, const Card& card);
+    friend std::ostream& operator<<(std::ostream& out, const Card& card);
 
   private:
     CardColor color;

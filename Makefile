@@ -1,28 +1,34 @@
-CXX := g++
+TARGET_EXEC := main
 
-SOURCE_FOLDER := src
-OUTPUT_FOLDER := bin
-INCLUDE_FOLDERS := lib lib/states lib/entities lib/entities/combos
+BUILD_DIR := bin
+SRC_DIRS := src
+DRIVER_DIR := src/driver
 
-CFLAGS := -std=c++17 -ggdb
-CINCLUDES = $(INCLUDE_FOLDERS:%=-I$(SOURCE_FOLDER)/%)
+SRCS := $(shell find $(SRC_DIRS) -path *driver -prune -o -name '*.cpp' -print)
 
-DIRS := apps/acts apps/entities apps/managers apps/states
-FILES := $(foreach DIR,$(DIRS),$(wildcard $(SOURCE_FOLDER)/$(DIR)/*.cpp))
-MAIN := $(SOURCE_FOLDER)/main.cpp
+OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
-DRIVER_FOLDER := src/driver
+INC_DIRS := $(shell find $(SRC_DIRS) -path *apps -prune -o -type d)
+INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-.PHONY: all
+CPPFLAGS := $(INC_FLAGS) -std=c++17 -ggdb -MMD -MP
 
-all: build
+DEPS := $(OBJS:.o=.d)
 
-build: $(FILES)
-	@mkdir -p bin
-	@$(CXX) $(CFLAGS) $(CINCLUDES) $(MAIN) $^ -o $(OUTPUT_FOLDER)/main
+$(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
+	@$(CXX) $(OBJS) -o $@
 
-driver: $(FILES)
-	@$(CXX) $(CFLAGS) $(CINCLUDES) $(DRIVER_FOLDER)/$(DRIVER_SRC) $^ -o $(OUTPUT_FOLDER)/$(DRIVER_SRC:%.cpp=%)
+$(BUILD_DIR)/%.cpp.o: %.cpp
+	@mkdir -p $(dir $@)
+	@$(CXX) $(CPPFLAGS) -c $< -o $@
 
+.PHONY: clean all
+all: $(OBJS)
 clean:
-	@rm -rf bin/*
+	rm -r $(BUILD_DIR)
+driver: $(OBJS)
+	@mkdir -p $(BUILD_DIR)/driver
+	@$(CXX) $(CPPFLAGS) $(filter-out %/main.cpp.o,$(OBJS)) \
+		$(DRIVER_DIR)/$(DRIVER_SRC) -o $(BUILD_DIR)/driver/$(basename $(DRIVER_SRC))
+
+-include $(DEPS)
