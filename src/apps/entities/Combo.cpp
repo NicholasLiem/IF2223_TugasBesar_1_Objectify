@@ -2,9 +2,6 @@
 
 // Implementation of Class Combo
 vector<Combo*> Combo::combos;
-bool compareCards(const Card& a,const Card& b){
-    return a.value() > b.value();
-}
 
 Combo::Combo(string name) : name(name) {}
 
@@ -30,7 +27,7 @@ vector<Combo*>& Combo::getCombos(){
 }
 
 bool compareCards(const Card& a,const Card& b){
-    return a.value() > b.value();
+    return a > b;
 }
 
 // Implementation of Class HighCard
@@ -218,8 +215,14 @@ Combo* Straight::clone()
 
 float Straight::value() const
 {
-    // val maks = 3915.7832
-    return int(cards[0].getNumber()) * 100 + 2615.7832;
+    // val maks = 2626261.3996969696399996
+    float val = 1326261.39969696963 + int(cards[0].getNumber()) * 100000;
+    float constant = 0.000000000003 ;
+    for (int i = 0; i < 5; i++){
+        val += int(cards[i].getColor())*constant;
+        constant /= 10;
+    }
+    return val;
 }
 
 Flush::Flush() : Combo("Flush") {}
@@ -231,7 +234,14 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
 }
 
 float Flush::value() const {
-    return 0;
+    // max value = 13133939391.39969696963999969
+    float val = 2626261.3996969696399996 + int(cards[0].getColor())*0.00000000000000003;
+    int constant = 10;
+    for (int i = 4; i >= 0; i--){
+        val += int(cards[i].getNumber())*constant;
+        constant *= 100;
+    }
+    return val;
 }
 
 Combo* Flush::clone()
@@ -249,7 +259,14 @@ bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
 }
 
 float FullHouse::value() const {
-    return 0;
+    // max value = 26263939391.3996969696399996996396
+    float val = 13133939391.39969696963999969 + int(cards[0].getNumber())*1000000000 + int(cards[3].getNumber())*10000000;
+    float constant = 0.000000000000000003;
+    for (int i = 0; i < 5; i++){
+        val += int(cards[i].getColor())*constant;
+        constant /= 10;
+    }
+    return val;
 }
 Combo* FullHouse::clone()
 {
@@ -265,7 +282,9 @@ bool FourOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
 }
 
 float FourOfAKind::value() const {
-    return 0;
+    // max value = 26393939391.3996969696399996996396
+    float val = 26263939391.3996969696399996996396 + int(cards[0].getNumber())*1000000;
+    return val;
 }
 
 Combo* FourOfAKind::clone()
@@ -280,11 +299,14 @@ StraightFlush::StraightFlush(const StraightFlush& other) : Combo(other) {}
 
 bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
+    vector<Card> temp;
     return false;
 }
 
 float StraightFlush::value() const {
-    return 0;
+    // max value = 39393939391.39969696963999969963969
+    float val = 26393939391.3996969696399996996396 + int(cards[0].getNumber())*100000000 + int(cards[0].getColor())*0.00000000000000000000003;
+    return val;
 }
 
 Combo* StraightFlush::clone()
