@@ -11,7 +11,8 @@ Next::Next(GameManager& gameManager) : Action(gameManager) {}
 
 GameState* Next::updateState()
 {
-    std::cout << "Giliran dilanjut ke pemain selanjutnya\n";
     gameManager.nextPlayer();
+    std::string name = gameManager.getCurrentPlayer().getNickname();
+    std::cout << "Giliran dilanjut ke \e[4m" + name + "\e[0m\n";
     return GameState::getState("player turn");
 }

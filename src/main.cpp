@@ -3,6 +3,7 @@
 #include "GameManager.hpp"
 #include "GameState.hpp"
 #include "Next.hpp"
+#include "PlayerRegistration.hpp"
 #include "PlayerTurn.hpp"
 
 #include <map>
@@ -43,14 +44,12 @@ int main()
 {
     GameManager gameManager;
 
-    gameManager.registerPlayer(Player("budi"));
-    gameManager.registerPlayer(Player("udin"));
-    gameManager.registerPlayer(Player("dodi"));
-
     GameState::registerState("player turn", new PlayerTurn);
     GameState::registerState("next", new Next(gameManager));
+    GameState::registerState("player registration",
+                             new PlayerRegistration(gameManager));
 
-    GameState* state = GameState::getState("player turn");
+    GameState* state = GameState::getState("player registration");
 
     while (!state->isEnd()) {
         state = state->updateState();
