@@ -94,7 +94,9 @@ void GameManager::distributeAbilities()
     abilities.shuffle();
     int i = 0;
     for (Player& player : players) {
-        playerAbilities[player.getNickname()] = abilities.get(i);
+        Ability* ability = abilities.get(i);
+        playerAbilities[player.getNickname()] = ability;
+        ability->setOwner(&player);
         i++;
     }
 }
