@@ -1,3 +1,4 @@
+#include "Ability.hpp"
 #include "Action.hpp"
 #include "Card.hpp"
 #include "Combo.hpp"
@@ -47,6 +48,20 @@ int main()
     GameState::registerState("next", new Next(gameManager));
     GameState::registerState("player registration",
                              new PlayerRegistration(gameManager));
+    GameState::registerState("reverse", new ReverseDirAct(gameManager));
+    GameState::registerState("re-roll", new ReRollAct(gameManager));
+    GameState::registerState("double", new Double(gameManager));
+    GameState::registerState("half", new Half(gameManager));
+    GameState::registerState("quarter", new QuarterAct(gameManager));
+    GameState::registerState("quadruple", new QuadrupleAct(gameManager));
+
+    Ability::registerAbility(new QuadrupleCard(gameManager));
+    Ability::registerAbility(new QuarterCard(gameManager));
+    Ability::registerAbility(new ReRollCard(gameManager));
+    Ability::registerAbility(new ReverseDirCard(gameManager));
+    Ability::registerAbility(new SwapCard(gameManager));
+    Ability::registerAbility(new SwitchCard(gameManager));
+    Ability::registerAbility(new AbilitylessCard(gameManager));
 
     GameState* state = GameState::getState("player registration");
 
@@ -55,5 +70,6 @@ int main()
     }
 
     GameState::clearStates();
+    Ability::clearAbilities();
     return 0;
 }
