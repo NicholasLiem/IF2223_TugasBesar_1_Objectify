@@ -168,7 +168,7 @@ bool ThreeOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
         for (int h = 0; h < player.size(); h++){
             for (int i = 0; i < table.size(); i++){
                 if (player[h] == table[i]){
-                    for (int j = 0; j < table.size(); j++){
+                    for (int j = i; j < table.size(); j++){
                         if (player[h] == table[j]){
                             cards.push_back(player[h]);
                             cards.push_back(table[i]);
