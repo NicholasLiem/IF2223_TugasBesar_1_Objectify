@@ -83,10 +83,6 @@ bool Pair::isThereCombo(vector<Card>& player, vector<Card>& table) {
     return false;
 }
 
-
-
-
-
 Combo* Pair::clone()
 {
     return new Pair(*this);
@@ -205,6 +201,12 @@ Straight::Straight(const Straight& other) : Combo(other) {}
 
 bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
+    if (table.size() > 2){
+        vector<Card> temp;
+        for (int i = 0; i < player.size(); i++){
+            temp.push_back(player[i]);
+        }
+    }
     return false;
 }
 
