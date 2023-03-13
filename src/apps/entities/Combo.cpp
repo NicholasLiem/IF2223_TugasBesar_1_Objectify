@@ -41,10 +41,18 @@ float HighCard::value() {
 
 //Implementation of Class Pair
 Pair::Pair() : Combo("Pair") {}
+
+bool compareCards(const Card& a,const Card& b){
+    return a.value() > b.value();
+}
+
 bool Pair::isThereCombo(vector<Card>& cards) {
     for(int i = 0; i < cards.size();i++){
         for(int j = i; j < cards.size();j++){
             if(cards[i] == cards[j]){
+                this->cards.push_back(cards[i]);
+                this->cards.push_back(cards[j]);
+                sort(this->cards.begin(),this->cards.end(),compareCards);
                 return true;
             }
         }
@@ -54,19 +62,11 @@ bool Pair::isThereCombo(vector<Card>& cards) {
 Pair* Pair::clone() {
     Pair *clone = this;
     return clone;
-
-
 }
+
 float Pair::value() {
-    float val = 1.39;
-    float val1 = cards[0].value();
-    float val2 = cards[1].value();
-    if(val1 > val2){
-        val += val1;
-    } else {
-        val += val2;
-    }
-    return val;
+    // val maks = 2.78
+    return cards[0].value() + 1.39;
 }
 
 TwoPair::TwoPair() : Combo("TwoPair") {}
@@ -76,6 +76,14 @@ bool TwoPair::isThereCombo(vector<Card>& cards) {
 TwoPair* TwoPair::clone() {
     TwoPair *clone = this;
     return this;
+}
+
+float TwoPair::value(){
+    // val maks = 1315.7832
+    float val = 2.78;
+    val += int(cards[0].getNumber()) * 100 + int(cards[0].getColor()) * 0.001;
+    val += int(cards[2].getNumber()) + int(cards[2].getColor()) * 0.0001;
+    return val;
 }
 
 ThreeOfAKind::ThreeOfAKind() : Combo("ThreeOfAKind"){}
