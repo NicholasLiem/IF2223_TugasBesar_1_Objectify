@@ -30,6 +30,8 @@ HighCard::HighCard(const HighCard& other) : Combo(other) {}
 bool HighCard::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
     if (player.size() > 0) {
+        sort(player.begin(),player.end(),compareCards);
+        this->cards.push_back(player[0]);
         return true;
     }
     return false;
@@ -43,6 +45,7 @@ Combo* HighCard::clone()
 
 float HighCard::value() const
 {
+    // max value = 1.39
     return cards[0].value();
 }
 
@@ -55,11 +58,12 @@ bool compareCards(const Card& a,const Card& b){
 }
 
 bool Pair::isThereCombo(vector<Card>& player, vector<Card>& table) {
-    for(int i = 0; i < cards.size();i++){
-        for(int j = i; j < cards.size();j++){
-            if(cards[i] == cards[j]){
-                this->cards.push_back(cards[i]);
-                this->cards.push_back(cards[j]);
+    sort(player.begin(),player.end(),compareCards);
+    for(int i = 0; i < player.size(); i++){
+        for(int j = 0; j < table.size(); j++){
+            if(player[i] == table[j]){
+                this->cards.push_back(player[i]);
+                this->cards.push_back(table[j]);
                 sort(this->cards.begin(),this->cards.end(),compareCards);
                 return true;
             }
@@ -76,8 +80,9 @@ Combo* Pair::clone()
 
 float Pair::value() const
 {
-    // val maks = 2.78
-    return cards[0].value() + 1.39;
+    // max value = 13131.3996
+    float val = 1.39 + int(cards[0].getNumber()) * 10 + int(cards[0].getColor()) * 0.003 + int(cards[1].getNumber()) * 1000 + int(cards[1].getColor()) * 0.0003;
+    return val;
 }
 
 TwoPair::TwoPair() : Combo("TwoPair") {}
@@ -85,6 +90,22 @@ TwoPair::TwoPair(const TwoPair& other) : Combo(other) {}
 
 bool TwoPair::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
+    if (table.size() > 1) {
+        for (int i = 0; i < table.size(); i++){
+            if (player[0] == table[i]){
+                for (int j = 0; j < table.size(); j++){
+                    if (player[1] == table[j]){
+                        cards.push_back(player[0]);
+                        cards.push_back(table[i]);
+                        cards.push_back(player[1]);
+                        cards.push_back(player[j]);
+                        sort(cards.begin(),cards.end(),compareCards);
+                        return true;
+                    }
+                }
+            }
+        }
+    }
     return false;
 }
 
@@ -95,10 +116,10 @@ Combo* TwoPair::clone()
 
 float TwoPair::value() const
 {
-    // val maks = 1315.7832
-    float val = 2.78;
-    val += int(cards[0].getNumber()) * 100 + int(cards[0].getColor()) * 0.001;
-    val += int(cards[2].getNumber()) + int(cards[2].getColor()) * 0.0001;
+    // max value = 26261.39969696
+    float val = 13131.3996;
+    val += int(cards[0].getNumber()) * 10 + int(cards[0].getColor()) * 0.00003 + int(cards[1].getColor()) * 0.000003;
+    val += int(cards[2].getNumber()) * 1000 + int(cards[2].getColor()) * 0.0000003 + int(cards[3].getColor()) * 0.00000003;
     return val;
 }
 
