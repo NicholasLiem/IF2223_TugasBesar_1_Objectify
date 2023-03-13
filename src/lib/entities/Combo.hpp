@@ -7,6 +7,7 @@
 // #include <string>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 class Combo : public Valuable
@@ -17,7 +18,7 @@ class Combo : public Valuable
     Combo(string name);
 
     // Copy Constructor
-    Combo(Combo& other);
+    Combo(const Combo& other);
 
     // Delete constructor
     virtual ~Combo() = default;
@@ -52,73 +53,91 @@ class Combo : public Valuable
 class HighCard : public Combo
 {
   public:
-    HighCard(Card c);
+    HighCard();
+    HighCard(const HighCard& other);
     bool isThereCombo(vector<Card>& cards) override;
     Combo* clone() override;
+    float value() const override;
 };
 
 class Pair: public Combo
 {
   public:
-    Pair(vector<Card> _cards);
+    Pair();
+    Pair(const Pair& other);
     bool isThereCombo(vector<Card>& cards) override;
     Combo* clone() override;
+    float value() const override;
 };
 
 class TwoPair : public Combo
 {
   public:
-    TwoPair(vector<Card> _cards);
+    TwoPair();
+    TwoPair(const TwoPair& other);
     bool isThereCombo(vector<Card>& cards) override;
     Combo* clone() override;
+    float value() const override;
 };
 
 class ThreeOfAKind : public Combo
 {
   public:
-    ThreeOfAKind(vector<Card> _cards);
+    ThreeOfAKind();
+    ThreeOfAKind(const ThreeOfAKind& other);
     bool isThereCombo(vector<Card>& cards) override;
     Combo* clone() override;
+    float value() const override;
 };
 
 class Straight : public Combo
 {
   public:
-    Straight(vector<Card> _cards);
+    Straight();
+    Straight(const Straight& other);
     bool isThereCombo(vector<Card>& cards) override;
     Combo* clone() override;
+    float value() const override;
 };
 
 class Flush : public Combo
 {
   public:
-    Flush(vector<Card> _cards);
+    Flush();
+    Flush(const Flush& other);
     bool isThereCombo(vector<Card>& cards) override;
     Combo* clone() override;
+    float value() const override;
 };
 
 class FullHouse : public Combo
 {
   public:
-    FullHouse(vector<Card> _cards);
+    FullHouse();
+    FullHouse(const FullHouse& other);
     bool isThereCombo(vector<Card>& cards) override;
     Combo* clone() override;
+    float value() const override;
 };
 
 class FourOfAKind : public Combo
 {
   public:
-    FourOfAKind(vector<Card> _cards);
+    FourOfAKind();
+    FourOfAKind(const FourOfAKind& other);
     bool isThereCombo(vector<Card>& cards) override;
     Combo* clone() override;
+    float value() const override;
 };
 
 class StraightFlush : public Combo
 {
   public:
-    StraightFlush(vector<Card> _cards);
+    StraightFlush();
+    StraightFlush(const StraightFlush& other);
     bool isThereCombo(vector<Card>& cards) override;
     Combo* clone() override;
+    float value() const override;
 };
 
-#endif //!__COMBO_
+#endif // !__COMBO_

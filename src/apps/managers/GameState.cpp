@@ -4,12 +4,9 @@
 
 std::map<std::string, GameState*> GameState::states;
 
-GameState::GameState(bool end)
-{
-    this->end = end;
-}
+GameState::GameState(bool end) : end(end) {}
 
-bool GameState::isEnd()
+bool GameState::isEnd() const
 {
     return end;
 }

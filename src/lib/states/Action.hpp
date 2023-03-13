@@ -16,4 +16,47 @@ class Action : public GameState
     GameManager& gameManager;
 };
 
+class Double : public Action
+{
+  public:
+    Double(GameManager& gameManager);
+
+    GameState* updateState() override;
+};
+
+class Half : public Action
+{
+  public:
+    Half(GameManager& gameManager);
+
+    GameState* updateState() override;
+};
+
+/*
+ * Aksi NEXT: selesaikan giliran tanpa melakukan apa-apa.
+ */
+class Next : public Action
+{
+  public:
+    Next(GameManager& gameManager);
+
+    GameState* updateState() override;
+};
+
+class QuadrupleAct : public Action
+{
+  public:
+    QuadrupleAct(GameManager& gameManager);
+
+    GameState* updateState() override;
+};
+
+class QuarterAct : public Action
+{
+  public:
+    QuarterAct(GameManager& gameManager);
+
+    GameState* updateState() override;
+};
+
 #endif // !__ACTION_

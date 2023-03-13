@@ -1,20 +1,19 @@
 #include "../../lib/entities/Combo.hpp"
 
+// Implementation of Class Combo
 vector<Combo*> Combo::combos;
 
 Combo::Combo(string name) : name(name) {}
 
-Combo::Combo(Combo& other) : name(other.name) {
-    cards = other.cards;
+Combo::Combo(const Combo& other) : name(other.name), cards(other.cards) {}
+
+void Combo::registerCombo(Combo* combo)
+{
+    combos.push_back(combo);
 }
 
-void Combo::registerCombo(Combo* combo){
-    cout << "Register combo" << endl;
-    Combo::combos.push_back(combo);
-    cout << combo->getName();
-}
-
-void Combo::clearCombos(){
+void Combo::clearCombos()
+{
     combos.clear();
 }
 
@@ -27,21 +26,32 @@ vector<Combo*>& Combo::getCombos(){
     return combos;
 }
 
-HighCard::HighCard(Card c): Combo("HighCard"){}
+// Implementation of Class HighCard
+HighCard::HighCard() : Combo("HighCard") {}
 
-bool HighCard::isThereCombo(vector<Card>& cards){
-    if (cards.size() > 0){
+HighCard::HighCard(const HighCard& other) : Combo(other) {}
+
+bool HighCard::isThereCombo(vector<Card>& cards)
+{
+    if (cards.size() > 0) {
         return true;
     }
     return false;
 }
 
-Combo* HighCard::clone() {
-    HighCard *clone = this;
+float HighCard::value() const{
+    return 0.0;
+}
+
+Combo* HighCard::clone()
+{
+    HighCard* clone = this;
     return clone;
 }
 
-Pair::Pair(vector<Card> _cards) : Combo("Pair") {}
+//Implementation of Class Pair
+Pair::Pair() : Combo("Pair") {}
+Pair::Pair(const Pair& other) : Combo(other) {}
 bool Pair::isThereCombo(vector<Card>& cards) {
     for(int i = 0; i < cards.size();i++){
         int count = 1;
@@ -56,21 +66,71 @@ bool Pair::isThereCombo(vector<Card>& cards) {
     }
     return false;
 }
-Combo* Pair::clone() {
-    Pair *clone = this;
-    return clone;
+
+Combo* Pair::clone()
+{
+    return new Pair(*this);
 }
 
-TwoPair::TwoPair(vector<Card> _cards) : Combo("TwoPair") {}
-bool TwoPair::isThereCombo(vector<Card>& cards) {
-    return false;
+float Pair::value() const
+{
+    float val = 1.39;
+    float val1 = cards[0].value();
+    float val2 = cards[1].value();
+    if(val1 > val2){
+        val += val1;
+    } else {
+        val += val2;
+    }
+    return val;
 }
-Combo* TwoPair::clone() {
-    TwoPair *clone = this;
+
+TwoPair::TwoPair() : Combo("TwoPair") {}
+TwoPair::TwoPair(const TwoPair& other) : Combo(other) {}
+
+bool TwoPair::isThereCombo(vector<Card>& cards)
+{
+    int pair = 0;
+    for(int i = 0; i < cards.size();i++){
+        int count = 1;
+        for(int j = i + 1; j < cards.size();j++){
+            if(cards[i] == cards[j]){
+                count++;
+            }
+        }
+        if(count == 2){
+            pair++;
+        }
+    }
+    if(pair == 2){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+float TwoPair::value()const{
+    return 0.0;
+}
+
+Combo* TwoPair::clone()
+{
+    return new TwoPair(*this);
+}
+
+ThreeOfAKind::ThreeOfAKind() : Combo("ThreeOfAKind") {}
+ThreeOfAKind::ThreeOfAKind(const ThreeOfAKind& other) : Combo(other) {}
+
+float ThreeOfAKind::value()const{
+    return 0.0;
+}
+
+Combo* ThreeOfAKind::clone()
+{
+    ThreeOfAKind* clone = this;
     return this;
 }
 
-ThreeOfAKind::ThreeOfAKind(vector<Card> _cards) : Combo("ThreeOfAKind"){}
 bool ThreeOfAKind::isThereCombo(vector<Card>& cards) {
     for(int i = 0 ; i < cards.size();i++){
         int count = 1;
@@ -85,52 +145,93 @@ bool ThreeOfAKind::isThereCombo(vector<Card>& cards) {
     }
     return false;
 }
-Combo* ThreeOfAKind::clone() {
-    ThreeOfAKind *clone = this;
+
+Straight::Straight() : Combo("Straight") {}
+Straight::Straight(const Straight& other) : Combo(other) {}
+
+bool Straight::isThereCombo(vector<Card>& cards)
+{
+    return false;
+}
+
+float Straight::value()const{
+    return 0.0;
+}
+
+Combo* Straight::clone()
+{
+    return new Straight(*this);
+}
+
+Flush::Flush() : Combo("Flush") {}
+Flush::Flush(const Flush& other) : Combo(other) {}
+
+bool Flush::isThereCombo(vector<Card>& cards)
+{
+    return false;
+}
+
+float Flush::value()const{
+    return 0.0;
+}
+
+Combo* Flush::clone()
+{
+    Flush* clone = this;
     return this;
 }
 
-Straight::Straight(vector<Card> _cards) : Combo("Straight"){}
-bool Straight::isThereCombo(vector<Card>& cards) {
+FullHouse::FullHouse() : Combo("FullHouse") {}
+FullHouse::FullHouse(const FullHouse& other) : Combo(other) {}
+
+bool FullHouse::isThereCombo(vector<Card>& cards)
+{
     return false;
-}
-Combo* Straight::clone() {
-    Straight *clone = this;
-    return this;
 }
 
-Flush::Flush(vector<Card> _cards) : Combo("Flush") {}
-bool Flush::isThereCombo(vector<Card>& cards) {
-    return false;
-}
-Combo* Flush::clone() {
-    Flush *clone = this;
-    return this;
+float FullHouse::value()const{
+    return 0.0;
 }
 
-FullHouse::FullHouse(vector<Card> _cards) : Combo("FullHouse"){}
-bool FullHouse::isThereCombo(vector<Card>& cards) {
-    return false;
-}
-Combo* FullHouse::clone() {
-    FullHouse *clone = this;
-    return this;
+Combo* FullHouse::clone()
+{
+    return new FullHouse(*this);
 }
 
-FourOfAKind::FourOfAKind(vector<Card> _cards) : Combo("FourOfAKind") {}
-bool FourOfAKind::isThereCombo(vector<Card>& cards) {
+FourOfAKind::FourOfAKind() : Combo("FourOfAKind") {}
+FourOfAKind::FourOfAKind(const FourOfAKind& other) : Combo(other) {}
+
+bool FourOfAKind::isThereCombo(vector<Card>& cards)
+{
     return false;
-}
-Combo* FourOfAKind::clone() {
-    FourOfAKind *clone = this;
-    return this;
 }
 
-StraightFlush::StraightFlush(vector<Card> _cards) : Combo("StraightFlush") {}
-bool StraightFlush::isThereCombo(vector<Card>& cards) {
+float FourOfAKind::value()const{
+    return 0.0;
+}
+
+Combo* FourOfAKind::clone()
+{
+    return new FourOfAKind(*this);
+}
+
+
+
+StraightFlush::StraightFlush() : Combo("StraightFlush") {}
+StraightFlush::StraightFlush(const StraightFlush& other) : Combo(other) {}
+
+bool StraightFlush::isThereCombo(vector<Card>& cards)
+{
     return false;
 }
-Combo* StraightFlush::clone() {
-    StraightFlush *clone = this;
-    return this;
+
+float StraightFlush::value() const{
+    return 0.0;   
+}
+
+
+Combo* StraightFlush::clone()
+{
+    StraightFlush* clone = this;
+    return new StraightFlush(*this);
 }
