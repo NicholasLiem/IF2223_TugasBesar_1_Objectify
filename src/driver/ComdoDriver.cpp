@@ -11,28 +11,20 @@ int main(){
     Card c5(3,9);
     Card c6(3,9);
     Card c7(3,4);
-    vector <Card> listCards;
-    listCards.push_back(c1);listCards.push_back(c2);listCards.push_back(c3);listCards.push_back(c4);listCards.push_back(c5);
-    listCards.push_back(c6);listCards.push_back(c7);
-    int pair = 0;
-    for(int i = 0; i < listCards.size();i++){
-        int count = 1;
-        for(int j = i + 1; j < listCards.size();j++){
-            if(listCards[i] == listCards[j]){
-                count++;
-            }
-        }
-        if(count == 2){
-            pair++;
-        }
+    vector <Card> playerCards;
+    vector <Card> tableCards;
+    tableCards.push_back(c1);tableCards.push_back(c2);tableCards.push_back(c3);tableCards.push_back(c4);tableCards.push_back(c5);
+    playerCards.push_back(c6);playerCards.push_back(c7);
+    Pair *p2;
+    p2 = new Pair();
+    Combo *c;
+    c->registerCombo(p2);
+    Combo* combo;
+    for (Combo* c : Combo::getCombos()) {
+        if(c->isThereCombo(playerCards,tableCards)){
+            cout << "Ada combo!"<<endl;
+        }        
     }
-    if(pair == 2){
-        cout << "Two Pair!" << endl;
-    }else{
-        cout << "no pair" << endl;
-    }
-    
-        
     
     // for(int i = 0 ; i < listCards.size();i++){
     //     int count = 1;

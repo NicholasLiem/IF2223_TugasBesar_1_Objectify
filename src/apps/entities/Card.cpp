@@ -66,21 +66,20 @@ ostream& operator<<(ostream& os, const Card& card)
 {
     CardNumber card_num = card.getNumber();
     CardColor card_color = card.getColor();
-    os << "Card: ";
+    os << int(card_num) << " ";
     switch (card_color) {
     case CardColor::Red:
-        std::cout << "RED";
+        os << "Merah";
         break;
     case CardColor::Green:
-        std::cout << "GREEN";
+        os << "Hijau";
         break;
     case CardColor::Blue:
-        std::cout << "BLUE";
+        os << "Biru";
         break;
     case CardColor::Yellow:
-        std::cout << "YELLOW";
+        os << "Kuning";
         break;
     }
-    os << " " << int(card_num) << endl;
     return os;
 }

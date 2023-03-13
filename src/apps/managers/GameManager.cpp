@@ -3,6 +3,7 @@
 #include "Ability.hpp"
 #include "Player.hpp"
 
+#include <algorithm>
 #include <vector>
 
 GameManager::GameManager()
@@ -11,46 +12,77 @@ GameManager::GameManager()
     currentPlayerIndex = 0;
     nextRoundFirstPlayerIndex = 1;
     reversedDirection = false;
-    pot = 0;
+    pot = 64;
+    fillDeck();
+}
+
+GameManager::~GameManager()
+{
+    for (auto p : playerAbilities) {
+        delete p.second;
+    }
+}
+
+void GameManager::fillDeck()
+{
+    for (int color = 1; color <= 4; color++) {
+        for (int number = 1; number <= 13; number++) {
+            deck.putCard(Card(color, number));
+        }
+    }
 }
 
 void GameManager::registerPlayer(Player player)
 {
+    if (players.size() == 7) {
+        throw "Jumlah player sudah ada 7";
+    }
     players.push_back(player);
+    player.put(deck.takeCard());
+    player.put(deck.takeCard());
+    if (players.size() == 7) {
+        setupRound();
+    }
 }
+
 void GameManager::reverseDirection()
 {
+    std::reverse(currentRoundTurnQueue.begin(), currentRoundTurnQueue.end());
+    std::reverse(nextRoundTurnQueue.begin() + 1, nextRoundTurnQueue.end());
     reversedDirection = !reversedDirection;
 }
 
 void GameManager::nextPlayer()
 {
     // menentukan peralihan ronde
-    if (playedPlayers.size() == players.size() - 1) {
+    if (currentRoundTurnQueue.empty()) {
         currentRound++;
         setupRound();
     } else {
-        playedPlayers.push_back(currentPlayerIndex);
-        if (reversedDirection) {
-            currentPlayerIndex +=
-                (--currentPlayerIndex < 0) ? players.size() : 0;
-        } else {
-            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-        }
+        currentPlayerIndex = currentRoundTurnQueue[0];
+        currentRoundTurnQueue = std::vector<int>(
+            currentRoundTurnQueue.begin() + 1, currentRoundTurnQueue.end());
     }
 }
 
 void GameManager::setupRound()
 {
-    playedPlayers.clear();
-    currentPlayerIndex = nextRoundFirstPlayerIndex;
-    if (reversedDirection) {
-        nextRoundFirstPlayerIndex +=
-            (--nextRoundFirstPlayerIndex < 0) ? players.size() : 0;
+    if (!nextRoundTurnQueue.empty()) {
+        currentPlayerIndex = nextRoundTurnQueue[0];
+        nextRoundTurnQueue = std::vector<int>(nextRoundTurnQueue.begin() + 1, nextRoundTurnQueue.end());
+        currentRoundTurnQueue = std::vector<int>(nextRoundTurnQueue);
+        nextRoundTurnQueue.push_back(currentPlayerIndex);
     } else {
-        nextRoundFirstPlayerIndex++; // should not reach players.size()
+        // ronde pertama
+        for (int i = 1; i < 7; i++) {
+            currentRoundTurnQueue.push_back(i);
+            nextRoundTurnQueue.push_back(i);
+        }
+        nextRoundTurnQueue.push_back(0);
     }
-    table.takeAll();
+    if (currentRound < 6) {
+        table.put(deck.takeCard());
+    }
     if (currentRound == 2) {
         distributeAbilities();
     }
@@ -62,7 +94,9 @@ void GameManager::distributeAbilities()
     abilities.shuffle();
     int i = 0;
     for (Player& player : players) {
-        playerAbilities[player.getNickname()] = abilities.get(i);
+        Ability* ability = abilities.get(i);
+        playerAbilities[player.getNickname()] = ability;
+        ability->setOwner(&player);
         i++;
     }
 }
@@ -72,7 +106,8 @@ Player& GameManager::getCurrentPlayer()
     return players[currentPlayerIndex];
 }
 
-Ability* GameManager::getAbility(std::string playerNickname) {
+Ability* GameManager::getAbility(std::string playerNickname)
+{
     return playerAbilities[playerNickname];
 }
 
@@ -89,4 +124,14 @@ int GameManager::getPot() const
 int GameManager::getCurrentRound() const
 {
     return currentRound;
+}
+
+std::vector<int>& GameManager::getCurrentRoundTurnQueue()
+{
+    return currentRoundTurnQueue;
+}
+
+std::vector<int>& GameManager::getNextRoundTurnQueue()
+{
+    return nextRoundTurnQueue;
 }

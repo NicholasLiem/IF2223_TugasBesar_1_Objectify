@@ -5,12 +5,21 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "gdb",
+            "type": "cppdbg",
             "request": "launch",
             "name": "Launch Program",
-            "target": "bin/main",
+            "program": "${workspaceRoot}/bin/main",
             "cwd": "${workspaceRoot}",
-            "valuesFormatting": "parseText"
+            "args": [],
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build Program",
         }
     ]
 }
