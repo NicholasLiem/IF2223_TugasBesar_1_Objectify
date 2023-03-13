@@ -59,4 +59,20 @@ class QuarterAct : public Action
     GameState* updateState() override;
 };
 
+class ReRollAct : public Action
+{
+  public:
+    ReRollAct(GameManager& gameManager);
+
+    GameState* updateState() override;
+};
+
+class ReverseDirAct : public Action
+{
+  public:
+    ReverseDirAct(GameManager& gameManager);
+
+    GameState* updateState() override;
+};
+
 #endif // !__ACTION_
