@@ -273,6 +273,59 @@ FullHouse::FullHouse(const FullHouse& other) : Combo(other) {}
 
 bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
+    sort(table.begin(),table.end(),compareCards);
+    if (table.size() > 2) {
+        if (player[0] == player[1]){
+            for (int i = 0; i < table.size(); i++){
+                if (table[i] == player[0]){
+                    vector<Card> temp;
+                    temp.push_back(player[0]);
+                    temp.push_back(player[1]);
+                    temp.push_back(table[i]);
+                    sort(temp.begin(),temp.end(),compareCards);
+                    for (int j = 0; j < table.size(); j++){
+                        if (i != j){
+                            for (int k = j + 1; k < table.size(); k++){
+                                if ((i != k) && (table[j] == table[k])){
+                                    for (int l = k + 1; l < table.size(); l++){
+                                        if (table[l] == table[j]){
+                                            if (player[0] > table[j]){
+                                                cards.push_back(temp[0]);
+                                                cards.push_back(temp[1]);
+                                                cards.push_back(temp[2]);
+                                                cards.push_back(table[j]);
+                                                cards.push_back(table[k]);
+                                                sort(cards.begin(),cards.end(),compareCards);
+                                                return true;
+                                            } else {
+                                                cards.push_back(temp[0]);
+                                                cards.push_back(temp[1]);
+                                                cards.push_back(table[j]);
+                                                cards.push_back(table[k]);
+                                                cards.push_back(table[l]);
+                                                sort(cards.begin(),cards.end(),compareCards);
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (player[0] > player[1]){
+            for (int i = 0; i < table.size(); i++){
+                if (table[i] == player[0]) {
+                    for (int j = i+1; j < table.size(); j++){
+                        if (table[j] == player[0]){
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
     return false;
 }
 
