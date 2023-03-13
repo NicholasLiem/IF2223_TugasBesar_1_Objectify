@@ -3,6 +3,7 @@
 
 #include "Card.hpp"
 #include "Deck.hpp"
+#include "GameState.hpp"
 #include "Player.hpp"
 #include "Table.hpp"
 
@@ -16,7 +17,8 @@ class GameManager
 {
   private:
     std::vector<Player> players;
-    std::vector<int> playedPlayers;
+    std::vector<int> currentRoundTurnQueue;
+    std::vector<int> nextRoundTurnQueue;
     std::map<std::string, Ability*> playerAbilities;
 
     int currentPlayerIndex;
@@ -27,24 +29,28 @@ class GameManager
     bool reversedDirection;
 
     void setupRound();
+    void fillDeck();
     void distributeAbilities();
 
   public:
     Deck<Card> deck;
+    Table table;
+
     GameManager();
+    ~GameManager();
 
     Player& getCurrentPlayer();
     std::vector<Player>& getPlayers();
     Ability* getAbility(std::string playerNickname);
     int getPot() const;
     int getCurrentRound() const;
+    std::vector<int>& getCurrentRoundTurnQueue();
+    std::vector<int>& getNextRoundTurnQueue();
 
     void registerPlayer(Player player);
     void reverseDirection();
     void nextPlayer();
     void setPot(int value);
-
-    Table table;
 };
 
 #endif // !__GAMEMANAGER_
