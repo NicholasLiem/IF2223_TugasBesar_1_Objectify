@@ -5,7 +5,7 @@ vector<Combo*> Combo::combos;
 
 Combo::Combo(string name) : name(name) {}
 
-Combo::Combo(Combo& other) : name(other.name), cards(other.cards) {}
+Combo::Combo(const Combo& other) : name(other.name), cards(other.cards) {}
 
 void Combo::registerCombo(Combo* combo)
 {
@@ -60,7 +60,7 @@ Combo* Pair::clone()
     return new Pair(*this);
 }
 
-float Pair::value()
+float Pair::value() const
 {
     float val = 1.39;
     float val1 = cards[0].value();
