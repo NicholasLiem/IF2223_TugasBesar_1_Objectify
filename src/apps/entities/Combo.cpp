@@ -232,6 +232,7 @@ Flush::Flush(const Flush& other) : Combo(other) {}
 
 bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
+    
     return false;
 }
 

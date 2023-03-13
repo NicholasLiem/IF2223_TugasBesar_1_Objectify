@@ -26,7 +26,7 @@ int main(){
     float value = 0;
     for (Combo* c : Combo::getCombos()) {
         if(c->isThereCombo(playerCards,tableCards)){
-            cout << "Ada Combo!" << endl;
+            cout << "Ada Combo " << c->getName() << endl;
             cout << c->value() <<endl;
         }        
     }
