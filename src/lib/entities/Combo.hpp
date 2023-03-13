@@ -7,6 +7,7 @@
 // #include <string>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 class Combo : public Valuable
@@ -62,7 +63,7 @@ class HighCard : public Combo
 class Pair: public Combo
 {
   public:
-    Pair(vector<Card> _cards);
+    Pair();
     Pair(const Pair& other);
     bool isThereCombo(vector<Card>& cards) override;
     Combo* clone() override;
