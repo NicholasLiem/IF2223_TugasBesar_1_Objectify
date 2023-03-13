@@ -22,6 +22,10 @@ vector<Combo*>& Combo::getCombos()
     return combos;
 }
 
+bool compareCards(const Card& a,const Card& b){
+    return a.value() > b.value();
+}
+
 // Implementation of Class HighCard
 HighCard::HighCard() : Combo("HighCard") {}
 
@@ -53,9 +57,6 @@ float HighCard::value() const
 Pair::Pair() : Combo("Pair") {}
 Pair::Pair(const Pair& other) : Combo(other) {}
 
-bool compareCards(const Card& a,const Card& b){
-    return a.value() > b.value();
-}
 
 bool Pair::isThereCombo(vector<Card>& player, vector<Card>& table) {
     sort(player.begin(),player.end(),compareCards);
@@ -63,14 +64,15 @@ bool Pair::isThereCombo(vector<Card>& player, vector<Card>& table) {
         cards.push_back(player[0]);
         cards.push_back(player[1]);
         return true;
-    }
-    for(int i = 0; i < player.size(); i++){
-        for(int j = 0; j < table.size(); j++){
-            if(player[i] == table[j]){
-                cards.push_back(player[i]);
-                cards.push_back(table[j]);
-                sort(cards.begin(),cards.end(),compareCards);
-                return true;
+    } else {
+        for(int i = 0; i < player.size(); i++){
+            for(int j = 0; j < table.size(); j++){
+                if(player[i] == table[j]){
+                    cards.push_back(player[i]);
+                    cards.push_back(table[j]);
+                    sort(cards.begin(),cards.end(),compareCards);
+                    return true;
+                }
             }
         }
     }
@@ -109,17 +111,18 @@ bool TwoPair::isThereCombo(vector<Card>& player, vector<Card>& table)
                     }
                 }
             }
-        }
-        for (int i = 0; i < table.size(); i++){
-            if (player[0] == table[i]){
-                for (int j = 0; j < table.size(); j++){
-                    if (player[1] == table[j]){
-                        cards.push_back(player[0]);
-                        cards.push_back(table[i]);
-                        cards.push_back(player[1]);
-                        cards.push_back(table[j]);
-                        sort(cards.begin(),cards.end(),compareCards);
-                        return true;
+        } else {
+            for (int i = 0; i < table.size(); i++){
+                if (player[0] == table[i]){
+                    for (int j = 0; j < table.size(); j++){
+                        if (player[1] == table[j]){
+                            cards.push_back(player[0]);
+                            cards.push_back(table[i]);
+                            cards.push_back(player[1]);
+                            cards.push_back(table[j]);
+                            sort(cards.begin(),cards.end(),compareCards);
+                            return true;
+                        }
                     }
                 }
             }
@@ -147,6 +150,33 @@ ThreeOfAKind::ThreeOfAKind(const ThreeOfAKind& other) : Combo(other) {}
 
 bool ThreeOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
+    if (player[0] == player[1]){
+        for (int i = 0; i < table.size(); i++){
+            if (table[i] == player[0]){
+                cards.push_back(player[0]);
+                cards.push_back(player[1]);
+                cards.push_back(table[i]);
+                sort(cards.begin(),cards.end(),compareCards);
+                return true;
+            }
+        }
+    } else {
+        for (int h = 0; h < player.size(); h++){
+            for (int i = 0; i < table.size(); i++){
+                if (player[h] == table[i]){
+                    for (int j = 0; j < table.size(); j++){
+                        if (player[h] == table[j]){
+                            cards.push_back(player[h]);
+                            cards.push_back(table[i]);
+                            cards.push_back(table[j]);
+                            sort(cards.begin(),cards.end(),compareCards);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
     return false;
 }
 Combo* ThreeOfAKind::clone()
@@ -157,8 +187,8 @@ Combo* ThreeOfAKind::clone()
 
 float ThreeOfAKind::value() const
 {
-    // val maks = 2615.7832
-    return int(cards[0].getNumber()) * 100 + 1315.7832;
+    // val maks = 1326261.39969696963
+    return 26261.39969696 + int(cards[0].getNumber()) * 100000 + int(cards[0].getColor()) * 0.000000003 + int(cards[1].getColor()) * 0.0000000003 + int(cards[2].getColor()) * 0.00000000003;
 }
 
 Straight::Straight() : Combo("Straight") {}
