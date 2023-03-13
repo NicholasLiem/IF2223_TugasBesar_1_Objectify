@@ -47,6 +47,8 @@ int main()
     GameState::registerState("next", new Next(gameManager));
     GameState::registerState("player registration",
                              new PlayerRegistration(gameManager));
+    GameState::registerState("reverse", new ReverseDirAct(gameManager));
+    GameState::registerState("re-roll", new ReRollAct(gameManager));
 
     GameState* state = GameState::getState("player registration");
 
