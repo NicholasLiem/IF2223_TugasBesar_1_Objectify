@@ -21,7 +21,7 @@ class Combo : public Valuable
 
     // Delete constructor
     virtual ~Combo() = default;
-
+    string getName(); 
     // Function to check if there is any combos
     virtual bool isThereCombo(vector<Card>& cards) = 0;
 
@@ -121,4 +121,4 @@ class StraightFlush : public Combo
     Combo* clone() override;
 };
 
-#endif // !__COMBO_
+#endif //!__COMBO_

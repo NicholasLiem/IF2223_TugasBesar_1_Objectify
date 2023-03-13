@@ -9,11 +9,18 @@ Combo::Combo(Combo& other) : name(other.name) {
 }
 
 void Combo::registerCombo(Combo* combo){
-    combos.push_back(combo);
+    cout << "Register combo" << endl;
+    Combo::combos.push_back(combo);
+    cout << combo->getName();
 }
 
 void Combo::clearCombos(){
     combos.clear();
+}
+
+
+string Combo::getName(){
+    return this->name;
 }
 
 vector<Combo*>& Combo::getCombos(){
@@ -37,10 +44,14 @@ Combo* HighCard::clone() {
 Pair::Pair(vector<Card> _cards) : Combo("Pair") {}
 bool Pair::isThereCombo(vector<Card>& cards) {
     for(int i = 0; i < cards.size();i++){
+        int count = 1;
         for(int j = i; j < cards.size();j++){
             if(cards[i] == cards[j]){
-                return true;
+                count++;
             }
+        }
+        if(count == 2){
+            return true;
         }
     }
     return false;
@@ -61,6 +72,17 @@ Combo* TwoPair::clone() {
 
 ThreeOfAKind::ThreeOfAKind(vector<Card> _cards) : Combo("ThreeOfAKind"){}
 bool ThreeOfAKind::isThereCombo(vector<Card>& cards) {
+    for(int i = 0 ; i < cards.size();i++){
+        int count = 1;
+        for(int j = i+1; j < cards.size();j++){
+            if(cards[i] == cards[j]){
+                count++;
+            }
+        }
+        if(count == 3){
+            return true;
+        }
+    }
     return false;
 }
 Combo* ThreeOfAKind::clone() {
