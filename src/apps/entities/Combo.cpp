@@ -78,7 +78,7 @@ float Pair::value() const
 {
     // val maks = 2.78
     return cards[0].value() + 1.39;
-} 
+}
 
 TwoPair::TwoPair() : Combo("TwoPair") {}
 TwoPair::TwoPair(const TwoPair& other) : Combo(other) {}
@@ -147,6 +147,10 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
     return false;
 }
 
+float Flush::value() const {
+    return 0;
+}
+
 Combo* Flush::clone()
 {
     Flush* clone = this;
@@ -159,6 +163,10 @@ FullHouse::FullHouse(const FullHouse& other) : Combo(other) {}
 bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
     return false;
+}
+
+float FullHouse::value() const {
+    return 0;
 }
 Combo* FullHouse::clone()
 {
@@ -173,6 +181,10 @@ bool FourOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
     return false;
 }
 
+float FourOfAKind::value() const {
+    return 0;
+}
+
 Combo* FourOfAKind::clone()
 {
     return new FourOfAKind(*this);
@@ -184,6 +196,10 @@ StraightFlush::StraightFlush(const StraightFlush& other) : Combo(other) {}
 bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
     return false;
+}
+
+float StraightFlush::value() const {
+    return 0;
 }
 
 Combo* StraightFlush::clone()

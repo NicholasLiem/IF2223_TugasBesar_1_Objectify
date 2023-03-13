@@ -12,9 +12,8 @@ GameManager::GameManager()
     currentPlayerIndex = 0;
     nextRoundFirstPlayerIndex = 1;
     reversedDirection = false;
-    pot = 0;
+    pot = 64;
     fillDeck();
-    setupRound();
 }
 
 GameManager::~GameManager()
@@ -35,14 +34,21 @@ void GameManager::fillDeck()
 
 void GameManager::registerPlayer(Player player)
 {
+    if (players.size() == 7) {
+        throw "Jumlah player sudah ada 7";
+    }
     players.push_back(player);
     player.put(deck.takeCard());
     player.put(deck.takeCard());
+    if (players.size() == 7) {
+        setupRound();
+    }
 }
 
 void GameManager::reverseDirection()
 {
     std::reverse(currentRoundTurnQueue.begin(), currentRoundTurnQueue.end());
+    std::reverse(nextRoundTurnQueue.begin() + 1, nextRoundTurnQueue.end());
     reversedDirection = !reversedDirection;
 }
 
@@ -61,19 +67,19 @@ void GameManager::nextPlayer()
 
 void GameManager::setupRound()
 {
-    nextRoundFirstPlayerIndex = nextRoundTurnQueue[0];
-    nextRoundTurnQueue.clear();
-    for (int i = nextRoundFirstPlayerIndex;
-         currentRoundTurnQueue.size() != players.size() - 1;) {
-        currentRoundTurnQueue.push_back(i);
-        nextRoundTurnQueue.push_back(i);
-        if (reversedDirection) {
-            i += (--i < 0) ? players.size() : 0;
-        } else {
-            i = (i + 1) % players.size();
+    if (!nextRoundTurnQueue.empty()) {
+        currentPlayerIndex = nextRoundTurnQueue[0];
+        nextRoundTurnQueue = std::vector<int>(nextRoundTurnQueue.begin() + 1, nextRoundTurnQueue.end());
+        currentRoundTurnQueue = std::vector<int>(nextRoundTurnQueue);
+        nextRoundTurnQueue.push_back(currentPlayerIndex);
+    } else {
+        // ronde pertama
+        for (int i = 1; i < 7; i++) {
+            currentRoundTurnQueue.push_back(i);
+            nextRoundTurnQueue.push_back(i);
         }
+        nextRoundTurnQueue.push_back(0);
     }
-    nextRoundTurnQueue.push_back(currentPlayerIndex);
     if (currentRound < 6) {
         table.put(deck.takeCard());
     }

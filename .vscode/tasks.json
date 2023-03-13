@@ -2,7 +2,7 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: cpp build active file",
+            "label": "Build Program",
             "command": "make",
             "args": [],
             "options": {

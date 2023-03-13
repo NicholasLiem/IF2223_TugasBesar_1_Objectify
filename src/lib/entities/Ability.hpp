@@ -19,22 +19,23 @@ class Ability
 
   protected:
     GameManager& game;
-    Player& owner;
+    Player* owner;
     const std::string name;
     bool used;
     bool muted;
 
   public:
-    Ability(GameManager& game, Player& owner, std::string name);
+    Ability(GameManager& game, std::string name);
     virtual ~Ability() = default;
     std::string getName() const;
-    const Player& getOwner() const;
+    Player* getOwner();
     virtual void useAbility() = 0;
 
     static Deck<Ability*>& getAbilities();
     static void registerAbility(Ability* ability);
     static void clearAbilities();
     void mute();
+    void setOwner(Player* player);
     bool isMuted() const;
     bool isUsed() const;
 };
@@ -42,50 +43,59 @@ class Ability
 class ReRollCard : public Ability
 {
   public:
-    ReRollCard(GameManager&, Player&);
-    void useAbility();
+    ReRollCard(GameManager&);
+    void useAbility() override;
 };
 
 class QuadrupleCard : public Ability
 {
   public:
-    QuadrupleCard(GameManager&, Player&);
-    void useAbility();
+    QuadrupleCard(GameManager&);
+    void useAbility() override;
 };
 
 class QuarterCard : public Ability
 {
   public:
-    QuarterCard(GameManager&, Player&);
-    void useAbility();
+    QuarterCard(GameManager&);
+    void useAbility() override;
 };
 
 class ReverseDirCard : public Ability
 {
   public:
-    ReverseDirCard(GameManager&, Player&);
-    void useAbility();
+    ReverseDirCard(GameManager&);
+    void useAbility() override;
 };
 
 class SwapCard : public Ability
 {
   public:
-    SwapCard(GameManager&, Player&);
+    SwapCard(GameManager&);
     void useAbility(Player&, int, int);
+
+  private:
+    void useAbility() override;
 };
 
 class SwitchCard : public Ability
 {
   public:
-    SwitchCard(GameManager&, Player&);
+    SwitchCard(GameManager&);
     void useAbility(Player&);
+
+  private:
+    void useAbility() override;
 };
 
 class AbilitylessCard : public Ability
 {
   public:
-    AbilitylessCard(GameManager&, Player&);
+    AbilitylessCard(GameManager&);
     void useAbility(Player&);
+
+  private:
+    void useAbility() override;
 };
 
 #endif // !__ABILITY_
