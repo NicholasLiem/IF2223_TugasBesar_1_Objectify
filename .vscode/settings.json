@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "cctype": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "ostream": "cpp"
     }
 }
