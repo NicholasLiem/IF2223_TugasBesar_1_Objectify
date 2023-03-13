@@ -161,3 +161,70 @@ GameState* ReverseDirAct::updateState()
     }
     return GameState::getState("player turn");
 }
+
+ReRollAct::ReRollAct(GameManager& gameManager) : Action(gameManager) {}
+
+GameState* ReRollAct::updateState()
+{
+    Player& player = gameManager.getCurrentPlayer();
+    Ability* ability = gameManager.getAbility(player.getNickname());
+    if (ability->getName() == "ReRoll Card") {
+        if (ability->isUsed()) {
+            std::cout << "Kamu sudah menggunakan ability ini sebelumnya\n";
+            return GameState::getState("player turn");
+        }
+        if (ability->isMuted()) {
+            std::cout << "Abiity sudah dinonaktifkan oleh pemain lain!\n";
+            return GameState::getState("player turn");
+        }
+        std::cout << "Melakukan pembuangan kartu yang sedang dimiliki\n";
+        ability->useAbility();
+        std::cout << "Kamu mendapatkan 2 kartu baru yaitu:\n";
+        int i = 1;
+        for (auto& x : player.getAll()) {
+            std::cout << "\t" << i++ << ". " << x << "\n";
+        }
+        gameManager.nextPlayer();
+    } else {
+        std::cout
+            << "Ets, tidak bisa. Kamu tidak punya kartu Ability Re-Roll.\n";
+    }
+    return GameState::getState("player turn");
+}
+
+ReverseDirAct::ReverseDirAct(GameManager& gameManager)
+    : Action(gameManager)
+{
+}
+
+GameState* ReverseDirAct::updateState()
+{
+    Player& player = gameManager.getCurrentPlayer();
+    Ability* ability = gameManager.getAbility(player.getNickname());
+    if (ability->getName() == "Reverse Direction Card") {
+        if (ability->isUsed()) {
+            std::cout << "Kamu sudah menggunakan ability ini sebelumnya\n";
+            return GameState::getState("player turn");
+        }
+        if (ability->isMuted()) {
+            std::cout << "Abiity sudah dinonaktifkan oleh pemain lain!\n";
+            return GameState::getState("player turn");
+        }
+        std::cout << player.getNickname() << "melakukan reverse!\n";
+        ability->useAbility();
+        std::cout << "Sisa urutan giliran ronde ini:  ";
+        for (int& x : gameManager.getCurrentRoundTurnQueue()) {
+            std::cout << x << " ";
+        }
+        std::cout << "\n";
+        std::cout << "Urutan giliran ronde berikutnya: ";
+        for (int& x : gameManager.getNextRoundTurnQueue()) {
+            std::cout << x << " ";
+        }
+        std::cout << "\n";
+    } else {
+        std::cout
+            << "Ets, tidak bisa. Kamu tidak punya kartu Ability QUARTER.\n";
+    }
+    return GameState::getState("player turn");
+}
