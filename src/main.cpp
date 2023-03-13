@@ -61,7 +61,7 @@ int main()
     Ability::registerAbility(new ReverseDirCard(gameManager));
     Ability::registerAbility(new SwapCard(gameManager));
     Ability::registerAbility(new SwitchCard(gameManager));
-    Ability::registerAbility(new AbilitylessCard(gameManager));
+    Ability::registerAbility(new AbilitylessCard(gameManager));    
 
     GameState* state = GameState::getState("player registration");
 

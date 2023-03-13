@@ -2,6 +2,9 @@
 
 // Implementation of Class Combo
 vector<Combo*> Combo::combos;
+bool compareCards(const Card& a,const Card& b){
+    return a.value() > b.value();
+}
 
 Combo::Combo(string name) : name(name) {}
 
@@ -17,8 +20,12 @@ void Combo::clearCombos()
     combos.clear();
 }
 
-vector<Combo*>& Combo::getCombos()
-{
+
+string Combo::getName(){
+    return this->name;
+}
+
+vector<Combo*>& Combo::getCombos(){
     return combos;
 }
 
@@ -78,6 +85,10 @@ bool Pair::isThereCombo(vector<Card>& player, vector<Card>& table) {
     }
     return false;
 }
+
+
+
+
 
 Combo* Pair::clone()
 {
@@ -179,6 +190,7 @@ bool ThreeOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
     }
     return false;
 }
+
 Combo* ThreeOfAKind::clone()
 {
     ThreeOfAKind* clone = this;
@@ -198,6 +210,7 @@ bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
     return false;
 }
+
 Combo* Straight::clone()
 {
     return new Straight(*this);
@@ -259,6 +272,8 @@ Combo* FourOfAKind::clone()
 {
     return new FourOfAKind(*this);
 }
+
+
 
 StraightFlush::StraightFlush() : Combo("StraightFlush") {}
 StraightFlush::StraightFlush(const StraightFlush& other) : Combo(other) {}
