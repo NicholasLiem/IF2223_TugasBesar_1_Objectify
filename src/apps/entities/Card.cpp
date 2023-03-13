@@ -11,8 +11,8 @@ Card::Card(const CardColor color, const CardNumber number)
 
 Card::Card(const int color, const int number)
 {
-    this->color = static_cast<CardColor>(color-1);
-    this->number = static_cast<CardNumber>(number-1);
+    this->color = static_cast<CardColor>(color);
+    this->number = static_cast<CardNumber>(number);
 }
 
 Card::Card(const Card& other)
@@ -23,7 +23,7 @@ Card::Card(const Card& other)
 
 float Card::value() const
 {
-    return int(number) + int(color) * 0.03;
+    return int(number) + int(color) * 0.003;
 }
 
 CardColor Card::getColor() const
@@ -36,9 +36,13 @@ CardNumber Card::getNumber() const
     return number;
 }
 
+bool Card::operator==(const Card& card1){
+    return (this->getNumber() == card1.getNumber());
+}
+
 bool operator==(const Card& card1, const Card& card2)
 {
-    return card1.value() == card2.value();
+    return (card1.getNumber() == card2.getNumber());
 }
 
 Card& Card::operator=(const Card& other)
