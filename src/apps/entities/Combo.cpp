@@ -1,4 +1,5 @@
 #include "../../lib/entities/Combo.hpp"
+using namespace std;
 
 // Implementation of Class Combo
 vector<Combo*> Combo::combos;
@@ -38,7 +39,6 @@ HighCard::HighCard(const HighCard& other) : Combo(other) {}
 bool HighCard::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
     if (player.size() > 0) {
-        sort(player.begin(),player.end(),compareCards);
         this->cards.push_back(player[0]);
         return true;
     }
@@ -63,7 +63,7 @@ Pair::Pair(const Pair& other) : Combo(other) {}
 
 
 bool Pair::isThereCombo(vector<Card>& player, vector<Card>& table) {
-    sort(player.begin(),player.end(),compareCards);
+    std::sort(player.begin(),player.end(),compareCards);
     if (player[0] == player[1]){
         cards.push_back(player[0]);
         cards.push_back(player[1]);
@@ -201,29 +201,36 @@ Straight::Straight(const Straight& other) : Combo(other) {}
 
 bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
-    if (table.size() > 2){
-        vector<Card> temp;
-        for (int i = 0; i < player.size(); i++){
-            temp.push_back(player[i]);
-        }
-        for (int i = 0; i < table.size(); i++){
-            temp.push_back(table[i]);
-        }
-        sort(temp.begin(),temp.end(),compareCards);
-        int num = int(temp[0].getNumber()) - 1;
-        bool straight = true;
-        for (int i = 1; i < temp.size(); i++){
-            if(int(temp[i].getNumber()) != num){
-                straight = false;
-            }
-            num--;
-        }
-        if (straight){
-
-            return true;
+    bool straightTable = true;
+    sort(table.begin(),table.end(),compareCards);
+    sort(player.begin(),player.end(),compareCards);
+    for(int i = 0; i < table.size();i++){
+        if( (int)table[i].getNumber() != ((int) table[i+1].getNumber())-1){
+            straightTable = false;
         }
     }
-    return false;
+    if(straightTable){
+        for(int i = 0; i < 5;i++){
+            cards.push_back(table[i]);
+        }
+        // Kondisi dimana angka terkecil kartu sama dengan angka terkecil player  
+        if((int)player[1].getNumber() == (int)cards[4].getNumber()){
+            cards.pop_back();
+            cards.push_back(player[1]);
+        }
+        // Kondisi dimana angka terkecil player = angka terbesar kartu atau angka terkecil player = angka terbesar kartu + 1
+        else if((int)player[1].getNumber() == (int)cards[0].getNumber()){
+            cards[0] = player[1];
+            if((int)player[0].getNumber() == (int)player[1].getNumber()+1){
+                cards.pop_back();
+                cards.push_back(player[0]);
+                sort(cards.begin(),cards.end(),compareCards);
+            }
+        }  
+    }else{
+        cout << "Table tidak membentuk straight";
+    }
+    return true;
 }
 
 Combo* Straight::clone()
@@ -257,8 +264,9 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
         }
     }
     sort(table.begin(),table.end(),compareCards);
+    sort(player.begin(),player.end(),compareCards);
 
-    // Kalau semua card dalam table membentuk flush, return false
+    // Kalau semua card dalam table membentuk flus
     if(allTable){
         for(int i = 0; i < player.size();i++){
             if(player[i].getColor() == table[0].getColor()){
@@ -269,7 +277,6 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
         if(!playerHas){
             return false;
         }else{
-            sort(player.begin(),player.end(),compareCards);
             // Kondisi : player ada kartu yang sama kayak di table
             int temp = 0;
             if(player[0].getColor() == table[4].getColor()){
@@ -388,7 +395,7 @@ float Flush::value() const {
     int constant = 10;
     for (int i = 4; i >= 0; i--){
         val += int(cards[i].getNumber())*constant;
-        constant *= 100;
+          constant *= 100;
     }
     return val;
 }

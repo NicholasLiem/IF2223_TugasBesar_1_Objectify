@@ -9,12 +9,12 @@ bool tempCompare(const Card& a,const Card& b){
 
 int main(){
     Card c1(3,8);
-    Card c2(3,12);
-    Card c3(3,14);
-    Card c4(3,8);
-    Card c5(3,9);
+    Card c2(3,9);
+    Card c3(3,10);
+    Card c4(3,11);
+    Card c5(3,12);
     Card c6(3,6);
-    Card c7(3,11);
+    Card c7(3,13);
     vector <Card> playerCards;
     vector <Card> tableCards;
     tableCards.push_back(c1);tableCards.push_back(c2);tableCards.push_back(c3);tableCards.push_back(c4);tableCards.push_back(c5);
@@ -26,10 +26,12 @@ int main(){
     t = new ThreeOfAKind();
     Flush  *f;
     f = new Flush();
+    Straight *s;
+    s = new Straight();
     Combo *c;
     // c->registerCombo(p2);
     // c->registerCombo(t);
-    c->registerCombo(f);
+    c->registerCombo(s);
     Combo* combo;
     float value = 0;
     for (Combo* c : Combo::getCombos()) {
