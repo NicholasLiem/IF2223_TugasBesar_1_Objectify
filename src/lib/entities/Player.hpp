@@ -23,10 +23,14 @@ class Player : public InventoryHolder<Card>
 
     std::string getNickname() const;
     int getPoints() const;
-
+    bool operator==(const Player& other);
+    bool operator<(const Player& other);
+    bool operator>(const Player& other);
     Player& operator=(const Player& other);
 
     friend bool operator==(const Player& a, const Player& b);
+    friend bool operator< (const Player& a, const Player& b);
+    friend bool operator> (const Player& a, const Player& b);
     friend bool operator!=(const Player& a, const Player& b);
 };
 
