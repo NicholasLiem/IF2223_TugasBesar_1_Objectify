@@ -63,6 +63,16 @@ int main()
     Ability::registerAbility(new SwitchCard(gameManager));
     Ability::registerAbility(new AbilitylessCard(gameManager));    
 
+    Combo::registerCombo(new HighCard());
+    Combo::registerCombo(new Pair());
+    Combo::registerCombo(new TwoPair());
+    Combo::registerCombo(new ThreeOfAKind());
+    Combo::registerCombo(new Straight());
+    Combo::registerCombo(new Flush());
+    Combo::registerCombo(new FullHouse());
+    Combo::registerCombo(new FourOfAKind());
+    Combo::registerCombo(new StraightFlush());
+
     GameState* state = GameState::getState("player registration");
 
     while (!state->isEnd()) {
