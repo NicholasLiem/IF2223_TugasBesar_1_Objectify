@@ -30,6 +30,8 @@ class Combo : public Valuable
     // Function to clone a combo
     virtual Combo* clone() = 0;
 
+    vector<Card> getCards() const;
+
     // Procedure to add new Combo
     static void registerCombo(Combo* combo);
 

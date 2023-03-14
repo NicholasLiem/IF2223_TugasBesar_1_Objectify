@@ -1,4 +1,8 @@
-#include "../../lib/entities/Combo.hpp"
+#include "Combo.hpp"
+
+#include "Utils.hpp"
+
+#include <vector>
 using namespace std;
 
 // Implementation of Class Combo
@@ -7,6 +11,11 @@ vector<Combo*> Combo::combos;
 Combo::Combo(string name) : name(name) {}
 
 Combo::Combo(const Combo& other) : name(other.name), cards(other.cards) {}
+
+vector<Card> Combo::getCards() const
+{
+    return cards;
+}
 
 void Combo::registerCombo(Combo* combo)
 {
@@ -60,6 +69,26 @@ bool foundPlayerCard(vector<Card>& temp, vector<Card>& player)
         }
     }
     return false;
+}
+
+bool isGreen(const Card& c)
+{
+    return c.getColor() == CardColor::Green;
+}
+
+bool isBlue(const Card& c)
+{
+    return c.getColor() == CardColor::Blue;
+}
+
+bool isYellow(const Card& c)
+{
+    return c.getColor() == CardColor::Yellow;
+}
+
+bool isRed(const Card& c)
+{
+    return c.getColor() == CardColor::Red;
 }
 
 // Implementation of Class HighCard
@@ -303,70 +332,58 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
     allCards.insert(allCards.end(), table.begin(), table.end());
     sort(allCards.begin(), allCards.end(), compareCards);
 
-    vector<Card> temp1;
-    vector<Card> temp2;
-    vector<Card> temp3;
-    vector<Card> temp4;
-    for (int i = 0; i < 7; i++) {
-        switch (int(allCards[i].getColor())) {
-        case 0:
-            temp1.push_back(allCards[i]);
-        case 1:
-            temp2.push_back(allCards[i]);
-        case 2:
-            temp3.push_back(allCards[i]);
-        case 3:
-            temp4.push_back(allCards[i]);
-        }
-    }
+    vector<Card> green = Utils::filter_vector<Card>(allCards, isGreen);
+    vector<Card> blue = Utils::filter_vector<Card>(allCards, isBlue);
+    vector<Card> yellow = Utils::filter_vector<Card>(allCards, isYellow);
+    vector<Card> red = Utils::filter_vector<Card>(allCards, isRed);
 
-    if (temp1.size() > 4) {
-        cards.insert(cards.begin(), temp1.begin(), temp1.begin() + 5);
+    if (green.size() > 4) {
+        cards.insert(cards.begin(), green.begin(), green.begin() + 5);
         if (foundPlayerCard(cards, player)) {
             return true;
         } else {
-            if (temp1.size() > 5) {
+            if (green.size() > 5) {
                 cards.erase(cards.begin());
-                cards.push_back(temp1[5]);
+                cards.push_back(green[5]);
                 return true;
             } else {
                 return false;
             }
         }
-    } else if (temp2.size() > 4) {
-        cards.insert(cards.begin(), temp2.begin(), temp2.begin() + 5);
+    } else if (blue.size() > 4) {
+        cards.insert(cards.begin(), blue.begin(), blue.begin() + 5);
         if (foundPlayerCard(cards, player)) {
             return true;
         } else {
-            if (temp2.size() > 5) {
+            if (blue.size() > 5) {
                 cards.erase(cards.begin());
-                cards.push_back(temp2[5]);
+                cards.push_back(blue[5]);
                 return true;
             } else {
                 return false;
             }
         }
-    } else if (temp3.size() > 4) {
-        cards.insert(cards.begin(), temp3.begin(), temp3.begin() + 5);
+    } else if (yellow.size() > 4) {
+        cards.insert(cards.begin(), yellow.begin(), yellow.begin() + 5);
         if (foundPlayerCard(cards, player)) {
             return true;
         } else {
-            if (temp3.size() > 5) {
+            if (yellow.size() > 5) {
                 cards.erase(cards.begin());
-                cards.push_back(temp3[5]);
+                cards.push_back(yellow[5]);
                 return true;
             } else {
                 return false;
             }
         }
-    } else if (temp4.size() > 4) {
-        cards.insert(cards.begin(), temp4.begin(), temp4.begin() + 5);
+    } else if (red.size() > 4) {
+        cards.insert(cards.begin(), red.begin(), red.begin() + 5);
         if (foundPlayerCard(cards, player)) {
             return true;
         } else {
-            if (temp4.size() > 5) {
+            if (red.size() > 5) {
                 cards.erase(cards.begin());
-                cards.push_back(temp4[5]);
+                cards.push_back(red[5]);
                 return true;
             } else {
                 return false;
@@ -510,31 +527,15 @@ StraightFlush::StraightFlush(const StraightFlush& other) : Combo(other) {}
 
 bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
-    vector<Card> green;
-    vector<Card> blue;
-    vector<Card> yellow;
-    vector<Card> red;
     vector<Card> allCards;
     allCards.insert(allCards.end(), table.begin(), table.end());
     allCards.insert(allCards.end(), player.begin(), player.end());
-    for (int i = 0; i < allCards.size(); i++) {
-        switch ((int)allCards[i].getColor()) {
-        case 0:
-            green.push_back(allCards[i]);
-            break;
-        case 1:
-            blue.push_back(allCards[i]);
-            break;
-        case 2:
-            yellow.push_back(allCards[i]);
-            break;
-        case 3:
-            red.push_back(allCards[i]);
-            break;
-        default:
-            break;
-        }
-    }
+
+    vector<Card> green = Utils::filter_vector<Card>(allCards, isGreen);
+    vector<Card> blue = Utils::filter_vector<Card>(allCards, isBlue);
+    vector<Card> yellow = Utils::filter_vector<Card>(allCards, isYellow);
+    vector<Card> red = Utils::filter_vector<Card>(allCards, isRed);
+
     allCards.clear();
     if (green.size() < 5 && blue.size() < 5 && yellow.size() < 5 &&
         red.size() < 5) {
