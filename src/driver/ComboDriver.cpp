@@ -20,14 +20,10 @@ int main(){
     tableCards.push_back(c1);tableCards.push_back(c2);tableCards.push_back(c3);tableCards.push_back(c4);tableCards.push_back(c5);
     playerCards.push_back(c6);playerCards.push_back(c7);
    
-    Pair *p2;
-    p2 = new Pair();
-    ThreeOfAKind *t;
-    t = new ThreeOfAKind();
-    Flush  *f;
-    f = new Flush();
-    Straight *s;
-    s = new Straight();
+    Pair *p2;p2 = new Pair();
+    ThreeOfAKind *t;t = new ThreeOfAKind();
+    Flush  *f;f = new Flush();
+    Straight *s;s = new Straight();
     Combo *c;
     FullHouse *fh;
     fh = new FullHouse();
@@ -41,6 +37,7 @@ int main(){
     for (Combo* c : Combo::getCombos()) {
         if(c->isThereCombo(playerCards,tableCards)){
             cout << "Ada Combo " << c->getName() << endl;
+            cout << "Selesai" << endl;
             cout << c->value() <<endl;
         }else{
             cout << "Tidak ada combo " << c->getName() << endl;

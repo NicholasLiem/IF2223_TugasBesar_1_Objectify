@@ -232,6 +232,7 @@ bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table) {
             temp.push_back(allCards[i]);
             if (straightCount == 5){
                 if (foundPlayerCard(temp,player)){
+                    cards.insert(cards.begin(),temp.begin(),temp.end());
                     return true;
                 } else {
                     temp.erase(temp.begin());
@@ -262,7 +263,8 @@ Combo* Straight::clone()
 }
 
 float Straight::value() const
-{
+{   
+    cout << cards.size() << endl;
     // val maks = 2626261.3996969696399996
     float val = 1326261.39969696963 + int(cards[0].getNumber()) * 100000;
     float constant = 0.000000000003 ;
@@ -560,6 +562,7 @@ bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
                 temp.push_back(allCards[i]);
                 if (straightCount == 5){
                     if (foundPlayerCard(temp,player)){
+                        cards.insert(cards.begin(),temp.begin(),temp.end());
                         return true;
                     } else {
                         temp.erase(temp.begin());
