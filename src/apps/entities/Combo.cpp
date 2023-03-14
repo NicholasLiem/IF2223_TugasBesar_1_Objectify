@@ -118,7 +118,7 @@ bool TwoPair::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
     if (player[0] == player[1]){
         for (int i = 0; i < 5; i++){
-            for (int j = 0; j < 5; j++){
+            for (int j = i + 1; j < 5; j++){
                 if (table[i] == table[j]){
                     cards.push_back(player[0]);
                     cards.push_back(player[1]);
@@ -216,6 +216,10 @@ bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table) {
     vector<Card> allCards = player;
     allCards.insert(allCards.end(), table.begin(), table.end());
     sort(allCards.begin(), allCards.end(), compareCards);
+
+    for (int i = 0; i < 7; i++){
+        cout << int(allCards[i].getNumber()) << endl;
+    }
 
     int straightCount = 1;
     int currentRank = int(allCards[0].getNumber());
