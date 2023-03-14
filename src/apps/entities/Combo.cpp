@@ -306,7 +306,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
     }
 
     if (temp1.size() > 4){
-        cards.insert(cards.begin(),temp1.begin(),temp1.begin()+4);
+        cards.insert(cards.begin(),temp1.begin(),temp1.begin()+5);
         if (foundPlayerCard(cards,player)){
             return true;
         } else {
@@ -319,7 +319,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
             }
         }
     } else if (temp2.size() > 4){
-        cards.insert(cards.begin(),temp2.begin(),temp2.begin()+4);
+        cards.insert(cards.begin(),temp2.begin(),temp2.begin()+5);
         if (foundPlayerCard(cards,player)){
             return true;
         } else {
@@ -332,7 +332,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
             }
         }
     } else if (temp3.size() > 4){
-        cards.insert(cards.begin(),temp3.begin(),temp3.begin()+4);
+        cards.insert(cards.begin(),temp3.begin(),temp3.begin()+5);
         if (foundPlayerCard(cards,player)){
             return true;
         } else {
@@ -345,7 +345,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
             }
         }
     } else if (temp4.size() > 4){
-        cards.insert(cards.begin(),temp4.begin(),temp4.begin()+4);
+        cards.insert(cards.begin(),temp4.begin(),temp4.begin()+5);
         if (foundPlayerCard(cards,player)){
             return true;
         } else {
@@ -363,11 +363,15 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
 
 float Flush::value() const {
     // max value = 13133939391.39969696963999969
+    for(int i = 0; i < cards.size();i++){
+        cout << cards[i] << endl;
+    }
     float val = 2626261.3996969696399996 + int(cards[0].getColor())*0.00000000000000003;
     int constant = 10;
     for (int i = 4; i >= 0; i--){
+        cout << val << endl;
         val += int(cards[i].getNumber())*constant;
-          constant *= 100;
+        constant *= 100;
     }
     return val;
 }
@@ -518,7 +522,7 @@ bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
         }
     }
     allCards.clear();
-    if(green.size() != 5 && blue.size()!= 5 && yellow.size() != 5 && red.size() != 5){
+    if(green.size() < 5 && blue.size()< 5 && yellow.size() < 5 && red.size() < 5){
         return false;
     }
     else if(green.size() >= 5){
@@ -541,10 +545,10 @@ bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
     if(!inPlayer){
         return false;
     }
+    // Mengurutkan seluruh kartu yang ada dan berurutan
     sort(allCards.begin(),allCards.end(),compareCards);
-    for(int i = 0; i < allCards.size();i++){
-        cout << allCards[i]<<endl;
-    }
+    vector <Card> temp;
+    
     
     cout << "Lolos" << endl;
 
