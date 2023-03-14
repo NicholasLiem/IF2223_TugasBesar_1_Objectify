@@ -22,7 +22,8 @@ class Player : public InventoryHolder<Card>
     std::vector<Card> takeAll();
 
     std::string getNickname() const;
-    int getPoints() const;
+
+    long getPoints() const;
     bool operator==(const Player& other);
     bool operator<(const Player& other);
     bool operator>(const Player& other);

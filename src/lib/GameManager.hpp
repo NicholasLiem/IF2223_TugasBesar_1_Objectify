@@ -26,8 +26,6 @@ class GameManager
     int nextRoundFirstPlayerIndex;
     long pot;
 
-    bool reversedDirection;
-
     void setupRound();
     void fillDeck();
     void distributeAbilities();
@@ -37,7 +35,6 @@ class GameManager
     Table table;
 
     GameManager();
-    ~GameManager();
 
     Player& getCurrentPlayer();
     std::vector<Player>& getPlayers();
@@ -51,6 +48,8 @@ class GameManager
     void reverseDirection();
     void nextPlayer();
     void setPot(long value);
+    void setupGame();
+    void reset();
 };
 
 #endif // !__GAMEMANAGER_

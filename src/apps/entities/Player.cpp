@@ -42,7 +42,7 @@ std::string Player::getNickname() const
     return nickname;
 }
 
-int Player::getPoints() const
+long Player::getPoints() const
 {
     return points;
 }

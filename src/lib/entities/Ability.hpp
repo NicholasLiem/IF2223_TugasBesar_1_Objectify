@@ -34,8 +34,10 @@ class Ability
     static Deck<Ability*>& getAbilities();
     static void registerAbility(Ability* ability);
     static void clearAbilities();
+    static void reset();
     void mute();
     void setUsed(bool value);
+    void setMuted(bool value);
     void setOwner(Player* player);
     bool isMuted() const;
     bool isUsed() const;
