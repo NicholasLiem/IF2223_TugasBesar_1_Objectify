@@ -227,8 +227,13 @@ bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table) {
             straightCount++;
             currentRank--;
             temp.push_back(allCards[i]);
-            if (straightCount == 5 && foundPlayerCard(temp,player)) {
-                return true;
+            if (straightCount == 5){
+                if (foundPlayerCard(temp,player)){
+                    return true;
+                } else {
+                    temp.erase(temp.begin());
+                    straightCount--;
+                }
             }
         }
         else if (int(allCards[i].getNumber()) == currentRank) {
@@ -533,7 +538,40 @@ StraightFlush::StraightFlush(const StraightFlush& other) : Combo(other) {}
 
 bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
+    vector<Card> allCards = player;
+    allCards.insert(allCards.end(), table.begin(), table.end());
+    sort(allCards.begin(), allCards.end(), compareCards);
+
+    int straightCount = 1;
+    int currentRank = int(allCards[0].getNumber());
+    int currentColor = int(allCards[0].getColor());
+
     vector<Card> temp;
+    temp.push_back(allCards[0]);
+    for (int i = 1; i < 7; i++) {
+        if (int(allCards[i].getNumber()) == currentRank - 1) {
+            if (int(allCards[i].getColor()) == currentColor) {
+                straightCount++;
+                currentRank--;
+                temp.push_back(allCards[i]);
+                if (straightCount == 5){
+                    if (foundPlayerCard(temp,player)){
+                        return true;
+                    } else {
+                        temp.erase(temp.begin());
+                        straightCount--;
+                    }
+                }
+            }
+        }
+        else {
+            temp.clear();
+            temp.push_back(allCards[i]);
+            straightCount = 1;
+            currentRank = int(allCards[i].getNumber());
+            currentColor = int(allCards[i].getColor());
+        }
+    }
     return false;
 }
 
