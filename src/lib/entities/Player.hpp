@@ -24,6 +24,7 @@ class Player : public InventoryHolder<Card>
     int getPoints() const;
 
     friend bool operator==(const Player& a, const Player& b);
+    friend bool operator!=(const Player& a, const Player& b);
 };
 
 #endif // !__PLAYER_

@@ -5,7 +5,7 @@
 #include "InventoryHolder.hpp"
 #include <vector>
 
-class Table : InventoryHolder<Card>
+class Table : public InventoryHolder<Card>
 {
 	public:
 		std::vector<Card> takeAll();

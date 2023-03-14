@@ -40,6 +40,10 @@ bool Ability::isUsed() const
     return used;
 }
 
+void Ability::setUsed(bool value) {
+    used = value;
+}
+
 bool Ability::isMuted() const
 {
     return muted;
@@ -52,7 +56,7 @@ Deck<Ability*>& Ability::getAbilities()
 
 void Ability::mute()
 {
-    this->muted = false;
+    this->muted = true;
 }
 
 ReRollCard::ReRollCard(GameManager& game) : Ability(game, "ReRoll Card") {}
@@ -99,16 +103,16 @@ SwapCard::SwapCard(GameManager& game) : Ability(game, "Swap Card") {}
 
 void SwapCard::useAbility() {}
 
-void SwapCard::useAbility(Player& target, int CardIdx1, int CardIdx2)
+void SwapCard::useAbility(Player& target1, Player& target2, int CardIdx1, int CardIdx2)
 {
-    Card ownCard = this->owner->get(CardIdx1);
-    Card targetCard = target.get(CardIdx2);
+    Card target1Card = target1.get(CardIdx1);
+    Card target2Card = target2.get(CardIdx2);
 
-    target.take(targetCard);
-    target.put(ownCard);
+    target1.take(target1Card);
+    target1.put(target2Card);
 
-    this->owner->take(ownCard);
-    this->owner->put(targetCard);
+    target2.take(target2Card);
+    target2.put(target1Card);
     this->used = true;
 } // maybe right (?)
 
@@ -140,6 +144,7 @@ void AbilitylessCard::useAbility() {}
 
 void AbilitylessCard::useAbility(Player& target)
 {
-    this->game.getAbility(target.getNickname())->mute();
+    Ability& ability = *game.getAbility(target.getNickname());
+    ability.mute();
     this->used = true;
 }

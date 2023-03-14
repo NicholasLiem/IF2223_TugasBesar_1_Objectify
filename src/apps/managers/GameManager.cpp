@@ -14,6 +14,7 @@ GameManager::GameManager()
     reversedDirection = false;
     pot = 64;
     fillDeck();
+    deck.shuffle();
 }
 
 GameManager::~GameManager()
@@ -25,7 +26,7 @@ GameManager::~GameManager()
 
 void GameManager::fillDeck()
 {
-    for (int color = 1; color <= 4; color++) {
+    for (int color = 0; color < 4; color++) {
         for (int number = 1; number <= 13; number++) {
             deck.putCard(Card(color, number));
         }
@@ -37,9 +38,15 @@ void GameManager::registerPlayer(Player player)
     if (players.size() == 7) {
         throw "Jumlah player sudah ada 7";
     }
+    for (const Player& p : players) {
+        if (p == player) {
+            throw "Player dengan nama " + player.getNickname() +
+                " sudah terdaftar. Silahkan masukkan nama yang lain";
+        }
+    }
+    player.put(deck.takeCard());
+    player.put(deck.takeCard());
     players.push_back(player);
-    player.put(deck.takeCard());
-    player.put(deck.takeCard());
     if (players.size() == 7) {
         setupRound();
     }
@@ -69,7 +76,8 @@ void GameManager::setupRound()
 {
     if (!nextRoundTurnQueue.empty()) {
         currentPlayerIndex = nextRoundTurnQueue[0];
-        nextRoundTurnQueue = std::vector<int>(nextRoundTurnQueue.begin() + 1, nextRoundTurnQueue.end());
+        nextRoundTurnQueue = std::vector<int>(nextRoundTurnQueue.begin() + 1,
+                                              nextRoundTurnQueue.end());
         currentRoundTurnQueue = std::vector<int>(nextRoundTurnQueue);
         nextRoundTurnQueue.push_back(currentPlayerIndex);
     } else {
@@ -101,6 +109,11 @@ void GameManager::distributeAbilities()
     }
 }
 
+std::vector<Player>& GameManager::getPlayers()
+{
+    return players;
+}
+
 Player& GameManager::getCurrentPlayer()
 {
     return players[currentPlayerIndex];
@@ -111,12 +124,12 @@ Ability* GameManager::getAbility(std::string playerNickname)
     return playerAbilities[playerNickname];
 }
 
-void GameManager::setPot(int value)
+void GameManager::setPot(long value)
 {
     pot = value;
 }
 
-int GameManager::getPot() const
+long GameManager::getPot() const
 {
     return pot;
 }

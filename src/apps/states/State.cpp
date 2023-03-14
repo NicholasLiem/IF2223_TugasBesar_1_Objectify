@@ -1,11 +1,11 @@
 #include "State.hpp"
 
+#include "Ability.hpp"
 #include "Action.hpp"
 #include "Exceptions.hpp"
 
 #include <cctype>
 #include <iostream>
-#include <stdexcept>
 #include <string>
 
 std::string to_lower(std::string s)
@@ -17,6 +17,29 @@ std::string to_lower(std::string s)
     return result;
 }
 
+Dashboard::Dashboard(GameManager& gm) : GameState(false), gameManager(gm) {}
+
+GameState* Dashboard::updateState()
+{
+    std::cout << "\e[1;93mRonde ke-" << gameManager.getCurrentRound()
+              << "\e[0m\nPoin hadiah: " << gameManager.getPot()
+              << "\nKartu di meja:\n";
+    int i = 1;
+    for (const Card& c : gameManager.table.getAll()) {
+        std::cout << "\t" << i++ << ". " << c << "\n";
+    }
+    const Player& player = gameManager.getCurrentPlayer();
+    std::cout << "Nama pemain: " << player.getNickname()
+              << "\nKartu di tangan:\n\t1. " << player.get(0) << "\n\t2. "
+              << player.get(1) << "\n";
+    if (gameManager.getAbility(player.getNickname()) != NULL) {
+        Ability& ability = *gameManager.getAbility(player.getNickname());
+        std::cout << "Kamu punya \e[4m" << ability.getName() << "\e[0m"
+                  << std::endl;
+    }
+    return GameState::getState("player turn");
+}
+
 PlayerTurn::PlayerTurn() : GameState(false) {}
 
 GameState* PlayerTurn::updateState()
@@ -24,7 +47,7 @@ GameState* PlayerTurn::updateState()
     std::string command;
 
     std::cout << "> ";
-    std::getline(std::cin, command);
+    std::getline(std::cin >> std::ws, command);
 
     try {
         try {
@@ -52,18 +75,24 @@ PlayerRegistration::PlayerRegistration(GameManager& gameManager)
 GameState* PlayerRegistration::updateState()
 {
     std::string first;
-    for (int i = 1; i <= 7; i++) {
+    for (int i = 1; i <= 7;) {
         std::string name;
         std::cout << "Masukkan nickname player " << i << ": ";
         std::cin >> name;
-        gameManager.registerPlayer(Player(name));
-        std::cout << "Player " << i
-                  << " \e[4m" + name + "\e[0m telah terdaftar!\n";
+        try {
+            gameManager.registerPlayer(Player(name));
+            std::cout << "Player " << i
+                      << " \e[4m" + name + "\e[0m telah terdaftar!"
+                      << std::endl;
+        } catch (const std::string& exception) {
+            std::cout << exception << "\n";
+            continue;
+        }
         if (i == 1) {
             first = name;
         }
+        i++;
     }
-    std::cout << "Giliran pertama diambil oleh " + first << std::endl;
-    std::cin.clear();
-    return GameState::getState("player turn");
+    std::cout << "Giliran pertama diambil oleh " << first << std::endl;
+    return GameState::getState("dashboard");
 }

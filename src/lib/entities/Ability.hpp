@@ -35,6 +35,7 @@ class Ability
     static void registerAbility(Ability* ability);
     static void clearAbilities();
     void mute();
+    void setUsed(bool value);
     void setOwner(Player* player);
     bool isMuted() const;
     bool isUsed() const;
@@ -72,7 +73,7 @@ class SwapCard : public Ability
 {
   public:
     SwapCard(GameManager&);
-    void useAbility(Player&, int, int);
+    void useAbility(Player&, Player&, int, int);
 
   private:
     void useAbility() override;

@@ -45,3 +45,7 @@ std::vector<Card> Player::takeAll()
 bool operator==(const Player& a, const Player& b) {
     return a.getNickname() == b.getNickname();
 }
+
+bool operator!=(const Player& a, const Player& b) {
+    return a.getNickname() != b.getNickname();
+}
