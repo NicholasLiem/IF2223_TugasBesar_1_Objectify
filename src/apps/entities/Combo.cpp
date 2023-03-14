@@ -280,137 +280,80 @@ Flush::Flush(const Flush& other) : Combo(other) {}
 
 bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
-    // Memastikan semua card dalam table tidak membentuk flush
-    bool allTable = true;
-    bool playerHas = false;
-    for(int i = 0; i < 5-1;i++){
-        if(table[i].getColor() != table[0].getColor()){
-            allTable = false;
+    vector<Card> allCards = player;
+    allCards.insert(allCards.end(), table.begin(), table.end());
+    sort(allCards.begin(), allCards.end(),compareCards);
+
+    vector<Card> temp1;
+    vector<Card> temp2;
+    vector<Card> temp3;
+    vector<Card> temp4;
+    for (int i = 0; i < 7; i++) {
+        switch(int(allCards[i].getColor())){
+            case 0:
+                temp1.push_back(allCards[i]);
+            case 1:
+                temp2.push_back(allCards[i]);
+            case 2:
+                temp3.push_back(allCards[i]);
+            case 3:
+                temp4.push_back(allCards[i]);
         }
     }
-    sort(table.begin(),table.end(),compareCards);
-    sort(player.begin(),player.end(),compareCards);
 
-    // Kalau semua card dalam table membentuk flus
-    if(allTable){
-        for(int i = 0; i < 2;i++){
-            if(player[i].getColor() == table[0].getColor()){
-                playerHas = true;
-                break;
-            }
-        }
-        if(!playerHas){
-            return false;
-        }else{
-            // Kondisi : player ada kartu yang sama kayak di table
-            int temp = 0;
-            if(player[0].getColor() == table[4].getColor()){
-                    cards.push_back(player[0]);
-                    if(player[1].getColor() == player[0].getColor() && player[1].getNumber() > table[3].getNumber()){
-                        cards.push_back(player[1]);
-                        temp = 3;
-                        for(int i = 0; i < 3;i++){
-                            cards.push_back(table[i]);
-                        }
-                    }else{
-                        temp = 4;
-                    }
-                    for(int i = 0; i < temp;i++){
-                        cards.push_back(table[i]);
-                    }
-            }
-            else{
-                cards.push_back(player[1]);
-                for(int i = 0; i < 4;i++){
-                    cards.push_back(table[i]);
-                }
-            }
-            sort(cards.begin(),cards.end(),compareCards);
-            for(int i = 0; i < cards.size();i++){
-                cout << cards[i] << endl;
-            }
+    if (temp1.size() > 4){
+        cards.insert(cards.begin(),temp1.begin(),temp1.begin()+4);
+        if (foundPlayerCard(cards,player)){
             return true;
-        }
-    }else{
-        if(player[0].getColor() == player[1].getColor()){
-            int count = 2;
-            // Memasukkan kartu player ke dalam cards
-            cards.push_back(player[0]);
-            cards.push_back(player[1]);
-            // Sort cards, sehingga kartu terbesar berada di cards[0]
-            sort(cards.begin(),cards.end(),compareCards);
-            int i = 0;
-            while(count != 5 && i < 5){
-                if(table[i].getColor() == cards[0].getColor()){
-                    count++;
-                    cards.push_back(table[i]);
-                }
-                i++;
-            }
-            if(count != 5){
+        } else {
+            if (temp1.size() > 5){
+                cards.erase(cards.begin());
+                cards.push_back(temp1[5]);
+                return true;
+            } else {
                 return false;
-            }else{
-                sort(cards.begin(),cards.end(),compareCards);
-                while(i < 5){
-                    if(table[i] > cards[4] && table[i].getColor() == cards[4].getColor()){
-                        cards.pop_back();
-                        cards.push_back(table[i]);
-                        sort(cards.begin(),cards.end(),compareCards);
-                    }
-                    i++;
-                }
-                for(int i = 0; i < cards.size();i++){
-                    cout << cards[i] << endl;
-                }
-                return true;
             }
-            
         }
-        // Kasus dimana player memiliki dua kartu yang warnanya berbeda - beda
-        else{
-            // cout << "Warna kartu player beda - beda"<< endl;
-            int countOne = 1;
-            int countTwo = 1;
-            sort(cards.begin(),cards.end(),compareCards);
-            // cout << "Done sorting" << endl;
-            for(int i = 0; i < 5;i++){
-                if(table[i].getColor() == player[0].getColor()){
-                    countOne++;
-                }
-                if(table[i].getColor() == player[1].getColor()){
-                    countTwo++;
-                }
-            }
-            if(countOne < 5 && countTwo < 5){
+    } else if (temp2.size() > 4){
+        cards.insert(cards.begin(),temp2.begin(),temp2.begin()+4);
+        if (foundPlayerCard(cards,player)){
+            return true;
+        } else {
+            if (temp2.size() > 5){
+                cards.erase(cards.begin());
+                cards.push_back(temp2[5]);
+                return true;
+            } else {
                 return false;
-            }else if(countOne >= 5){
-                cards.push_back(player[0]);
-                for(int i = 0; i < 5;i++){
-                    if(table[i].getColor() == player[0].getColor()){
-                        cards.push_back(table[i]);
-                    }
-                }
-                for(int i = 0; i < cards.size();i++){
-                    cout << cards[i] << endl;
-                }
-                return true;
-            }else{
-                cards.push_back(player[1]);
-                for(int i = 0; i < 5;i++){
-                    if(table[i].getColor() == player[1].getColor()){
-                        cards.push_back(table[i]);
-                    }
-                }
-                for(int i = 0; i < cards.size();i++){
-                    cout << cards[i] << endl;
-                }
-                return true;
             }
         }
-    
+    } else if (temp3.size() > 4){
+        cards.insert(cards.begin(),temp3.begin(),temp3.begin()+4);
+        if (foundPlayerCard(cards,player)){
+            return true;
+        } else {
+            if (temp3.size() > 5){
+                cards.erase(cards.begin());
+                cards.push_back(temp3[5]);
+                return true;
+            } else {
+                return false;
+            }
+        }
+    } else if (temp4.size() > 4){
+        cards.insert(cards.begin(),temp4.begin(),temp4.begin()+4);
+        if (foundPlayerCard(cards,player)){
+            return true;
+        } else {
+            if (temp4.size() > 5){
+                cards.erase(cards.begin());
+                cards.push_back(temp4[5]);
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
-
-    
     return false;
 }
 
