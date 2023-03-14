@@ -37,9 +37,10 @@ bool compareColor(const Card& a,const Card& b){
 }
 
 bool isMember(vector<Card>& cards, Card card){
-    auto itr = find(cards.begin(),cards.end(),card);
-    if (itr != cards.end()){
-        return true;
+    for (int i = 0; i < cards.size(); i++){
+        if (cards[i].value() == card.value()){
+            return true;
+        }
     }
     return false;
 }
