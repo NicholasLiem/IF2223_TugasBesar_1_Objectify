@@ -19,7 +19,9 @@ Card Player::take(Card card)
 {
     auto it = std::find(inventory.begin(), inventory.end(), card);
     if (it != inventory.end()) {
-        return *it;
+        Card ret = *it;
+        inventory.erase(it);
+        return ret;
     } else {
         throw "Card not found";
     }
