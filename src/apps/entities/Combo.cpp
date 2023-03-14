@@ -26,8 +26,19 @@ vector<Combo*>& Combo::getCombos(){
     return combos;
 }
 
+// Implementation of additional functions
 bool compareCards(const Card& a,const Card& b){
     return a > b;
+}
+
+bool foundPlayerCard(vector<Card>& temp, vector<Card>& player){
+    for (int j = 0; j < 2; j++){
+        auto itr = find(temp.begin(),temp.end(),player[j]);
+        if (itr != temp.end()){
+            return true;
+        }
+    }
+    return false;
 }
 
 // Implementation of Class HighCard
@@ -197,27 +208,35 @@ float ThreeOfAKind::value() const
 Straight::Straight() : Combo("Straight") {}
 Straight::Straight(const Straight& other) : Combo(other) {}
 
-bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table)
-{
-    vector<Card> temp;
-    for (int i = 0; i < 2; i++){
-        temp.push_back(player[i]);
-    }
-    for (int i = 0; i < 5; i++){
-        temp.push_back(table[i]);
-    }
-    sort(temp.begin(),temp.end(),compareCards);
-    int num = int(temp[0].getNumber()) - 1;
-    bool straight = true;
-    for (int i = 1; i < temp.size(); i++){
-        if(int(temp[i].getNumber()) != num){
-            straight = false;
-        }
-        num--;
-    }
-    if (straight){
+bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table) {
+    vector<Card> allCards = player;
+    allCards.insert(allCards.end(), table.begin(), table.end());
+    sort(allCards.begin(), allCards.end(), compareCards);
 
-        return true;
+    int straightCount = 1;
+    int currentRank = int(allCards[0].getNumber());
+
+    vector<Card> temp;
+    for (int i = 1; i < allCards.size(); i++) {
+        if (int(allCards[i].getNumber()) == currentRank - 1) {
+            straightCount++;
+            currentRank--;
+            if (straightCount == 5) {
+                
+                for (int j = i; j >= i - 4; j--) {
+                    cards.push_back(allCards[j]);
+                }
+                return true;
+            }
+        }
+        // If the current card has the same rank as the previous card, do nothing
+        else if (int(allCards[i].getNumber()) == currentRank) {
+            continue;
+        }
+        else {
+            straightCount = 1;
+            currentRank = int(allCards[i].getNumber());
+        }
     }
     return false;
 }
@@ -427,14 +446,7 @@ bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
         if (foundPair && foundTriplet) {
             vector<Card> temp = temp1;
             temp.insert(temp.end(),temp2.begin(),temp2.end());
-            bool foundPlayerCard = false;
-            for (int j = 0; j < 2; j++){
-                auto itr = find(temp.begin(),temp.end(),player[j]);
-                if (itr != temp.end()){
-                    foundPlayerCard = true;
-                }
-            }
-            if (foundPlayerCard){
+            if (foundPlayerCard(temp,player)){
                 cards.insert(cards.end(),temp.begin(),temp.end());
                 return true;
             }
