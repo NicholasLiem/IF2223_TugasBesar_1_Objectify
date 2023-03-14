@@ -295,25 +295,30 @@ bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
                                                 cards.push_back(temp[2]);
                                                 cards.push_back(table[j]);
                                                 cards.push_back(table[k]);
-                                                sort(cards.begin(),cards.end(),compareCards);
                                                 return true;
                                             } else {
-                                                cards.push_back(temp[0]);
-                                                cards.push_back(temp[1]);
                                                 cards.push_back(table[j]);
                                                 cards.push_back(table[k]);
                                                 cards.push_back(table[l]);
-                                                sort(cards.begin(),cards.end(),compareCards);
+                                                cards.push_back(temp[0]);
+                                                cards.push_back(temp[1]);
                                                 return true;
                                             }
                                         }
                                     }
+                                    cards.push_back(temp[0]);
+                                    cards.push_back(temp[1]);
+                                    cards.push_back(temp[2]);
+                                    cards.push_back(table[j]);
+                                    cards.push_back(table[k]);
+                                    return true;
                                 }
                             }
                         }
                     }
                 }
             }
+            
         } else if (player[0] > player[1]){
             for (int i = 0; i < table.size(); i++){
                 if (table[i] == player[0]) {
