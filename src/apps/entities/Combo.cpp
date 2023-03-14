@@ -424,20 +424,20 @@ bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
             foundPair = true;
             i += 1;
         }
-    }
-    if (foundPair && foundTriplet) {
-        vector<Card> temp = temp1;
-        temp.insert(temp.end(),temp2.begin(),temp2.end());
-        bool foundPlayerCard = false;
-        for (int i = 0; i < 2; i++){
-            auto itr = find(temp.begin(),temp.end(),player[i]);
-            if (itr != temp.end()){
-                foundPlayerCard = true;
+        if (foundPair && foundTriplet) {
+            vector<Card> temp = temp1;
+            temp.insert(temp.end(),temp2.begin(),temp2.end());
+            bool foundPlayerCard = false;
+            for (int j = 0; j < 2; j++){
+                auto itr = find(temp.begin(),temp.end(),player[j]);
+                if (itr != temp.end()){
+                    foundPlayerCard = true;
+                }
             }
-        }
-        if (foundPlayerCard){
-            cards.insert(cards.end(),temp.begin(),temp.end());
-            return true;
+            if (foundPlayerCard){
+                cards.insert(cards.end(),temp.begin(),temp.end());
+                return true;
+            }
         }
     }
     return false;
