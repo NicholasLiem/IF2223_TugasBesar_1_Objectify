@@ -69,8 +69,8 @@ bool Pair::isThereCombo(vector<Card>& player, vector<Card>& table) {
         cards.push_back(player[1]);
         return true;
     } else {
-        for(int i = 0; i < player.size(); i++){
-            for(int j = 0; j < table.size(); j++){
+        for(int i = 0; i < 2; i++){
+            for(int j = 0; j < 5; j++){
                 if(player[i] == table[j]){
                     cards.push_back(player[i]);
                     cards.push_back(table[j]);
@@ -101,32 +101,30 @@ TwoPair::TwoPair(const TwoPair& other) : Combo(other) {}
 
 bool TwoPair::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
-    if (table.size() > 1) {
-        if (player[0] == player[1]){
-            for (int i = 0; i < table.size(); i++){
-                for (int j = 0; j < table.size(); j++){
-                    if (table[i] == table[j]){
+    if (player[0] == player[1]){
+        for (int i = 0; i < 5; i++){
+            for (int j = 0; j < 5; j++){
+                if (table[i] == table[j]){
+                    cards.push_back(player[0]);
+                    cards.push_back(player[1]);
+                    cards.push_back(table[i]);
+                    cards.push_back(table[j]);
+                    sort(cards.begin(),cards.end(),compareCards);
+                    return true;
+                }
+            }
+        }
+    } else {
+        for (int i = 0; i < 5; i++){
+            if (player[0] == table[i]){
+                for (int j = 0; j < 5; j++){
+                    if (player[1] == table[j]){
                         cards.push_back(player[0]);
-                        cards.push_back(player[1]);
                         cards.push_back(table[i]);
+                        cards.push_back(player[1]);
                         cards.push_back(table[j]);
                         sort(cards.begin(),cards.end(),compareCards);
                         return true;
-                    }
-                }
-            }
-        } else {
-            for (int i = 0; i < table.size(); i++){
-                if (player[0] == table[i]){
-                    for (int j = 0; j < table.size(); j++){
-                        if (player[1] == table[j]){
-                            cards.push_back(player[0]);
-                            cards.push_back(table[i]);
-                            cards.push_back(player[1]);
-                            cards.push_back(table[j]);
-                            sort(cards.begin(),cards.end(),compareCards);
-                            return true;
-                        }
                     }
                 }
             }
@@ -155,7 +153,7 @@ ThreeOfAKind::ThreeOfAKind(const ThreeOfAKind& other) : Combo(other) {}
 bool ThreeOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
     if (player[0] == player[1]){
-        for (int i = 0; i < table.size(); i++){
+        for (int i = 0; i < 5; i++){
             if (table[i] == player[0]){
                 cards.push_back(player[0]);
                 cards.push_back(player[1]);
@@ -165,10 +163,10 @@ bool ThreeOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
             }
         }
     } else {
-        for (int h = 0; h < player.size(); h++){
-            for (int i = 0; i < table.size(); i++){
+        for (int h = 0; h < 2; h++){
+            for (int i = 0; i < 5; i++){
                 if (player[h] == table[i]){
-                    for (int j = i + 1; j < table.size(); j++){
+                    for (int j = i + 1; j < 5; j++){
                         if (player[h] == table[j]){
                             cards.push_back(player[h]);
                             cards.push_back(table[i]);
@@ -201,27 +199,25 @@ Straight::Straight(const Straight& other) : Combo(other) {}
 
 bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
-    if (table.size() > 2){
-        vector<Card> temp;
-        for (int i = 0; i < player.size(); i++){
-            temp.push_back(player[i]);
+    vector<Card> temp;
+    for (int i = 0; i < 2; i++){
+        temp.push_back(player[i]);
+    }
+    for (int i = 0; i < 5; i++){
+        temp.push_back(table[i]);
+    }
+    sort(temp.begin(),temp.end(),compareCards);
+    int num = int(temp[0].getNumber()) - 1;
+    bool straight = true;
+    for (int i = 1; i < temp.size(); i++){
+        if(int(temp[i].getNumber()) != num){
+            straight = false;
         }
-        for (int i = 0; i < table.size(); i++){
-            temp.push_back(table[i]);
-        }
-        sort(temp.begin(),temp.end(),compareCards);
-        int num = int(temp[0].getNumber()) - 1;
-        bool straight = true;
-        for (int i = 1; i < temp.size(); i++){
-            if(int(temp[i].getNumber()) != num){
-                straight = false;
-            }
-            num--;
-        }
-        if (straight){
+        num--;
+    }
+    if (straight){
 
-            return true;
-        }
+        return true;
     }
     return false;
 }
@@ -251,7 +247,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
     // Memastikan semua card dalam table tidak membentuk flush
     bool allTable = true;
     bool playerHas = false;
-    for(int i = 0; i < table.size()-1;i++){
+    for(int i = 0; i < 5-1;i++){
         if(table[i].getColor() != table[0].getColor()){
             allTable = false;
         }
@@ -260,7 +256,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
 
     // Kalau semua card dalam table membentuk flush, return false
     if(allTable){
-        for(int i = 0; i < player.size();i++){
+        for(int i = 0; i < 2;i++){
             if(player[i].getColor() == table[0].getColor()){
                 playerHas = true;
                 break;
@@ -308,7 +304,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
             // Sort cards, sehingga kartu terbesar berada di cards[0]
             sort(cards.begin(),cards.end(),compareCards);
             int i = 0;
-            while(count != 5 && i < table.size()){
+            while(count != 5 && i < 5){
                 if(table[i].getColor() == cards[0].getColor()){
                     count++;
                     cards.push_back(table[i]);
@@ -319,7 +315,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
                 return false;
             }else{
                 sort(cards.begin(),cards.end(),compareCards);
-                while(i < table.size()){
+                while(i < 5){
                     if(table[i] > cards[4] && table[i].getColor() == cards[4].getColor()){
                         cards.pop_back();
                         cards.push_back(table[i]);
@@ -341,7 +337,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
             int countTwo = 1;
             sort(cards.begin(),cards.end(),compareCards);
             // cout << "Done sorting" << endl;
-            for(int i = 0; i < table.size();i++){
+            for(int i = 0; i < 5;i++){
                 if(table[i].getColor() == player[0].getColor()){
                     countOne++;
                 }
@@ -353,7 +349,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
                 return false;
             }else if(countOne >= 5){
                 cards.push_back(player[0]);
-                for(int i = 0; i < table.size();i++){
+                for(int i = 0; i < 5;i++){
                     if(table[i].getColor() == player[0].getColor()){
                         cards.push_back(table[i]);
                     }
@@ -364,7 +360,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
                 return true;
             }else{
                 cards.push_back(player[1]);
-                for(int i = 0; i < table.size();i++){
+                for(int i = 0; i < 5;i++){
                     if(table[i].getColor() == player[1].getColor()){
                         cards.push_back(table[i]);
                     }
@@ -404,62 +400,44 @@ FullHouse::FullHouse(const FullHouse& other) : Combo(other) {}
 
 bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
-    sort(table.begin(),table.end(),compareCards);
-    if (table.size() > 2) {
-        if (player[0] == player[1]){
-            for (int i = 0; i < table.size(); i++){
-                if (table[i] == player[0]){
-                    vector<Card> temp;
-                    temp.push_back(player[0]);
-                    temp.push_back(player[1]);
-                    temp.push_back(table[i]);
-                    sort(temp.begin(),temp.end(),compareCards);
-                    for (int j = 0; j < table.size(); j++){
-                        if (i != j){
-                            for (int k = j + 1; k < table.size(); k++){
-                                if ((i != k) && (table[j] == table[k])){
-                                    for (int l = k + 1; l < table.size(); l++){
-                                        if (table[l] == table[j]){
-                                            if (player[0] > table[j]){
-                                                cards.push_back(temp[0]);
-                                                cards.push_back(temp[1]);
-                                                cards.push_back(temp[2]);
-                                                cards.push_back(table[j]);
-                                                cards.push_back(table[k]);
-                                                return true;
-                                            } else {
-                                                cards.push_back(table[j]);
-                                                cards.push_back(table[k]);
-                                                cards.push_back(table[l]);
-                                                cards.push_back(temp[0]);
-                                                cards.push_back(temp[1]);
-                                                return true;
-                                            }
-                                        }
-                                    }
-                                    cards.push_back(temp[0]);
-                                    cards.push_back(temp[1]);
-                                    cards.push_back(temp[2]);
-                                    cards.push_back(table[j]);
-                                    cards.push_back(table[k]);
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
+    vector<Card> allCards = player;
+    allCards.insert(allCards.end(), table.begin(), table.end());
+    sort(allCards.begin(), allCards.end(),compareCards);
+
+    bool foundPair = false;
+    bool foundTriplet = false;
+
+    vector<Card> temp1;
+    vector<Card> temp2;
+    for (int i = 0; i < 5; i++) {
+        if (allCards[i] == allCards[i+1] && allCards[i+1] == allCards[i+2]) {
+            for (int j = i; j < i + 3; j++){
+                temp1.push_back(allCards[j]);
             }
-            
-        } else if (player[0] > player[1]){
-            for (int i = 0; i < table.size(); i++){
-                if (table[i] == player[0]) {
-                    for (int j = i+1; j < table.size(); j++){
-                        if (table[j] == player[0]){
-                            
-                        }
-                    }
-                }
+            foundTriplet = true;
+            i += 2;
+        }
+        else if (allCards[i] == allCards[i+1]) {
+            for (int j = i; j < i + 2; j++){
+                temp2.push_back(allCards[j]);
             }
+            foundPair = true;
+            i += 1;
+        }
+    }
+    if (foundPair && foundTriplet) {
+        vector<Card> temp = temp1;
+        temp.insert(temp.end(),temp2.begin(),temp2.end());
+        bool foundPlayerCard = false;
+        for (int i = 0; i < 2; i++){
+            auto itr = find(temp.begin(),temp.end(),player[i]);
+            if (itr != temp.end()){
+                foundPlayerCard = true;
+            }
+        }
+        if (foundPlayerCard){
+            cards.insert(cards.end(),temp.begin(),temp.end());
+            return true;
         }
     }
     return false;
@@ -485,36 +463,34 @@ FourOfAKind::FourOfAKind(const FourOfAKind& other) : Combo(other) {}
 
 bool FourOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
-    if (player.size() > 1){
-        if (player[0] == player[1]){
+    if (player[0] == player[1]){
+        int count = 0;
+        for(int i = 0; i < 5; i++){
+            if(table[i] == player[0]){
+                count++;
+            }
+        }
+        if (count == 2){
+            int num = int(player[0].getNumber());
+            for (int i = 0; i < 4; i++){
+                cards.push_back(Card(i,num));
+            }
+            return true;
+        }
+    } else {
+        for (int j = 0; j < 2; j++){
             int count = 0;
-            for(int i = 0; i < table.size(); i++){
-                if(table[i] == player[0]){
+            for(int i = 0; i < 5; i++){
+                if(table[i] == player[j]){
                     count++;
                 }
             }
-            if (count == 2){
-                int num = int(player[0].getNumber());
+            if (count == 3){
+                int num = int(player[j].getNumber());
                 for (int i = 0; i < 4; i++){
                     cards.push_back(Card(i,num));
                 }
                 return true;
-            }
-        } else {
-            for (int j = 0; j < 2; j++){
-                int count = 0;
-                for(int i = 0; i < table.size(); i++){
-                    if(table[i] == player[j]){
-                        count++;
-                    }
-                }
-                if (count == 3){
-                    int num = int(player[j].getNumber());
-                    for (int i = 0; i < 4; i++){
-                        cards.push_back(Card(i,num));
-                    }
-                    return true;
-                }
             }
         }
     }
