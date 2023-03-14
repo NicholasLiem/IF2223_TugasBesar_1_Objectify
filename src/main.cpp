@@ -44,6 +44,7 @@ int main()
 {
     GameManager gameManager;
 
+    GameState::registerState("dashboard", new Dashboard(gameManager));
     GameState::registerState("player turn", new PlayerTurn);
     GameState::registerState("next", new Next(gameManager));
     GameState::registerState("player registration",
@@ -54,6 +55,9 @@ int main()
     GameState::registerState("half", new Half(gameManager));
     GameState::registerState("quarter", new QuarterAct(gameManager));
     GameState::registerState("quadruple", new QuadrupleAct(gameManager));
+    GameState::registerState("switch", new SwitchAct(gameManager));
+    GameState::registerState("swap", new SwapAct(gameManager));
+    GameState::registerState("abilityless", new AbilitylessAct(gameManager));
 
     Ability::registerAbility(new QuadrupleCard(gameManager));
     Ability::registerAbility(new QuarterCard(gameManager));
@@ -61,7 +65,7 @@ int main()
     Ability::registerAbility(new ReverseDirCard(gameManager));
     Ability::registerAbility(new SwapCard(gameManager));
     Ability::registerAbility(new SwitchCard(gameManager));
-    Ability::registerAbility(new AbilitylessCard(gameManager));    
+    Ability::registerAbility(new AbilitylessCard(gameManager));
 
     Combo::registerCombo(new HighCard());
     Combo::registerCombo(new Pair());

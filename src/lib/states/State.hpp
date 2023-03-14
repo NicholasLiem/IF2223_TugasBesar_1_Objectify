@@ -1,8 +1,19 @@
 #ifndef __STATE_
 #define __STATE_
 
-#include "GameState.hpp"
 #include "GameManager.hpp"
+#include "GameState.hpp"
+
+class Dashboard : public GameState
+{
+  private:
+    GameManager& gameManager;
+
+  public:
+    Dashboard(GameManager& gm);
+
+    GameState* updateState() override;
+};
 
 class PlayerTurn : public GameState
 {

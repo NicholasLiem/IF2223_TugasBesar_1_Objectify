@@ -24,7 +24,7 @@ class GameManager
     int currentPlayerIndex;
     int currentRound;
     int nextRoundFirstPlayerIndex;
-    int pot;
+    long pot;
 
     bool reversedDirection;
 
@@ -42,7 +42,7 @@ class GameManager
     Player& getCurrentPlayer();
     std::vector<Player>& getPlayers();
     Ability* getAbility(std::string playerNickname);
-    int getPot() const;
+    long getPot() const;
     int getCurrentRound() const;
     std::vector<int>& getCurrentRoundTurnQueue();
     std::vector<int>& getNextRoundTurnQueue();
@@ -50,7 +50,7 @@ class GameManager
     void registerPlayer(Player player);
     void reverseDirection();
     void nextPlayer();
-    void setPot(int value);
+    void setPot(long value);
 };
 
 #endif // !__GAMEMANAGER_

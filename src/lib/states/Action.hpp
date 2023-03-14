@@ -75,4 +75,28 @@ class ReverseDirAct : public Action
     GameState* updateState() override;
 };
 
+class SwapAct : public Action
+{
+  public:
+    SwapAct(GameManager& gameManager);
+
+    GameState* updateState() override;
+};
+
+class SwitchAct : public Action
+{
+  public:
+    SwitchAct(GameManager& gameManager);
+
+    GameState* updateState() override;
+};
+
+class AbilitylessAct : public Action
+{
+  public:
+    AbilitylessAct(GameManager& gameManager);
+
+    GameState* updateState() override;
+};
+
 #endif // !__ACTION_
