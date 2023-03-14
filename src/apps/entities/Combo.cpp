@@ -32,6 +32,10 @@ bool compareCards(const Card& a,const Card& b){
     return a > b;
 }
 
+bool compareColor(const Card& a,const Card& b){
+    return a.getColor() > b.getColor();
+}
+
 bool isMember(vector<Card>& cards, Card card){
     auto itr = find(cards.begin(),cards.end(),card);
     if (itr != cards.end()){
@@ -302,7 +306,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
     }
 
     if (temp1.size() > 4){
-        cards.insert(cards.begin(),temp1.begin(),temp1.begin()+4);
+        cards.insert(cards.begin(),temp1.begin(),temp1.begin()+5);
         if (foundPlayerCard(cards,player)){
             return true;
         } else {
@@ -315,7 +319,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
             }
         }
     } else if (temp2.size() > 4){
-        cards.insert(cards.begin(),temp2.begin(),temp2.begin()+4);
+        cards.insert(cards.begin(),temp2.begin(),temp2.begin()+5);
         if (foundPlayerCard(cards,player)){
             return true;
         } else {
@@ -328,7 +332,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
             }
         }
     } else if (temp3.size() > 4){
-        cards.insert(cards.begin(),temp3.begin(),temp3.begin()+4);
+        cards.insert(cards.begin(),temp3.begin(),temp3.begin()+5);
         if (foundPlayerCard(cards,player)){
             return true;
         } else {
@@ -341,7 +345,7 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
             }
         }
     } else if (temp4.size() > 4){
-        cards.insert(cards.begin(),temp4.begin(),temp4.begin()+4);
+        cards.insert(cards.begin(),temp4.begin(),temp4.begin()+5);
         if (foundPlayerCard(cards,player)){
             return true;
         } else {
@@ -487,42 +491,104 @@ StraightFlush::StraightFlush(const StraightFlush& other) : Combo(other) {}
 
 bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
 {
-    vector<Card> allCards = player;
-    allCards.insert(allCards.end(), table.begin(), table.end());
-    sort(allCards.begin(), allCards.end(), compareCards);
-
-    int straightCount = 1;
-    int currentRank = int(allCards[0].getNumber());
-    int currentColor = int(allCards[0].getColor());
-
-    vector<Card> temp;
-    temp.push_back(allCards[0]);
-    for (int i = 1; i < 7; i++) {
-        if (int(allCards[i].getNumber()) == currentRank - 1) {
-            if (int(allCards[i].getColor()) == currentColor) {
-                straightCount++;
-                currentRank--;
-                temp.push_back(allCards[i]);
-                if (straightCount == 5){
-                    if (foundPlayerCard(temp,player)){
-                        cards.insert(cards.begin(),temp.begin(),temp.end());
-                        return true;
-                    } else {
-                        temp.erase(temp.begin());
-                        straightCount--;
-                    }
-                }
-            }
-        }
-        else {
-            temp.clear();
-            temp.push_back(allCards[i]);
-            straightCount = 1;
-            currentRank = int(allCards[i].getNumber());
-            currentColor = int(allCards[i].getColor());
+    vector <Card> green;
+    vector <Card> blue;
+    vector <Card> yellow;
+    vector <Card> red;
+    vector <Card> allCards;
+    allCards.insert(allCards.end(),table.begin(),table.end());
+    allCards.insert(allCards.end(),player.begin(),player.end());
+    for(int i = 0; i < allCards.size();i++){
+        switch ((int)allCards[i].getColor())
+        {
+        case 0:
+            green.push_back(allCards[i]);
+            break;
+        case 1 : 
+            blue.push_back(allCards[i]);
+            break;
+        case 2 : 
+            yellow.push_back(allCards[i]);
+            break;
+        case 3 : 
+            red.push_back(allCards[i]);
+            break;
+        default:
+            break;
         }
     }
-    return false;
+    allCards.clear();
+    if(green.size() < 5 && blue.size()< 5 && yellow.size() < 5 && red.size() < 5){
+        return false;
+    }
+    else if(green.size() >= 5){
+        allCards.insert(allCards.end(),green.begin(),green.end());
+    }else if(blue.size() >= 5){
+        allCards.insert(allCards.end(),blue.begin(),blue.end());
+    }else if(yellow.size() >= 5){
+        allCards.insert(allCards.end(),yellow.begin(),yellow.end());
+    }else{
+        allCards.insert(allCards.end(),red.begin(),red.end());
+    }
+
+    bool inPlayer = false;
+    for(int i = 0; i < player.size();i++){
+        if(isMember(allCards,player[i])){
+            inPlayer = true;
+            break;
+        }
+    }
+    if(!inPlayer){
+        return false;
+    }
+    // Mengurutkan seluruh kartu yang ada dan berurutan
+    sort(allCards.begin(),allCards.end(),compareCards);
+    vector <Card> temp;
+    
+    
+    cout << "Lolos" << endl;
+
+    return true;
+    // vector<Card> allCards = player;
+    // allCards.insert(allCards.end(), table.begin(), table.end());
+    // sort(allCards.begin(), allCards.end(), compareCards);
+    // for (int i = 0; i < 7; i++){
+    //     cout << int(allCards[i].getNumber()) << endl;
+    // }
+
+    // int straightCount = 1;
+    // int currentRank = int(allCards[0].getNumber());
+    // int currentColor = int(allCards[0].getColor());
+
+    // vector<Card> temp;
+    // temp.push_back(allCards[0]);
+    // for (int i = 1; i < 7; i++) {
+    //     if (int(allCards[i].getNumber()) == currentRank - 1) {
+    //         if (int(allCards[i].getColor()) == currentColor) {
+    //             straightCount++;
+    //             currentRank--;
+    //             cout << int(allCards[i].getNumber()) << '-' << straightCount << endl;
+    //             temp.push_back(allCards[i]);
+    //             if (straightCount == 5){
+    //                 if (foundPlayerCard(temp,player)){
+    //                     cards.insert(cards.begin(),temp.begin(),temp.end());
+    //                     return true;
+    //                 } else {
+    //                     temp.erase(temp.begin());
+    //                     straightCount--;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     else {
+    //         temp.clear();
+    //         temp.push_back(allCards[i]);
+    //         straightCount = 1;
+    //         currentRank = int(allCards[i].getNumber());
+    //         currentColor = int(allCards[i].getColor());
+    //     }
+    // }
+    // return false;
 }
 
 float StraightFlush::value() const {
