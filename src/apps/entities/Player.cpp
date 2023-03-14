@@ -54,6 +54,18 @@ std::vector<Card> Player::takeAll()
     return ret;
 }
 
+bool Player::operator==(const Player& other){
+    return (this->getNickname() == other.getNickname());
+}
+
+bool Player::operator<(const Player& other){
+    return this->getPoints() < other.getPoints();
+}
+
+bool Player::operator>(const Player& other){
+    return this->getPoints() > other.getPoints();
+}
+
 Player& Player::operator=(const Player& other)
 {
     inventory = other.inventory;
@@ -66,6 +78,14 @@ bool operator==(const Player& a, const Player& b)
 {
     return a.getNickname() == b.getNickname();
 }
+
+bool operator<(const Player& a, const Player& b){
+    return a.getPoints() < b.getPoints();
+}
+
+bool operator>(const Player&a, const Player& b){
+    return a.getPoints() > b.getPoints();
+};
 
 bool operator!=(const Player& a, const Player& b)
 {
