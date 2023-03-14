@@ -16,6 +16,13 @@ class Action : public GameState
     GameManager& gameManager;
 };
 
+class Scoreboard : public Action {
+public:
+  Scoreboard(GameManager& gm);
+
+  GameState* updateState() override;
+};
+
 class Double : public Action
 {
   public:

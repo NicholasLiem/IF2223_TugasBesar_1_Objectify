@@ -58,6 +58,7 @@ int main()
     GameState::registerState("switch", new SwitchAct(gameManager));
     GameState::registerState("swap", new SwapAct(gameManager));
     GameState::registerState("abilityless", new AbilitylessAct(gameManager));
+    GameState::registerState("scoreboard", new Scoreboard(gameManager));
 
     Ability::registerAbility(new QuadrupleCard(gameManager));
     Ability::registerAbility(new QuarterCard(gameManager));

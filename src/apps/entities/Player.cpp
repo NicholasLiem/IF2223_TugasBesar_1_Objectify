@@ -3,7 +3,17 @@
 #include <algorithm>
 #include <vector>
 
-Player::Player(std::string nickname) : nickname(nickname) {}
+Player::Player(std::string nickname)
+{
+    this->nickname = nickname;
+    points = 0;
+}
+
+Player::Player(const Player& other) {
+    nickname = other.nickname;
+    inventory = other.inventory;
+    points = other.points;
+}
 
 void Player::setPoints(long points)
 {
@@ -44,10 +54,20 @@ std::vector<Card> Player::takeAll()
     return ret;
 }
 
-bool operator==(const Player& a, const Player& b) {
+Player& Player::operator=(const Player& other)
+{
+    inventory = other.inventory;
+    points = other.points;
+    nickname = other.nickname;
+    return *this;
+}
+
+bool operator==(const Player& a, const Player& b)
+{
     return a.getNickname() == b.getNickname();
 }
 
-bool operator!=(const Player& a, const Player& b) {
+bool operator!=(const Player& a, const Player& b)
+{
     return a.getNickname() != b.getNickname();
 }
