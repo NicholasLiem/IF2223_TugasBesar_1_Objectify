@@ -37,11 +37,14 @@ bool isMember(vector<Card>& cards, Card card){
     if (itr != cards.end()){
         return true;
     }
+    return false;
 }
 
 bool foundPlayerCard(vector<Card>& temp, vector<Card>& player){
     for (int j = 0; j < 2; j++){
-        isMember(temp,player[j]);
+        if(isMember(temp,player[j])){
+            return true;
+        }
     }
     return false;
 }
@@ -216,10 +219,6 @@ bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table) {
     vector<Card> allCards = player;
     allCards.insert(allCards.end(), table.begin(), table.end());
     sort(allCards.begin(), allCards.end(), compareCards);
-
-    for (int i = 0; i < 7; i++){
-        cout << int(allCards[i].getNumber()) << endl;
-    }
 
     int straightCount = 1;
     int currentRank = int(allCards[0].getNumber());

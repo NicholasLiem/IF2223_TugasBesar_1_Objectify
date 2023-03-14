@@ -8,13 +8,13 @@ bool tempCompare(const Card& a,const Card& b){
 }
 
 int main(){
-    Card c1(3,8);
-    Card c2(3,9);
+    Card c1(1,8);
+    Card c2(2,8);
     Card c3(3,10);
-    Card c4(3,11);
-    Card c5(3,12);
-    Card c6(3,6);
-    Card c7(3,13);
+    Card c4(2,11);
+    Card c5(2,9);
+    Card c6(3,12);
+    Card c7(2,13);
     vector <Card> playerCards;
     vector <Card> tableCards;
     tableCards.push_back(c1);tableCards.push_back(c2);tableCards.push_back(c3);tableCards.push_back(c4);tableCards.push_back(c5);
@@ -29,6 +29,10 @@ int main(){
     Straight *s;
     s = new Straight();
     Combo *c;
+    FullHouse *fh;
+    fh = new FullHouse();
+    FourOfAKind *fk;
+    fk = new FourOfAKind();
     // c->registerCombo(p2);
     // c->registerCombo(t);
     c->registerCombo(s);
