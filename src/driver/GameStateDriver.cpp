@@ -1,11 +1,5 @@
-#include "Double.hpp"
-#include "GameManager.hpp"
-#include "GameState.hpp"
-#include "Half.hpp"
-#include "Next.hpp"
-#include "PlayerTurn.hpp"
-#include "QuadrupleAct.hpp"
-#include "QuarterAct.hpp"
+#include "State.hpp"
+#include "Action.hpp"
 
 int main()
 {
