@@ -370,7 +370,7 @@ float Flush::value() const {
     int constant = 10;
     for (int i = 4; i >= 0; i--){
         cout << val << endl;
-        val += int(cards[i].getNumber())*constant;
+        val += float(cards[i].getNumber())*constant;
         constant *= 100;
     }
     return val;
@@ -545,54 +545,43 @@ bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
     if(!inPlayer){
         return false;
     }
-    // Mengurutkan seluruh kartu yang ada dan berurutan
+    // Mengurutkan seluruh kartu yang ada dan diurutkan  (12,11,10,9,8,7) -> 7 kartu player, sisanya meja
     sort(allCards.begin(),allCards.end(),compareCards);
-    vector <Card> temp;
+    vector<Card> temp;
+    temp.push_back(allCards[0]);
+    int straightCount = 1;
+    int currentRank = (int)allCards[0].getNumber();
+    for (int i = 1; i < allCards.size(); i++) {
+        if (int(allCards[i].getNumber()) == currentRank - 1) {
+            straightCount++;
+            currentRank--;
+            temp.push_back(allCards[i]);
+            if (straightCount == 5){
+                if (foundPlayerCard(temp,player)){
+                    cards.insert(cards.begin(),temp.begin(),temp.end());
+                    return true;
+                } else {
+                    temp.erase(temp.begin());
+                    straightCount--;
+                    
+                }
+            }
+        }
+        else if (int(allCards[i].getNumber()) == currentRank) {
+            if(!foundPlayerCard(temp,player) && isMember(player,allCards[i])){
+                temp.erase(temp.begin() + straightCount - 1);
+                temp.push_back(allCards[i]);                
+            }
+        }
+        else {
+            temp.clear();
+            temp.push_back(allCards[i]);
+            straightCount = 1;
+            currentRank = int(allCards[i].getNumber());
+        }
     
-    
-    cout << "Lolos" << endl;
-
-    return true;
-    // vector<Card> allCards = player;
-    // allCards.insert(allCards.end(), table.begin(), table.end());
-    // sort(allCards.begin(), allCards.end(), compareCards);
-    // for (int i = 0; i < 7; i++){
-    //     cout << int(allCards[i].getNumber()) << endl;
-    // }
-
-    // int straightCount = 1;
-    // int currentRank = int(allCards[0].getNumber());
-    // int currentColor = int(allCards[0].getColor());
-
-    // vector<Card> temp;
-    // temp.push_back(allCards[0]);
-    // for (int i = 1; i < 7; i++) {
-    //     if (int(allCards[i].getNumber()) == currentRank - 1) {
-    //         if (int(allCards[i].getColor()) == currentColor) {
-    //             straightCount++;
-    //             currentRank--;
-    //             cout << int(allCards[i].getNumber()) << '-' << straightCount << endl;
-    //             temp.push_back(allCards[i]);
-    //             if (straightCount == 5){
-    //                 if (foundPlayerCard(temp,player)){
-    //                     cards.insert(cards.begin(),temp.begin(),temp.end());
-    //                     return true;
-    //                 } else {
-    //                     temp.erase(temp.begin());
-    //                     straightCount--;
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     else {
-    //         temp.clear();
-    //         temp.push_back(allCards[i]);
-    //         straightCount = 1;
-    //         currentRank = int(allCards[i].getNumber());
-    //         currentColor = int(allCards[i].getColor());
-    //     }
-    // }
-    // return false;
+    }
+    return false;
 }
 
 float StraightFlush::value() const {

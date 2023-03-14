@@ -8,13 +8,13 @@ bool tempCompare(const Card& a,const Card& b){
 }
 
 int main(){
-    Card c1(0,8);
+    Card c1(1,8);
     Card c2(1,9);
-    Card c3(3,8);
-    Card c4(0,1);
-    Card c5(1,13);
-    Card c6(2,13);
-    Card c7(3,13);
+    Card c3(1,10);
+    Card c4(1,11);
+    Card c5(1,12);
+    Card c6(1,7);
+    Card c7(2,13);
     vector <Card> playerCards;
     vector <Card> tableCards;
     tableCards.push_back(c1);tableCards.push_back(c2);tableCards.push_back(c3);tableCards.push_back(c4);tableCards.push_back(c5);
@@ -31,7 +31,7 @@ int main(){
     // c->registerCombo(p2);
     // c->registerCombo(t);
     Combo *c;
-    c->registerCombo(fh);
+    c->registerCombo(sf);
     Combo* combo;
     float value = 0;
     for (Combo* c : Combo::getCombos()) {
