@@ -85,5 +85,6 @@ int main()
 
     GameState::clearStates();
     Ability::clearAbilities();
+    Combo::clearCombos();
     return 0;
 }
