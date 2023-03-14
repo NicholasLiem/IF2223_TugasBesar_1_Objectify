@@ -9,11 +9,12 @@
 class Player : public InventoryHolder<Card>
 {
   private:
-    const std::string nickname;
+    std::string nickname;
     long points;
 
   public:
     Player(std::string nickname);
+    Player(const Player& other);
 
     void setPoints(long points);
     void put(Card card) override;
@@ -22,6 +23,8 @@ class Player : public InventoryHolder<Card>
 
     std::string getNickname() const;
     int getPoints() const;
+
+    Player& operator=(const Player& other);
 
     friend bool operator==(const Player& a, const Player& b);
     friend bool operator!=(const Player& a, const Player& b);

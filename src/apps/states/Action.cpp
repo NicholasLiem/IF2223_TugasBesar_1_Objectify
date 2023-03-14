@@ -4,6 +4,7 @@
 #include "GameManager.hpp"
 #include "Player.hpp"
 
+#include <algorithm>
 #include <ios>
 #include <iostream>
 #include <limits>
@@ -40,6 +41,24 @@ void input_validate(Type&& var, int lower, int upper)
         std::cin.clear();
         std::getline(std::cin, temp);
     }
+}
+
+Scoreboard::Scoreboard(GameManager& gm) : Action(gm) {}
+
+GameState* Scoreboard::updateState()
+{
+    std::vector<Player> players(gameManager.getPlayers());
+    std::sort(players.begin(), players.end(),
+              [](const Player& a, const Player& b) {
+                  return a.getPoints() > b.getPoints();
+              });
+    int i = 1;
+    std::cout << "\e[4;93mScoreboard\e[0m\n";
+    for (const Player& p : players) {
+        std::cout << "\t" << i++ << ". " << p.getNickname() << " ("
+                  << p.getPoints() << ")\n";
+    }
+    return GameState::getState("dashboard");
 }
 
 Double::Double(GameManager& gameManager) : Action(gameManager) {}
