@@ -23,6 +23,7 @@ class Combo : public Valuable
     // Delete constructor
     virtual ~Combo() = default;
     string getName(); 
+    void sortCards();
     // Function to check if there is any combos
     virtual bool isThereCombo(vector<Card>& player, vector<Card>& table) = 0;
 
