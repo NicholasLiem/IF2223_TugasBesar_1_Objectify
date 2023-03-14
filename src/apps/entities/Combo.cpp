@@ -31,12 +31,16 @@ bool compareCards(const Card& a,const Card& b){
     return a > b;
 }
 
+bool isMember(vector<Card>& cards, Card card){
+    auto itr = find(cards.begin(),cards.end(),card);
+    if (itr != cards.end()){
+        return true;
+    }
+}
+
 bool foundPlayerCard(vector<Card>& temp, vector<Card>& player){
     for (int j = 0; j < 2; j++){
-        auto itr = find(temp.begin(),temp.end(),player[j]);
-        if (itr != temp.end()){
-            return true;
-        }
+        isMember(temp,player[j]);
     }
     return false;
 }
@@ -217,23 +221,25 @@ bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table) {
     int currentRank = int(allCards[0].getNumber());
 
     vector<Card> temp;
-    for (int i = 1; i < allCards.size(); i++) {
+    temp.push_back(allCards[0]);
+    for (int i = 1; i < 7; i++) {
         if (int(allCards[i].getNumber()) == currentRank - 1) {
             straightCount++;
             currentRank--;
-            if (straightCount == 5) {
-                
-                for (int j = i; j >= i - 4; j--) {
-                    cards.push_back(allCards[j]);
-                }
+            temp.push_back(allCards[i]);
+            if (straightCount == 5 && foundPlayerCard(temp,player)) {
                 return true;
             }
         }
-        // If the current card has the same rank as the previous card, do nothing
         else if (int(allCards[i].getNumber()) == currentRank) {
-            continue;
+            if(!foundPlayerCard(temp,player) && isMember(player,allCards[i])){
+                temp.erase(temp.begin() + straightCount - 1);
+                temp.push_back(allCards[i]);                
+            }
         }
         else {
+            temp.clear();
+            temp.push_back(allCards[i]);
             straightCount = 1;
             currentRank = int(allCards[i].getNumber());
         }
