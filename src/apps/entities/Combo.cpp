@@ -97,7 +97,8 @@ HighCard::HighCard() : Combo("HighCard") {}
 HighCard::HighCard(const HighCard& other) : Combo(other) {}
 
 bool HighCard::isThereCombo(vector<Card>& player, vector<Card>& table)
-{
+{  
+    cards.clear();
     if (player.size() > 0) {
         this->cards.push_back(player[0]);
         return true;
@@ -121,7 +122,8 @@ Pair::Pair() : Combo("Pair") {}
 Pair::Pair(const Pair& other) : Combo(other) {}
 
 bool Pair::isThereCombo(vector<Card>& player, vector<Card>& table)
-{
+{  
+    cards.clear();
     std::sort(player.begin(), player.end(), compareCards);
     if (player[0] == player[1]) {
         cards.push_back(player[0]);
@@ -161,7 +163,8 @@ TwoPair::TwoPair() : Combo("TwoPair") {}
 TwoPair::TwoPair(const TwoPair& other) : Combo(other) {}
 
 bool TwoPair::isThereCombo(vector<Card>& player, vector<Card>& table)
-{
+{  
+    cards.clear();
     if (player[0] == player[1]) {
         for (int i = 0; i < 5; i++) {
             for (int j = i + 1; j < 5; j++) {
@@ -216,7 +219,8 @@ ThreeOfAKind::ThreeOfAKind() : Combo("ThreeOfAKind") {}
 ThreeOfAKind::ThreeOfAKind(const ThreeOfAKind& other) : Combo(other) {}
 
 bool ThreeOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
-{
+{  
+    cards.clear();
     if (player[0] == player[1]) {
         for (int i = 0; i < 5; i++) {
             if (table[i] == player[0]) {
@@ -265,7 +269,8 @@ Straight::Straight() : Combo("Straight") {}
 Straight::Straight(const Straight& other) : Combo(other) {}
 
 bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table)
-{
+{  
+    cards.clear();
     vector<Card> allCards = player;
     allCards.insert(allCards.end(), table.begin(), table.end());
     sort(allCards.begin(), allCards.end(), compareCards);
@@ -327,7 +332,8 @@ Flush::Flush() : Combo("Flush") {}
 Flush::Flush(const Flush& other) : Combo(other) {}
 
 bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
-{
+{  
+    cards.clear();
     vector<Card> allCards = player;
     allCards.insert(allCards.end(), table.begin(), table.end());
     sort(allCards.begin(), allCards.end(), compareCards);
@@ -415,7 +421,8 @@ FullHouse::FullHouse() : Combo("FullHouse") {}
 FullHouse::FullHouse(const FullHouse& other) : Combo(other) {}
 
 bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
-{
+{  
+    cards.clear();
     vector<Card> allCards = player;
     allCards.insert(allCards.end(), table.begin(), table.end());
     sort(allCards.begin(), allCards.end(), compareCards);
@@ -474,7 +481,8 @@ FourOfAKind::FourOfAKind() : Combo("FourOfAKind") {}
 FourOfAKind::FourOfAKind(const FourOfAKind& other) : Combo(other) {}
 
 bool FourOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
-{
+{  
+    cards.clear();
     if (player[0] == player[1]) {
         int count = 0;
         for (int i = 0; i < 5; i++) {
@@ -526,7 +534,8 @@ StraightFlush::StraightFlush() : Combo("StraightFlush") {}
 StraightFlush::StraightFlush(const StraightFlush& other) : Combo(other) {}
 
 bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
-{
+{  
+    cards.clear();
     vector<Card> allCards;
     allCards.insert(allCards.end(), table.begin(), table.end());
     allCards.insert(allCards.end(), player.begin(), player.end());

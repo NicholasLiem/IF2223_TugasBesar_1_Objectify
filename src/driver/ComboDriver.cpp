@@ -15,7 +15,7 @@ int main()
     Card c1(0, 12);
     Card c2(0, 11);
     Card c3(0, 10);
-    Card c4(1, 8);
+    Card c4(0, 13);
     Card c5(0, 9);
     Card c6(0, 7);
     Card c7(0, 8);
