@@ -110,7 +110,7 @@ Combo* Pair::clone()
 float Pair::value() const
 {
     // max value = 13131.3996
-    float val = 1.39 + int(cards[0].getNumber()) * 1000 + int(cards[0].getColor()) * 0.003 + int(cards[1].getNumber()) * 10 + int(cards[1].getColor()) * 0.0003;
+    float val = 1.39 + float(cards[0].getNumber()) * 1000 + float(cards[0].getColor()) * 0.003 + float(cards[1].getNumber()) * 10 + float(cards[1].getColor()) * 0.0003;
     return val;
 }
 
@@ -160,8 +160,8 @@ float TwoPair::value() const
 {
     // max value = 26261.39969696
     float val = 13131.3996;
-    val += int(cards[0].getNumber()) * 1000 + int(cards[0].getColor()) * 0.00003 + int(cards[1].getColor()) * 0.000003;
-    val += int(cards[2].getNumber()) * 10 + int(cards[2].getColor()) * 0.0000003 + int(cards[3].getColor()) * 0.00000003;
+    val += float(cards[0].getNumber()) * 1000 + float(cards[0].getColor()) * 0.00003 + float(cards[1].getColor()) * 0.000003;
+    val += float(cards[2].getNumber()) * 10 + float(cards[2].getColor()) * 0.0000003 + float(cards[3].getColor()) * 0.00000003;
     return val;
 }
 
@@ -209,7 +209,7 @@ Combo* ThreeOfAKind::clone()
 float ThreeOfAKind::value() const
 {
     // val maks = 1326261.39969696963
-    return 26261.39969696 + int(cards[0].getNumber()) * 100000 + int(cards[0].getColor()) * 0.000000003 + int(cards[1].getColor()) * 0.0000000003 + int(cards[2].getColor()) * 0.00000000003;
+    return 26261.39969696 + float(cards[0].getNumber()) * 100000 + float(cards[0].getColor()) * 0.000000003 + float(cards[1].getColor()) * 0.0000000003 + float(cards[2].getColor()) * 0.00000000003;
 }
 
 Straight::Straight() : Combo("Straight") {}
@@ -266,10 +266,10 @@ float Straight::value() const
 {   
     cout << cards.size() << endl;
     // val maks = 2626261.3996969696399996
-    float val = 1326261.39969696963 + int(cards[0].getNumber()) * 100000;
+    float val = 1326261.39969696963 + float(cards[0].getNumber()) * 100000;
     float constant = 0.000000000003 ;
     for (int i = 0; i < 5; i++){
-        val += int(cards[i].getColor())*constant;
+        val += float(cards[i].getColor())*constant;
         constant /= 10;
     }
     return val;
@@ -359,10 +359,10 @@ bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
 
 float Flush::value() const {
     // max value = 13133939391.39969696963999969
-    float val = 2626261.3996969696399996 + int(cards[0].getColor())*0.00000000000000003;
+    float val = 2626261.3996969696399996 + float(cards[0].getColor())*0.00000000000000003;
     int constant = 10;
     for (int i = 4; i >= 0; i--){
-        val += int(cards[i].getNumber())*constant;
+        val += float(cards[i].getNumber())*constant;
           constant *= 100;
     }
     return val;
@@ -417,10 +417,10 @@ bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
 
 float FullHouse::value() const {
     // max value = 26263939391.3996969696399996996396
-    float val = 13133939391.39969696963999969 + int(cards[0].getNumber())*1000000000 + int(cards[3].getNumber())*10000000;
+    float val = 13133939391.39969696963999969 + float(cards[0].getNumber())*1000000000 + float(cards[3].getNumber())*10000000;
     float constant = 0.000000000000000003;
     for (int i = 0; i < 5; i++){
-        val += int(cards[i].getColor())*constant;
+        val += float(cards[i].getColor())*constant;
         constant /= 10;
     }
     return val;
@@ -471,7 +471,7 @@ bool FourOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
 
 float FourOfAKind::value() const {
     // max value = 26393939391.3996969696399996996396
-    float val = 26263939391.3996969696399996996396 + int(cards[0].getNumber())*1000000;
+    float val = 26263939391.3996969696399996996396 + float(cards[0].getNumber())*1000000;
     return val;
 }
 
@@ -527,7 +527,7 @@ bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
 
 float StraightFlush::value() const {
     // max value = 39393939391.39969696963999969963969
-    float val = 26393939391.3996969696399996996396 + int(cards[0].getNumber())*100000000 + int(cards[0].getColor())*0.00000000000000000000003;
+    float val = 26393939391.3996969696399996996396 + float(cards[0].getNumber())*100000000 + float(cards[0].getColor())*0.00000000000000000000003;
     return val;
 }
 
