@@ -24,12 +24,15 @@ void CangkulGameManager::reset()
 void CangkulGameManager::setupGame()
 {
     currentRound = 1;
+    nextTurnPlayerIndex = 0;
     if (nextRoundTurnQueue.empty()) {
         currentPlayerIndex = 0;
         nextRoundFirstPlayerIndex = 1;
     } else if (deck.getAll().empty()) {
         setupRound();
     }
+
+    nilaiKartuTertinggi = 0;
 
     deck.clear();
     fillDeck();
@@ -74,8 +77,36 @@ void CangkulGameManager::setupRound()
 
 }
 
+int CangkulGameManager::getNextTurnPlayerIndex(){
+    return nextTurnPlayerIndex;
+}
+
+int CangkulGameManager::getCurrentPlayerIndex(){
+    return currentPlayerIndex;
+}
+
+void CangkulGameManager::setNextTurnPlayerIndex(int index){
+    nextTurnPlayerIndex = index;
+}
+
+int CangkulGameManager::getNilaiKartuTertinggi(){
+    return nilaiKartuTertinggi;
+}
+
+void CangkulGameManager::setNilaiKartuTertinggi(int nilai){
+    nilaiKartuTertinggi = nilai;
+}
+
 void CangkulGameManager::nextPlayer()
 {
+    if (currentRoundTurnQueue.empty()) {
+        currentRound++;
+        setupRound();
+    } else {
+        currentPlayerIndex = currentRoundTurnQueue[0];
+        currentRoundTurnQueue = std::vector<int>(
+            currentRoundTurnQueue.begin() + 1, currentRoundTurnQueue.end());
+    }
 }
 
 CangkulPlayer& CangkulGameManager::getCurrentPlayer()

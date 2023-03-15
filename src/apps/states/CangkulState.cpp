@@ -35,10 +35,17 @@ GameState* CangkulPlayerTurn::updateState()
     const vector<CangkulCard> playerCard = currentPlayer.takeAll();
 
     cout << "Kartu di meja: " << tableCardCurrent << endl;
+<<<<<<< Updated upstream
 
     cout << "Kartumu: \n";
+=======
+    cout << "=======================================\n";
+    cout << "Giliran: " << currentPlayer.getNickname() << endl;
+>>>>>>> Stashed changes
     currentPlayer.printInventory();
+    cout << "=======================================\n";
 
+<<<<<<< Updated upstream
     if (!currentPlayer.hasTypeCard(tableCardCurrent)) {
         return GameState::getState("draw card");
     } else {
@@ -62,6 +69,9 @@ GameState* CangkulPlayerTurn::updateState()
     }
 
     return GameState::getState("dashboard");
+=======
+    return GameState::getState("pilih kartu");
+>>>>>>> Stashed changes
 }
 
 CangkulPlayerRegistration::CangkulPlayerRegistration(
@@ -114,8 +124,33 @@ CangkulPilihKartu::CangkulPilihKartu(CangkulGameManager& gm)
 
 GameState* CangkulPilihKartu::updateState()
 {
-    cout << "Pilih Kartu: ";
-    return GameState::getState("player turn");
+    vector<CangkulCard>& tableCard = gameManager.table.getInventory();
+    CangkulCard tableCardCurrent = tableCard[0];
+
+    CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
+    vector<CangkulCard>& playerCard = currentPlayer.getInventory();
+
+    if (!currentPlayer.hasTypeCard(tableCardCurrent)) {
+        return GameState::getState("draw card");
+    } else {
+        cout << "Pilih kartu yang mau dikeluarkan: \n";
+        int index;
+        std::cout << "> ";
+        std::cin >> index;
+        CangkulCard card = playerCard[index-1];
+        if (card.getColor() == tableCardCurrent.getColor()){
+            cout << "Kartu yang dikeluaran adalah : " << card << endl;
+            if (int (card.getNumber()) > gameManager.getNilaiKartuTertinggi()){
+                gameManager.setNilaiKartuTertinggi(int (card.getNumber()));
+                gameManager.setNextTurnPlayerIndex(gameManager.getCurrentPlayerIndex());
+            }
+            cout << "Nilai tertinggi sekarang adalah : " << gameManager.getNilaiKartuTertinggi() << endl;
+            gameManager.table.put(currentPlayer.take(card));
+        } else {
+            cout << "Kartu yang dipilih tidak sesuai dengan tipe kartu di meja!" << endl;
+        }
+    }
+    return GameState::getState("next turn");
 }
 
 CangkulDrawCard::CangkulDrawCard(CangkulGameManager& gm)
@@ -129,5 +164,14 @@ GameState* CangkulDrawCard::updateState()
     currentPlayer.put(gameManager.deck.takeCard());
     cout << "Player " << gameManager.getCurrentPlayer().getNickname()
          << " mengambil kartu!" << endl;
+    return GameState::getState("player turn");
+}
+
+CangkulNextPlayer::CangkulNextPlayer(CangkulGameManager& gm) : GameState(false), gameManager(gm){}
+
+GameState* CangkulNextPlayer::updateState(){
+    gameManager.nextPlayer();
+    std::string name = gameManager.getCurrentPlayer().getNickname();
+    std::cout << "Giliran dilanjut ke \e[1;93m" + name + "\e[0m" << std::endl;
     return GameState::getState("player turn");
 }

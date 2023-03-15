@@ -69,4 +69,15 @@ class CangkulDrawCard : public GameState
     GameState* updateState() override;
 };
 
+class CangkulNextPlayer : public GameState
+{
+  private:
+    CangkulGameManager& gameManager;
+
+  public:
+    CangkulNextPlayer(CangkulGameManager& gm);
+
+    GameState* updateState() override;
+};
+
 #endif // __STATE_

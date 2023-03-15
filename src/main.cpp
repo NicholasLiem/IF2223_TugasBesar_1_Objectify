@@ -82,7 +82,10 @@ int main()
         GameState::registerState("draw card", new CangkulDrawCard(gameManager));
         GameState::registerState("conclusion",
                                  new CangkulConclusion(gameManager));
+        GameState::registerState("pilih kartu", new CangkulPilihKartu(gameManager));
+        GameState::registerState("next turn", new CangkulNextPlayer(gameManager));
         GameState::registerState("end", new End);
+
 
         GameState* state = GameState::getState("player registration");
 
