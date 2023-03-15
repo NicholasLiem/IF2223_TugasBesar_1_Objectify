@@ -42,7 +42,7 @@
 
 int main()
 {
-    GameManager gameManager;
+    GameManager gameManager("config.txt");
 
     GameState::registerState("dashboard", new Dashboard(gameManager));
     GameState::registerState("player turn", new PlayerTurn(gameManager));

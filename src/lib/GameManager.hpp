@@ -16,6 +16,7 @@ class Ability;
 class GameManager
 {
   private:
+    std::string configFilePath;
     std::vector<Player> players;
     std::vector<int> currentRoundTurnQueue;
     std::vector<int> nextRoundTurnQueue;
@@ -35,6 +36,7 @@ class GameManager
     Table table;
 
     GameManager();
+    GameManager(std::string configFilePath = "");
 
     Player& getCurrentPlayer();
     std::vector<Player>& getPlayers();

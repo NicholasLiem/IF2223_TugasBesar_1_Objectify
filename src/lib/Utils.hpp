@@ -8,6 +8,15 @@
 class Utils
 {
   public:
+    static std::string to_lower(std::string s)
+    {
+        std::string result;
+        for (auto it = s.begin(); it != s.end(); it++) {
+            result.push_back(std::tolower(*it));
+        }
+        return result;
+    }
+
     template <class T>
     static std::vector<T> filter_vector(const std::vector<T>& vec,
                                         std::function<bool(const T&)> predicate)

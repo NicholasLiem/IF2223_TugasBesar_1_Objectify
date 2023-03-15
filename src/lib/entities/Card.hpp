@@ -3,6 +3,7 @@
 
 #include "Valuable.hpp"
 
+#include <istream>
 #include <ostream>
 
 enum class CardColor { Green, Blue, Yellow, Red };
@@ -44,6 +45,12 @@ class Card : public Valuable
     friend bool operator>(const Card& card1, const Card& card2);
 
     friend std::ostream& operator<<(std::ostream& out, const Card& card);
+    friend std::istream& operator>>(std::istream& in, Card& card);
+
+    friend std::ostream& operator<<(std::ostream& out, const CardColor& color);
+    friend std::ostream& operator<<(std::ostream& out, const CardNumber& number);
+    friend std::istream& operator>>(std::istream& in, CardColor& color);
+    friend std::istream& operator>>(std::istream& in, CardNumber& number);
 
   private:
     CardColor color;
