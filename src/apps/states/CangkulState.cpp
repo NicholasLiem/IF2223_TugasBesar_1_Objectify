@@ -23,7 +23,7 @@ GameState* CangkulDashboard::updateState()
     CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
     vector<CangkulCard>& playerCard = currentPlayer.getInventory();
     Utils::clear_screen();
-    cout << "\e[0;36m==========[ \e[1;36mDashboard\e[0m \e[1;36m]==========\e[0m" << endl;
+    cout << "\e[0;36m==========[ \e[1;36mDashboard\e[0m \e[0;36m]==========\e[0m" << endl;
     cout << "> Kartu di meja: \e[1;93m" << tableCardCurrent << "\e[0m" << endl;
     cout << "> Tipe Kartu Sekarang: \e[1;93m" << tableCardCurrent.getColor() << "\e[0m" << endl;
     cout << "> Nilai Kartu Tertinggi: \e[1;93m" << gameManager.getNilaiKartuTertinggi() << "\e[0m" << endl;
@@ -43,7 +43,7 @@ GameState* CangkulPlayerTurn::updateState()
     CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
     vector<CangkulCard>& playerCard = currentPlayer.getInventory();
 
-    cout << "Daftar Kartu " << "\e[1;93m("  << currentPlayer.getNickname() << ")\e[0m" << ": \n";
+    cout << "> Daftar Kartu " << "\e[1;93m("  << currentPlayer.getNickname() << ")\e[0m" << ": \n";
     currentPlayer.printInventory();
 
     return GameState::getState("pilih kartu");

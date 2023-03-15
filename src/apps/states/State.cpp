@@ -18,16 +18,19 @@ GameState* Dashboard::updateState()
     if (gameManager.getCurrentRound() == 7) {
         return GameState::getState("calculation");
     }
-    std::cout << "\e[1;93mRonde ke-" << gameManager.getCurrentRound()
-              << "\e[0m\nPoin hadiah: " << gameManager.getPot()
-              << "\nKartu di meja:\n";
+    Utils::clear_screen();
+    std::cout << "\e[0;36m==========[ \e[1;36mDashboard\e[0m \e[0;36m]==========\e[0m\n";
+    std::cout << "> Ronde ke-\e[1;93m" << gameManager.getCurrentRound()
+              << "\e[0m\n> Poin hadiah: " << gameManager.getPot()
+              << "\n> Kartu di meja:\n";
+    std::cout << "\e[0;36m=================================\e[0m\n";
     int i = 1;
     for (const MainCard& c : gameManager.table.getAll()) {
         std::cout << "\t" << i++ << ". " << c << "\n";
     }
     const MainPlayer& player = gameManager.getCurrentPlayer();
-    std::cout << "Nama pemain: \e[1;93m" << player.getNickname()
-              << "\e[0m\nKartu di tangan:\n\t1. " << player.get(0) << "\n\t2. "
+    std::cout << "> Nama pemain: \e[1;93m" << player.getNickname()
+              << "\e[0m\n> Kartu di tangan:\n\t1. " << player.get(0) << "\n\t2. "
               << player.get(1) << "\n";
     if (gameManager.getAbility(player.getNickname()) != NULL) {
         Ability& ability = *gameManager.getAbility(player.getNickname());

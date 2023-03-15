@@ -7,6 +7,7 @@
 #include "GameManager.hpp"
 #include "GameState.hpp"
 #include "State.hpp"
+#include "Utils.hpp"
 
 #include <map>
 #include <string>
@@ -15,9 +16,11 @@
 int main()
 {
     string game;
-    std::cout << "Pilih game yang ingin dimainkan (permainankartu/cangkul): \n";
+    Utils::clear_screen();
+    Utils::splash_screen();
+    std::cout << "Apakah anda ingin bermain permainan cangkul? (Ya/Tidak): \n";
     std::getline(std::cin, game);
-    if (game != "cangkul") {
+    if (Utils::to_lower(game) != "ya") {
         GameManager gameManager;
 
         GameState::registerState("dashboard", new Dashboard(gameManager));
