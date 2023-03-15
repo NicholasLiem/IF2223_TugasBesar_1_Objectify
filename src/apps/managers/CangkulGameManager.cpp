@@ -99,14 +99,7 @@ void CangkulGameManager::setNilaiKartuTertinggi(int nilai){
 
 void CangkulGameManager::nextPlayer()
 {
-    if (currentRoundTurnQueue.empty()) {
-        currentRound++;
-        setupRound();
-    } else {
-        currentPlayerIndex = currentRoundTurnQueue[0];
-        currentRoundTurnQueue = std::vector<int>(
-            currentRoundTurnQueue.begin() + 1, currentRoundTurnQueue.end());
-    }
+    currentPlayerIndex++;
 }
 
 CangkulPlayer& CangkulGameManager::getCurrentPlayer()

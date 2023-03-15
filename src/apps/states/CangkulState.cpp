@@ -17,14 +17,21 @@ CangkulDashboard::CangkulDashboard(CangkulGameManager& gm)
 
 GameState* CangkulDashboard::updateState()
 {
-    cout << "Ronde ke-" << gameManager.getCurrentRound() << endl;
-    return GameState::getState("end");
+    vector<CangkulCard>& tableCard = gameManager.table.getInventory();
+    CangkulCard tableCardCurrent = tableCard[0];
+
+    CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
+    vector<CangkulCard>& playerCard = currentPlayer.getInventory();
+    cout << "========[ Dashboard ]========" << endl;
+    cout << "Kartu di meja: " << tableCardCurrent << endl;
+    cout << "Tipe Kartu Sekarang: " << tableCardCurrent.getColor() << endl;
+    cout << "Nilai Kartu Tertinggi: " << gameManager.getNilaiKartuTertinggi() << endl;
+    cout << "============================" << endl;
+    return GameState::getState("player turn");
 }
 
 CangkulPlayerTurn::CangkulPlayerTurn(CangkulGameManager& game)
-    : GameState(false), gameManager(game)
-{
-}
+    : GameState(false), gameManager(game){}
 
 GameState* CangkulPlayerTurn::updateState()
 {
@@ -34,15 +41,8 @@ GameState* CangkulPlayerTurn::updateState()
     CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
     vector<CangkulCard>& playerCard = currentPlayer.getInventory();
 
-    cout << "Kartu di meja: " << tableCardCurrent << endl;
-
-
-    cout << "Kartumu: \n";
-    cout << "=======================================\n";
-    cout << "Giliran: " << currentPlayer.getNickname() << endl;
-
+    cout << "Kartumu " << "\e[1;93m("  << currentPlayer.getNickname() << ")\e[0m" << ": \n";
     currentPlayer.printInventory();
-    cout << "=======================================\n";
 
     return GameState::getState("pilih kartu");
 }
@@ -76,7 +76,7 @@ GameState* CangkulPlayerRegistration::updateState()
     }
     std::cout << "Giliran pertama diambil oleh \e[1;93m" << first << "\e[0m"
               << std::endl;
-    return GameState::getState("player turn");
+    return GameState::getState("dashboard");
 }
 
 CangkulConclusion::CangkulConclusion(CangkulGameManager& gm)
@@ -112,12 +112,11 @@ GameState* CangkulPilihKartu::updateState()
         std::cin >> index;
         CangkulCard card = playerCard[index-1];
         if (card.getColor() == tableCardCurrent.getColor()){
-            cout << "Kartu yang dikeluaran adalah : " << card << endl;
             if (int (card.getNumber()) > gameManager.getNilaiKartuTertinggi()){
                 gameManager.setNilaiKartuTertinggi(int (card.getNumber()));
                 gameManager.setNextTurnPlayerIndex(gameManager.getCurrentPlayerIndex());
             }
-            cout << "Nilai tertinggi sekarang adalah : " << gameManager.getNilaiKartuTertinggi() << endl;
+            cout << "Kartu yang dikeluaran adalah : " << card << endl;
             gameManager.table.put(currentPlayer.take(card));
         } else {
             cout << "Kartu yang dipilih tidak sesuai dengan tipe kartu di meja!" << endl;
@@ -133,11 +132,18 @@ CangkulDrawCard::CangkulDrawCard(CangkulGameManager& gm)
 
 GameState* CangkulDrawCard::updateState()
 {
+    vector<CangkulCard>& tableCard = gameManager.table.getInventory();
+    CangkulCard tableCardCurrent = tableCard[0];
+
     CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
-    currentPlayer.put(gameManager.deck.takeCard());
-    cout << "Player " << gameManager.getCurrentPlayer().getNickname()
-         << " mengambil kartu!" << endl;
-    return GameState::getState("player turn");
+    vector<CangkulCard>& playerCard = currentPlayer.getInventory();
+
+    while(!currentPlayer.hasTypeCard(tableCardCurrent)){
+        currentPlayer.put(gameManager.deck.takeCard());
+        cout << "Player " << gameManager.getCurrentPlayer().getNickname()
+             << " mengambil kartu!" << endl;
+    }
+    return GameState::getState("dashboard");
 }
 
 CangkulNextPlayer::CangkulNextPlayer(CangkulGameManager& gm) : GameState(false), gameManager(gm){}
@@ -146,5 +152,5 @@ GameState* CangkulNextPlayer::updateState(){
     gameManager.nextPlayer();
     std::string name = gameManager.getCurrentPlayer().getNickname();
     std::cout << "Giliran dilanjut ke \e[1;93m" + name + "\e[0m" << std::endl;
-    return GameState::getState("player turn");
+    return GameState::getState("dashboard");
 }
