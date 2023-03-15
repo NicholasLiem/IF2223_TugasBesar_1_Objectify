@@ -3,66 +3,116 @@
 #include <iostream>
 using namespace std;
 
-Card::Card(const CardColor color, const CardNumber number)
+template <class T, class U>
+Card<T,U>::Card(const T color, const U number)
 {
     this->color = color;
     this->number = number;
 }
 
-Card::Card(const int color, const int number)
+template <class T, class U>
+Card<T,U>::Card(const int color, const int number)
 {
-    this->color = static_cast<CardColor>(color);
-    this->number = static_cast<CardNumber>(number);
+    this->color = static_cast<T>(color);
+    this->number = static_cast<U>(number);
 }
 
-Card::Card(const Card& other)
+
+template <class T, class U>
+Card<T,U>::Card(const Card<T,U>& other)
 {
     this->color = other.color;
     this->number = other.number;
 }
 
-float Card::value() const
+
+template <class T, class U>
+float Card<T,U>::value() const
 {
     return int(number) + int(color) * 0.03;
 }
 
-CardColor Card::getColor() const
+template <class T, class U>
+T Card<T,U>::getColor() const
 {
     return color;
 }
 
-CardNumber Card::getNumber() const
+template <class T, class U>
+U Card<T,U>::getNumber() const
 {
     return number;
 }
 
-bool Card::operator==(const Card& card1){
+template <class T, class U>
+bool Card<T,U>::operator==(const Card& card1){
     return (this->getNumber() == card1.getNumber());
 }
 
-bool operator==(const Card& card1, const Card& card2)
+template <class T, class U>
+bool operator==(const Card<T,U>& card1, const Card<T,U>& card2)
 {
     return (card1.getNumber() == card2.getNumber());
 }
 
-Card& Card::operator=(const Card& other)
+bool operator==(const Card<CardColor,CardNumber>& card1, const Card<CardColor,CardNumber>& card2)
+{
+    return (card1.getNumber() == card2.getNumber());
+}
+
+template <class T, class U>
+Card<T,U>& Card<T,U>::operator=(const Card<T,U>& other)
 {
     this->color = other.color;
     this->number = other.number;
     return *this;
 }
 
-bool operator<(const Card& card1, const Card& card2)
+template <class T, class U>
+bool operator<(const Card<T,U>& card1, const Card<T,U>& card2)
 {
     return (card1.value() < card2.value());
 }
 
-bool operator>(const Card& card1, const Card& card2)
+bool operator<(const Card<CardColor,CardNumber>& card1, const Card<CardColor,CardNumber>& card2)
+{
+    return (card1.value() < card2.value());
+}
+
+template <class T, class U>
+bool operator>(const Card<T,U>& card1, const Card<T,U>& card2)
 {
     return (card1.value() > card2.value());
 }
 
-ostream& operator<<(ostream& os, const Card& card)
+bool operator>(const Card<CardColor,CardNumber>& card1, const Card<CardColor,CardNumber>& card2)
+{
+    return (card1.value() > card2.value());
+}
+template <class T, class U>
+ostream& operator<<(ostream& os, const Card<T,U>& card)
+{
+    T card_num = card.getNumber();
+    U card_color = card.getColor();
+    os << int(card_num) << " ";
+    switch (card_color) {
+    case U::Red:
+        os << "Merah";
+        break;
+    case U::Green:
+        os << "Hijau";
+        break;
+    case U::Blue:
+        os << "Biru";
+        break;
+    case U::Yellow:
+        os << "Kuning";
+        break;
+    }
+    return os;
+}
+
+ostream& operator<<(ostream& os, const Card<CardColor,CardNumber>& card)
 {
     CardNumber card_num = card.getNumber();
     CardColor card_color = card.getColor();
@@ -83,3 +133,5 @@ ostream& operator<<(ostream& os, const Card& card)
     }
     return os;
 }
+template class Card<CardColor,CardNumber>;
+template class Card<CardSymbol,CangkulNumber>;

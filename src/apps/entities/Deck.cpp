@@ -55,5 +55,6 @@ void Deck<T>::operator+(T card){
     Deck::putCard(card);
 }
 
-template class Deck<Card>;
+template class Deck<Card<CardSymbol,CangkulNumber>>;
+template class Deck<Card<CardColor,CardNumber>>;
 template class Deck<Ability*>;

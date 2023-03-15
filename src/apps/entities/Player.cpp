@@ -3,104 +3,127 @@
 #include <algorithm>
 #include <vector>
 
-Player::Player(std::string nickname)
+template <class T, class U>
+Player<T,U>::Player(std::string nickname)
 {
     this->nickname = nickname;
     points = 0;
 }
 
-Player::Player(const Player& other) {
+template <class T, class U>
+Player<T,U>::Player(const Player& other) {
     nickname = other.nickname;
-    inventory = other.inventory;
+    this->inventory = other.inventory;
     points = other.points;
 }
 
-void Player::setPoints(long points)
+template <class T, class U>
+void Player<T,U>::setPoints(long points)
 {
     this->points = points;
 }
 
-void Player::put(Card card)
+template <class T, class U>
+void Player<T,U>::put(Card<T,U> card)
 {
-    inventory.push_back(card);
+    this->inventory.push_back(card);
 }
 
-Card Player::take(Card card)
+template <class T, class U>
+Card<T,U> Player<T,U>::take(Card<T,U> card)
 {
-    auto it = std::find(inventory.begin(), inventory.end(), card);
-    if (it != inventory.end()) {
-        Card ret = *it;
-        inventory.erase(it);
+    auto it = std::find(this->inventory.begin(), this->inventory.end(), card);
+    if (it != this->inventory.end()) {
+        Card<T,U> ret = *it;
+        this->inventory.erase(it);
         return ret;
     } else {
         throw "Card not found";
     }
 }
 
-std::string Player::getNickname() const
+template <class T, class U>
+std::string Player<T,U>::getNickname() const
 {
     return nickname;
 }
 
-long Player::getPoints() const
+template <class T, class U>
+long Player<T,U>::getPoints() const
 {
     return points;
 }
 
-std::vector<Card> Player::takeAll()
+template <class T, class U>
+std::vector<Card<T,U>> Player<T,U>::takeAll()
 {
-    std::vector<Card> ret(inventory);
-    clear();
+    std::vector<Card<T,U>> ret(this->inventory);
+    ret.clear();
     return ret;
 }
 
-Card Player::operator-(Card other){
-    return Player::take(other);
+template <class T, class U>
+Card<T,U> Player<T,U>::operator-(Card<T,U> other){
+    return Player<T,U>::take(other);
 }
 
-void Player::operator+(Card other){
-    Player::put(other);
+template <class T, class U>
+void Player<T,U>::operator+(Card<T,U> other){
+    Player<T,U>::put(other);
 }
 
-bool Player::operator==(const Player& other){
+template <class T, class U>
+bool Player<T,U>::operator==(const Player<T,U>& other){
     return (this->getNickname() == other.getNickname());
 }
 
-bool Player::operator<(const Player& other){
+template <class T, class U>
+bool Player<T,U>::operator<(const Player<T,U>& other){
     return this->getPoints() < other.getPoints();
 }
 
-bool Player::operator>(const Player& other){
+template <class T, class U>
+bool Player<T,U>::operator>(const Player<T,U>& other){
     return this->getPoints() > other.getPoints();
 }
 
-Player& Player::operator=(const Player& other)
+template <class T, class U>
+Player<T,U>& Player<T,U>::operator=(const Player<T,U>& other)
 {
-    inventory = other.inventory;
+    this->inventory = other.inventory;
     points = other.points;
     nickname = other.nickname;
     return *this;
 }
 
-bool operator==(const Player& a, const Player& b)
+template <class T, class U>
+bool operator==(const Player<T,U>& a, const Player<T,U>& b)
 {
     return a.getNickname() == b.getNickname();
 }
 
-bool operator<(const Player& a, const Player& b){
+bool operator==(const Player<CardColor,CardNumber>& a, const Player<CardColor,CardNumber>& b)
+{
+    return a.getNickname() == b.getNickname();
+}
+template <class T, class U>
+bool operator<(const Player<T,U>& a, const Player<T,U>& b){
     return a.getPoints() < b.getPoints();
 }
 
-bool operator>(const Player&a, const Player& b){
+template <class T, class U>
+bool operator>(const Player<T,U>&a, const Player<T,U>& b){
     return a.getPoints() > b.getPoints();
 };
 
-bool operator!=(const Player& a, const Player& b)
+template <class T, class U>
+bool operator!=(const Player<T,U>& a, const Player<T,U>& b)
 {
     return a.getNickname() != b.getNickname();
 }
 
-bool Player::hasTypeCard(Card tableCard){
+template<class T, class U>
+bool Player::hasTypeCard(Card<CardColor, CardNumber> tableCard) const{
     CardColor tableCardType = tableCard.getColor();
     for (Card card : inventory){
         if (card.getColor() == tableCardType){
@@ -109,3 +132,10 @@ bool Player::hasTypeCard(Card tableCard){
     }
     return false;
 }
+bool operator!=(const Player<CardColor,CardNumber>& a, const Player<CardColor,CardNumber>& b)
+{
+    return a.getNickname() != b.getNickname();
+}
+
+template class Player<CardColor,CardNumber>;
+template class Player<CardSymbol,CangkulNumber>;
