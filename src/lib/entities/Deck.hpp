@@ -15,7 +15,8 @@ class Deck : public InventoryHolder<T>
     void shuffle();
     void putCard(T card);
     T takeCard();
-
+    T operator-();
+    void operator+(T card);
   private:
     void put(T item) override;
     T take(T item) override;

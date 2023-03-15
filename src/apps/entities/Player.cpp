@@ -54,6 +54,14 @@ std::vector<Card> Player::takeAll()
     return ret;
 }
 
+Card Player::operator-(Card other){
+    return Player::take(other);
+}
+
+void Player::operator+(Card other){
+    Player::put(other);
+}
+
 bool Player::operator==(const Player& other){
     return (this->getNickname() == other.getNickname());
 }

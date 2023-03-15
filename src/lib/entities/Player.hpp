@@ -23,6 +23,8 @@ class Player : public InventoryHolder<Card>
 
     std::string getNickname() const;
     int getPoints() const;
+    Card operator-(Card other);
+    void operator+(Card other);
     bool operator==(const Player& other);
     bool operator<(const Player& other);
     bool operator>(const Player& other);
