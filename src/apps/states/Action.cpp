@@ -55,8 +55,7 @@ GameState* Double::updateState()
     std::cout << " Poin hadiah naik dari " << gameManager.getPot();
     gameManager.setPot(gameManager.getPot() * 2);
     std::cout << " menjadi " << gameManager.getPot() << "!\n";
-    gameManager.nextPlayer();
-    return GameState::getState("dashboard");
+    return GameState::getState("next");
 }
 
 Half::Half(GameManager& gameManager) : Action(gameManager) {}
@@ -67,15 +66,13 @@ GameState* Half::updateState()
     std::cout << "\e[1;93m" << player.getNickname() << "\e[0m melakukan Half!";
     long currPot = gameManager.getPot();
     if (currPot == 1){
-        std::cout << " Sayangnya poin hadiah sudah bernilai 1. Poin hadiah tidak berubah.. Giliran dilanjut!\n";
+        std::cout << " Sayangnya poin hadiah sudah bernilai 1. Poin hadiah tidak berubah..\n";
     } else {
-        std::cout << " Poin hadiah turun dari " << gameManager.getPot();
-        long newPot = currPot / 2 < 1 ? 1 : currPot / 2;
-        gameManager.setPot(newPot);
+        std::cout << " Poin hadiah turun dari " << currPot;
+        gameManager.setPot(currPot / 2);
         std::cout << " menjadi " << gameManager.getPot() << "!\n";
     }
-    gameManager.nextPlayer();
-    return GameState::getState("dashboard");
+    return GameState::getState("next");
 }
 
 Next::Next(GameManager& gameManager) : Action(gameManager) {}
@@ -102,8 +99,7 @@ GameState* QuadrupleAct::updateState()
     std::cout << " Poin hadiah naik dari " << gameManager.getPot();
     ability.useAbility();
     std::cout << " menjadi " << gameManager.getPot() << "!" << std::endl;
-    gameManager.nextPlayer();
-    return GameState::getState("dashboard");
+    return GameState::getState("next");
 }
 
 QuarterAct::QuarterAct(GameManager& gameManager) : Action(gameManager) {}
@@ -119,15 +115,14 @@ GameState* QuarterAct::updateState()
     std::cout << "\e[1;93m" << player.getNickname()
               << "\e[0m melakukan Quarter!";
     if (gameManager.getPot() == 1){
-        std::cout << " Sayangnya poin hadiah sudah bernilai 1. Poin hadiah tidak berubah.. Yah, sayang penggunaan kartu ini sia-sia! Giliran dilanjut!\n";
+        std::cout << " Sayangnya poin hadiah sudah bernilai 1. Poin hadiah tidak berubah.. Yah, sayang penggunaan kartu ini sia-sia!\n";
         ability.useAbility();
     } else {
         std::cout << " Poin hadiah turun dari " << gameManager.getPot();
         ability.useAbility();
         std::cout << " menjadi " << gameManager.getPot() << "!" << std::endl;
     }
-    gameManager.nextPlayer();
-    return GameState::getState("dashboard");
+    return GameState::getState("next");
 }
 
 ReRollAct::ReRollAct(GameManager& gameManager) : Action(gameManager) {}
@@ -147,8 +142,7 @@ GameState* ReRollAct::updateState()
         std::cout << "\t" << i++ << ". " << x << "\n";
     }
     std::flush(std::cout);
-    gameManager.nextPlayer();
-    return GameState::getState("dashboard");
+    return GameState::getState("next");
 }
 
 ReverseDirAct::ReverseDirAct(GameManager& gameManager) : Action(gameManager) {}
@@ -228,8 +222,7 @@ GameState* SwapAct::updateState()
 
     SwapCard& swapcard = dynamic_cast<SwapCard&>(ability);
     swapcard.useAbility(target1, target2, t1_side - 1, t2_side - 1);
-    gameManager.nextPlayer();
-    return GameState::getState("dashboard");
+    return GameState::getState("next");
 }
 
 SwitchAct::SwitchAct(GameManager& gameManager) : Action(gameManager) {}
@@ -264,8 +257,7 @@ GameState* SwitchAct::updateState()
               << "\e[0m telah ditukar dengan \e[1;93m" << target.getNickname()
               << "\e[0m!\nKartumu sekarang adalah " << player.get(0) << " dan "
               << player.get(1) << std::endl;
-    gameManager.nextPlayer();
-    return GameState::getState("dashboard");
+    return GameState::getState("next");
 }
 
 AbilitylessAct::AbilitylessAct(GameManager& gameManager) : Action(gameManager)
@@ -295,8 +287,7 @@ GameState* AbilitylessAct::updateState()
                      "menjadi abilityless. Yah, pengunaan kartu ini sia-sia"
                   << std::endl;
         ability.setUsed(true);
-        gameManager.nextPlayer();
-        return GameState::getState("dashboard");
+        return GameState::getState("next");
     }
     std::vector<Player*> players;
     int i = 1;
@@ -317,13 +308,11 @@ GameState* AbilitylessAct::updateState()
                      "sayang penggunaan kartu ini sia-sia"
                   << std::endl;
         ability.setUsed(true);
-        gameManager.nextPlayer();
-        return GameState::getState("dashboard");
+        return GameState::getState("next");
     }
     AbilitylessCard& card = dynamic_cast<AbilitylessCard&>(ability);
     card.useAbility(target);
     std::cout << "Kartu ability \e[1;93m" << target.getNickname()
               << "\e[0m telah dimatikan." << std::endl;
-    gameManager.nextPlayer();
-    return GameState::getState("dashboard");
+    return GameState::getState("next");
 }
