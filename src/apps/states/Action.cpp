@@ -39,8 +39,8 @@ GameState* Scoreboard::updateState()
     int i = 1;
     std::cout << "\e[4;93mScoreboard\e[0m\n";
     for (const Player& p : players) {
-        std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname() << "\e[0m: "
-                  << p.getPoints() << "\n";
+        std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname()
+                  << "\e[0m: " << p.getPoints() << "\n";
     }
     return GameState::getState("dashboard");
 }
@@ -112,7 +112,8 @@ GameState* QuarterAct::updateState()
     if (!check_ability(ability, "Quarter Card")) {
         return GameState::getState("dashboard");
     }
-    std::cout << "\e[1;93m" << player.getNickname() << "\e[0m melakukan Quarter!";
+    std::cout << "\e[1;93m" << player.getNickname()
+              << "\e[0m melakukan Quarter!";
     std::cout << " Poin hadiah turun dari " << gameManager.getPot();
     ability.useAbility();
     std::cout << " menjadi " << gameManager.getPot() << "!" << std::endl;
@@ -241,7 +242,8 @@ GameState* SwitchAct::updateState()
     for (Player& p : gameManager.getPlayers()) {
         if (p != player) {
             players.push_back(&p);
-            std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname() << "\e[0m\n";
+            std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname()
+                      << "\e[0m\n";
         }
     }
     int target_idx;
@@ -250,8 +252,8 @@ GameState* SwitchAct::updateState()
     SwitchCard& switchcard = dynamic_cast<SwitchCard&>(ability);
     switchcard.useAbility(target);
     std::cout << "Kedua kartu \e[1;93m" << player.getNickname()
-              << "\e[0m telah ditukar dengan " << target.getNickname()
-              << "!\nKartumu sekarang adalah " << player.get(0) << " dan "
+              << "\e[0m telah ditukar dengan \e[1;93m" << target.getNickname()
+              << "\e[0m!\nKartumu sekarang adalah " << player.get(0) << " dan "
               << player.get(1) << std::endl;
     gameManager.nextPlayer();
     return GameState::getState("dashboard");
