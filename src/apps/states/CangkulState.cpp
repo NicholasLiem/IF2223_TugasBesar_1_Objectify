@@ -34,6 +34,8 @@ GameState* CangkulDashboard::updateState()
     }
     cout << "> Jumlah Kartu Di Deck:" << endl;
     cout << "\t\e[1;95m" << "Count" << "\e[0m: " << gameManager.deck.getInventory().size() << endl;
+    cout << "> Jumlah Kartu Di Meja:" << endl;
+    cout << "\t\e[1;95m" << "Count" << "\e[0m: " << gameManager.table.getInventory().size() << endl;
     cout << "\e[0;36m=================================\e[0m" << endl;
     return GameState::getState("player turn");
 }
@@ -161,7 +163,7 @@ CangkulNextPlayer::CangkulNextPlayer(CangkulGameManager& gm) : GameState(false),
 
 GameState* CangkulNextPlayer::updateState(){
     gameManager.nextPlayer();
-    std::string name = gameManager.getCurrentPlayer().getNickname();
-    std::cout << "Giliran dilanjut ke \e[1;93m" + name + "\e[0m" << std::endl;
+    // std::string name = gameManager.getCurrentPlayer().getNickname();
+    // std::cout << "Giliran dilanjut ke \e[1;93m" + name + "\e[0m" << std::endl;
     return GameState::getState("dashboard");
 }
