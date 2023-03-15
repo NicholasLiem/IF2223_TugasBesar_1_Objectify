@@ -131,7 +131,7 @@ GameState* ReRollAct::updateState()
 {
     MainPlayer& player = gameManager.getCurrentPlayer();
     Ability& ability = *gameManager.getAbility(player.getNickname());
-    if (!check_ability(ability, "ReRoll MainPlayerCard")) {
+    if (!check_ability(ability, "ReRoll Card")) {
         return GameState::getState("dashboard");
     }
     std::cout << "Melakukan pembuangan kartu yang sedang dimiliki\n";
