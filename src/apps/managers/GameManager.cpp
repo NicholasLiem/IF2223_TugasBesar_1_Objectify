@@ -13,6 +13,12 @@
 
 GameManager::GameManager()
 {
+    setConfig();
+    setupGame();
+}
+
+void GameManager::setConfig()
+{
     std::string ans;
     std::cout << "Baca file konfigurasi? (y/N) ";
     std::getline(std::cin, ans);
@@ -25,7 +31,6 @@ GameManager::GameManager()
         std::cout << "Masukkan filepath: ";
         std::getline(std::cin, configFilePath);
     }
-    setupGame();
 }
 
 void GameManager::reset()
@@ -36,6 +41,7 @@ void GameManager::reset()
     table.clear();
     deck.clear();
     players.clear();
+    setConfig();
     setupGame();
 }
 

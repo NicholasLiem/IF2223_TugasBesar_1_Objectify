@@ -17,7 +17,8 @@ int main()
     GameState::registerState("dashboard", new Dashboard(gameManager));
     GameState::registerState("player turn", new PlayerTurn(gameManager));
     GameState::registerState("next", new Next(gameManager));
-    GameState::registerState("player registration", new PlayerRegistration(gameManager));
+    GameState::registerState("player registration",
+                             new PlayerRegistration(gameManager));
     GameState::registerState("reverse", new ReverseDirAct(gameManager));
     GameState::registerState("re-roll", new ReRollAct(gameManager));
     GameState::registerState("double", new Double(gameManager));
@@ -55,6 +56,8 @@ int main()
     while (!state->isEnd()) {
         state = state->updateState();
     }
+    // final state
+    state->updateState();
 
     GameState::clearStates();
     Ability::clearAbilities();

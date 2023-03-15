@@ -27,6 +27,7 @@ class GameManager
     int nextRoundFirstPlayerIndex;
     long pot;
 
+    void setConfig();
     void setupRound();
     void fillDeck();
     void distributeAbilities();
