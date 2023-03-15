@@ -317,7 +317,6 @@ Combo* Straight::clone()
 
 float Straight::value() const
 {
-    cout << cards.size() << endl;
     // val maks = 2626261.3996969696399996
     float val = 1326261.39969696963 + float(cards[0].getNumber()) * 100000;
     float constant = 0.000000000003;
