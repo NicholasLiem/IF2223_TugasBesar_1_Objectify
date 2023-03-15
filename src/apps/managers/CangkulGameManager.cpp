@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <vector>
 
-CangkulGameManager::CangkulGameManager()
+CangkulGameManager::CangkulGameManager() : nilaiKartuTertinggi(0), winner(CangkulPlayer("Winner"))
 {
     setupGame();
 }
@@ -31,8 +31,6 @@ void CangkulGameManager::setupGame()
     } else if (deck.getAll().empty()) {
         setupRound();
     }
-
-    nilaiKartuTertinggi = 0;
 
     deck.clear();
     fillDeck();
@@ -85,6 +83,11 @@ void CangkulGameManager::setupRound()
             nextRoundTurnQueue.push_back(i);
         }
         currentRoundTurnQueue = std::vector<int>(nextRoundTurnQueue);
+        std::vector<CangkulCard> cards = table.takeAll();
+        for(CangkulCard card : cards){
+            deck.putCard(card);
+        }
+        deck.shuffle();
     }else{
         for(int i = 1; i < 4; i++){
             currentRoundTurnQueue.push_back(i);
@@ -123,6 +126,11 @@ void CangkulGameManager::nextPlayer()
     }
 }
 
+std::vector<int> CangkulGameManager::getCurrentTurnQueue()
+{
+    return currentRoundTurnQueue;
+}
+
 CangkulPlayer& CangkulGameManager::getCurrentPlayer()
 {
     return players[currentPlayerIndex];
@@ -136,4 +144,14 @@ std::vector<CangkulPlayer>& CangkulGameManager::getPlayers()
 int CangkulGameManager::getCurrentRound() const
 {
     return currentRound;
+}
+
+CangkulPlayer& CangkulGameManager::getWinner()
+{
+    return winner;
+}
+
+void CangkulGameManager::setWinner(CangkulPlayer& player)
+{
+    winner = player;
 }

@@ -27,6 +27,7 @@ GameState* CangkulDashboard::updateState()
     cout << "> Kartu di meja: \e[1;93m" << tableCardCurrent << "\e[0m" << endl;
     cout << "> Tipe Kartu Sekarang: \e[1;93m" << tableCardCurrent.getColor() << "\e[0m" << endl;
     cout << "> Nilai Kartu Tertinggi: \e[1;93m" << gameManager.getNilaiKartuTertinggi() << "\e[0m" << endl;
+    cout << "> Pemegang Nilai Kartu Tertinggi: \e[1;94m" << gameManager.getPlayers()[gameManager.getNextTurnPlayerIndex()].getNickname() << "\e[0m" << endl;
     cout << "> Giliran: \e[1;93m" << gameManager.getCurrentPlayer().getNickname() << "\e[0m" << endl;
     cout << "> Jumlah Kartu Tiap Pemain:" << endl;
     for (int i = 0; i < gameManager.getPlayers().size(); i++) {
@@ -99,8 +100,11 @@ CangkulConclusion::CangkulConclusion(CangkulGameManager& gm)
 
 GameState* CangkulConclusion::updateState()
 {
-    cout << "aaaa";
-    return GameState::getState("player turn");
+    Utils::clear_screen();
+    cout << endl;
+    cout << "Selamat kepada \e[1;93m" << gameManager.getWinner().getNickname() << "\e[0m" << " yang telah memenangkan permainan ini!" << endl;
+    cout << endl;
+    return GameState::getState("end");
 }
 
 CangkulPilihKartu::CangkulPilihKartu(CangkulGameManager& gm)
@@ -115,6 +119,13 @@ GameState* CangkulPilihKartu::updateState()
 
     CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
     vector<CangkulCard>& playerCard = currentPlayer.getInventory();
+
+    for (CangkulPlayer p : gameManager.getPlayers()) {
+        if (p.getInventory().size() == 0) {
+            gameManager.setWinner(p);
+            return GameState::getState("conclusion");
+        }
+    }
 
     if (!currentPlayer.hasTypeCard(tableCardCurrent)) {
         return GameState::getState("draw card");
@@ -131,7 +142,6 @@ GameState* CangkulPilihKartu::updateState()
                     gameManager.setNilaiKartuTertinggi(int (card.getNumber()));
                     gameManager.setNextTurnPlayerIndex(gameManager.getCurrentPlayerIndex());
                 }
-                cout << "Kartu yang dikeluaran adalah : " << card << endl;
                 gameManager.table.put(currentPlayer.take(card));
             } else {
                throw InvalidCardException();
@@ -160,6 +170,13 @@ GameState* CangkulDrawCard::updateState()
     vector<CangkulCard>& playerCard = currentPlayer.getInventory();
 
     while(!currentPlayer.hasTypeCard(tableCardCurrent)){
+        // if (gameManager.deck.getInventory().empty()){
+        //     std::vector<CangkulCard> cards = gameManager.table.takeAll();
+        //     for(CangkulCard card : cards){
+        //         gameManager.deck.putCard(card);
+        //     }
+        //     gameManager.deck.shuffle();
+        //     }
         currentPlayer.put(gameManager.deck.takeCard());
         // cout << "Player " << gameManager.getCurrentPlayer().getNickname()
         //      << " mengambil kartu!" << endl;
@@ -170,8 +187,43 @@ GameState* CangkulDrawCard::updateState()
 CangkulNextPlayer::CangkulNextPlayer(CangkulGameManager& gm) : GameState(false), gameManager(gm){}
 
 GameState* CangkulNextPlayer::updateState(){
+    if (gameManager.getCurrentTurnQueue().empty()){
+        return GameState::getState("winner pick card");
+    }
     gameManager.nextPlayer();
     // std::string name = gameManager.getCurrentPlayer().getNickname();
     // std::cout << "Giliran dilanjut ke \e[1;93m" + name + "\e[0m" << std::endl;
     return GameState::getState("dashboard");
+}
+
+CangkulWinnerPickCard::CangkulWinnerPickCard(CangkulGameManager& gm) : GameState(false), gameManager(gm){}
+
+GameState* CangkulWinnerPickCard::updateState(){
+    gameManager.nextPlayer();
+    CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
+    vector<CangkulCard>& playerCard = currentPlayer.getInventory();
+    int index;
+    Utils::clear_screen();
+    cout << endl;
+    cout << "Selamat \e[1;93m" << currentPlayer.getNickname() << "\e[0m, kamu menang pada ronde ini!" << endl;
+    cout << endl;
+    cout << "> Daftar Kartu " << "\e[1;93m("  << currentPlayer.getNickname() << ")\e[0m" << ": \n";
+    currentPlayer.printInventory();
+    cout << endl;
+    std::cout << "Pilih kartu yang mau dikeluarkan untuk round selanjutnya: \n";
+        std::cout << "> ";
+        std::cin >> index;
+        try
+        {
+            CangkulCard card = playerCard[index-1];
+            gameManager.setNilaiKartuTertinggi(int (card.getNumber()));
+            gameManager.table.put(currentPlayer.take(card));
+        }
+        catch(InvalidCardException& e)
+        {
+            std::cout << e.what() << '\n';
+            return GameState::getState("winner pick card");
+        }
+    
+    return GameState::getState("next turn");
 }

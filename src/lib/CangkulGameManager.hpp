@@ -29,8 +29,12 @@ class CangkulGameManager
   public:
     Deck<CangkulCard> deck;
     CangkulTable table;
+    CangkulPlayer winner;
 
     CangkulGameManager();
+
+    void setWinner(CangkulPlayer& player);
+    CangkulPlayer& getWinner();
 
     int getNextTurnPlayerIndex();
     void setNextTurnPlayerIndex(int a);
@@ -39,6 +43,8 @@ class CangkulGameManager
     void setNilaiKartuTertinggi(int a);
 
     int getCurrentPlayerIndex();
+
+    std::vector<int> getCurrentTurnQueue();
 
     CangkulPlayer& getCurrentPlayer();
     std::vector<CangkulPlayer>& getPlayers();

@@ -80,4 +80,15 @@ class CangkulNextPlayer : public GameState
     GameState* updateState() override;
 };
 
+class CangkulWinnerPickCard : public GameState
+{
+  private:
+    CangkulGameManager& gameManager;
+
+  public:
+    CangkulWinnerPickCard(CangkulGameManager& gm);
+
+    GameState* updateState() override;
+};
+
 #endif // __STATE_
