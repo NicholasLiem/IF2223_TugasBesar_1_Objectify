@@ -99,3 +99,13 @@ bool operator!=(const Player& a, const Player& b)
 {
     return a.getNickname() != b.getNickname();
 }
+
+bool Player::hasTypeCard(Card tableCard){
+    CardColor tableCardType = tableCard.getColor();
+    for (Card card : inventory){
+        if (card.getColor() == tableCardType){
+            return true;
+        }
+    }
+    return false;
+}

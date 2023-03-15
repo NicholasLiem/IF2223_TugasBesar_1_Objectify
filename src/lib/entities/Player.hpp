@@ -30,6 +30,8 @@ class Player : public InventoryHolder<Card>
     bool operator>(const Player& other);
     Player& operator=(const Player& other);
 
+    bool hasTypeCard(Card card);
+
     friend bool operator==(const Player& a, const Player& b);
     friend bool operator< (const Player& a, const Player& b);
     friend bool operator> (const Player& a, const Player& b);
