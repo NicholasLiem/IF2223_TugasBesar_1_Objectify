@@ -28,6 +28,12 @@ GameState* CangkulDashboard::updateState()
     cout << "> Tipe Kartu Sekarang: \e[1;93m" << tableCardCurrent.getColor() << "\e[0m" << endl;
     cout << "> Nilai Kartu Tertinggi: \e[1;93m" << gameManager.getNilaiKartuTertinggi() << "\e[0m" << endl;
     cout << "> Giliran: \e[1;93m" << gameManager.getCurrentPlayer().getNickname() << "\e[0m" << endl;
+    cout << "> Jumlah Kartu Tiap Pemain:" << endl;
+    for (int i = 0; i < gameManager.getPlayers().size(); i++) {
+        cout << "\t\e[1;95m" << gameManager.getPlayers()[i].getNickname() << "\e[0m: " << gameManager.getPlayers()[i].getInventory().size() << endl;
+    }
+    cout << "> Jumlah Kartu Di Deck:" << endl;
+    cout << "\t\e[1;95m" << "Count" << "\e[0m: " << gameManager.deck.getInventory().size() << endl;
     cout << "\e[0;36m=================================\e[0m" << endl;
     return GameState::getState("player turn");
 }
@@ -58,10 +64,13 @@ CangkulPlayerRegistration::CangkulPlayerRegistration(
 GameState* CangkulPlayerRegistration::updateState()
 {
     std::string first;
+    Utils::clear_screen();
     for (int i = 1; i <= 4;) {
         std::string name;
+        std::cout << std::endl;
         std::cout << "Masukkan nickname player " << i << ": ";
         std::cin >> name;
+        std::cout << std::endl;
         try {
             gameManager.registerPlayer(CangkulPlayer(name));
             std::cout << "Player " << i

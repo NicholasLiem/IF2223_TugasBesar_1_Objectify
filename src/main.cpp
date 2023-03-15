@@ -18,7 +18,7 @@ int main()
     string game;
     Utils::clear_screen();
     Utils::splash_screen();
-    std::cout << "Apakah anda ingin bermain permainan cangkul? (Ya/Tidak): \n";
+    std::cout << "Apakah anda ingin bermain permainan \e[1;95mcangkul\e[0m? (\e[1;32mYa\e[0m/\e[1;31mTidak\e[0m): \n";
     std::getline(std::cin, game);
     if (Utils::to_lower(game) != "ya") {
         GameManager gameManager;

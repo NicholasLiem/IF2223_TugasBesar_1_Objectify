@@ -23,11 +23,11 @@ GameState* Dashboard::updateState()
     std::cout << "> Ronde ke-\e[1;93m" << gameManager.getCurrentRound()
               << "\e[0m\n> Poin hadiah: " << gameManager.getPot()
               << "\n> Kartu di meja:\n";
-    std::cout << "\e[0;36m=================================\e[0m\n";
     int i = 1;
     for (const MainCard& c : gameManager.table.getAll()) {
         std::cout << "\t" << i++ << ". " << c << "\n";
     }
+    std::cout << "\e[0;36m=================================\e[0m\n";
     const MainPlayer& player = gameManager.getCurrentPlayer();
     std::cout << "> Nama pemain: \e[1;93m" << player.getNickname()
               << "\e[0m\n> Kartu di tangan:\n\t1. " << player.get(0) << "\n\t2. "
