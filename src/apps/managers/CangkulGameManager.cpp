@@ -31,7 +31,6 @@ void CangkulGameManager::setupGame()
         setupRound();
     }
 
-
     deck.clear();
     fillDeck();
     deck.shuffle();
@@ -41,7 +40,7 @@ void CangkulGameManager::setupGame()
 void CangkulGameManager::fillDeck()
 {
     for (int tipe = 0; tipe < 4; tipe++) {
-        for (int number = 1; number <= 13; number++) {
+        for (int number = 2; number <= 14; number++) {
             deck.putCard(Card<CardSymbol, CangkulNumber>(tipe, number));
         }
     }
@@ -60,7 +59,7 @@ void CangkulGameManager::registerPlayer(Player<CardSymbol, CangkulNumber> player
         }
     }
 
-    for(int i = 0; i <= 7; i++){
+    for(int i = 0; i <= 6; i++){
         player.put(deck.takeCard());
     }
 

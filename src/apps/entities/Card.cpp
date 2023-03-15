@@ -147,7 +147,7 @@ ostream& operator<<(ostream& os, const Card<CardSymbol,CangkulNumber>& card)
         os << "Club";
         break;
     case CardSymbol::Heart:
-        os << "Hear";
+        os << "Heart";
         break;
     case CardSymbol::Spade:
         os << "Spade";

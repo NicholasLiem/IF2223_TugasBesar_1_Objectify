@@ -32,6 +32,7 @@ class Player : public InventoryHolder<Card<T,U>>
     bool operator>(const Player<T,U>& other);
     Player<T,U>& operator=(const Player<T,U>& other);
     bool hasTypeCard(Card<T, U> tableCard) const;
+    void printInventory();
 
     template <class T2,class U2>
     friend bool operator==(const Player<T2,U2>& a, const Player<T2,U2>& b);

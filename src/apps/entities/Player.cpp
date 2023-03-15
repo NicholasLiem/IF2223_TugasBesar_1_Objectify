@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <iostream>
 
 template <class T, class U>
 Player<T,U>::Player(std::string nickname)
@@ -142,6 +143,15 @@ bool Player<T,U>::hasTypeCard(Card<T, U> tableCard) const{
 bool operator!=(const Player<CardColor,CardNumber>& a, const Player<CardColor,CardNumber>& b)
 {
     return a.getNickname() != b.getNickname();
+}
+
+template <class T, class U>
+void Player<T, U>::printInventory(){
+    int count = 1;
+    for (Card<T, U> card : this->inventory){
+        std::cout << "[" << count << "] " << card << std::endl;
+        count++;
+    }
 }
 
 template class Player<CardColor,CardNumber>;

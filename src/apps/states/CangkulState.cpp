@@ -24,20 +24,35 @@ CangkulPlayerTurn::CangkulPlayerTurn(CangkulGameManager& game) : GameState(false
 
 GameState* CangkulPlayerTurn::updateState(){
     const vector<Card<CardSymbol, CangkulNumber>> tableCard = gameManager.table.takeAll();
-    Card<CardSymbol, CangkulNumber> tableCardCurrent = tableCard[0];
-
+    const vector<Card<CardSymbol, CangkulNumber>> playerCard = gameManager.getCurrentPlayer().takeAll();
     Player<CardSymbol, CangkulNumber>& currentPlayer = gameManager.getCurrentPlayer();
-    const vector<Card<CardSymbol, CangkulNumber>> playerCard = currentPlayer.takeAll();
+    Card<CardSymbol, CangkulNumber> tableCardCurrent = tableCard[0];
 
     cout << "Kartu di meja: " << tableCardCurrent << endl;
 
-    // Print semua kartu player
-    for (Card<CardSymbol, CangkulNumber> c : playerCard) {
-        cout << c << " ";
-    }
+    cout << "Kartumu: \n"; 
+    currentPlayer.printInventory();
 
     if (!currentPlayer.hasTypeCard(tableCardCurrent)){
         return GameState::getState("draw card");
+    } else {
+        cout << "Pilih kartu yang mau dikeluarkan: \n";
+        int index;
+        std::cout << "> ";
+        std::cin >> index;
+        try{
+            Card<CardSymbol, CangkulNumber> card = playerCard[index+1];
+            if (card.getColor() == tableCardCurrent.getColor()){
+                gameManager.table.put(currentPlayer.take(playerCard[index+1]));
+                return GameState::getState("dashboard");
+            } else {
+                cout << "Kartu yang dipilih tidak sesuai dengan tipe kartu di meja" << endl;
+                return GameState::getState("player turn");
+            }
+        } catch (const std::string& exception) {
+            std::cout << exception << "\n";
+            return GameState::getState("player turn");
+        }
     }
 
     return GameState::getState("dashboard");
