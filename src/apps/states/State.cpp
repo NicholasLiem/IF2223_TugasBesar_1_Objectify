@@ -156,7 +156,7 @@ GameState* CardCalculation::updateState()
     Player& winner = players[winnerIdx];
     std::cout << "\e[1;93m" << winner.getNickname() << "\e[0m\n";
     winner.setPoints(winner.getPoints() + gameManager.getPot());
-    cout << "Point yang dimenangkan sebesar " << gameManager.getPot()<<endl;
+    std::cout << "Point yang dimenangkan sebesar " << gameManager.getPot() << std::endl;
     // clean up
     for (auto c : playerCombos) {
         delete c;
