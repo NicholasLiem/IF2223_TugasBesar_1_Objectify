@@ -127,13 +127,6 @@ std::ostream& operator<<(std::ostream& out, const CangkulNumber& number)
     return out;
 }
 
-
-ostream& operator<<(ostream& out, const CardNumber& number)
-{
-    out << int(number);
-    return out;
-}
-
 istream& operator>>(istream& in, CardColor& color)
 {
     string line;

@@ -16,7 +16,7 @@ int main()
 {
     string game;
     std::cout << "Pilih game yang ingin dimainkan (permainankartu/cangkul): \n";
-    std::cin >> game;
+    std::getline(std::cin, game);
     if (game != "cangkul") {
         GameManager gameManager;
 
