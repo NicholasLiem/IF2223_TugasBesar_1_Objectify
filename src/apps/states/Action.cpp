@@ -65,11 +65,15 @@ GameState* Half::updateState()
 {
     MainPlayer& player = gameManager.getCurrentPlayer();
     std::cout << "\e[1;93m" << player.getNickname() << "\e[0m melakukan Half!";
-    std::cout << " Poin hadiah turun dari " << gameManager.getPot();
     long currPot = gameManager.getPot();
-    long newPot = currPot / 2 < 1 ? 1 : currPot / 2;
-    gameManager.setPot(newPot);
-    std::cout << " menjadi " << gameManager.getPot() << "!\n";
+    if (currPot == 1){
+        std::cout << " Sayangnya poin hadiah sudah bernilai 1. Poin hadiah tidak berubah.. Giliran dilanjut!\n";
+    } else {
+        std::cout << " Poin hadiah turun dari " << gameManager.getPot();
+        long newPot = currPot / 2 < 1 ? 1 : currPot / 2;
+        gameManager.setPot(newPot);
+        std::cout << " menjadi " << gameManager.getPot() << "!\n";
+    }
     gameManager.nextPlayer();
     return GameState::getState("dashboard");
 }
@@ -114,9 +118,14 @@ GameState* QuarterAct::updateState()
     }
     std::cout << "\e[1;93m" << player.getNickname()
               << "\e[0m melakukan Quarter!";
-    std::cout << " Poin hadiah turun dari " << gameManager.getPot();
-    ability.useAbility();
-    std::cout << " menjadi " << gameManager.getPot() << "!" << std::endl;
+    if (gameManager.getPot() == 1){
+        std::cout << " Sayangnya poin hadiah sudah bernilai 1. Poin hadiah tidak berubah.. Yah, sayang penggunaan kartu ini sia-sia! Giliran dilanjut!\n";
+        ability.useAbility();
+    } else {
+        std::cout << " Poin hadiah turun dari " << gameManager.getPot();
+        ability.useAbility();
+        std::cout << " menjadi " << gameManager.getPot() << "!" << std::endl;
+    }
     gameManager.nextPlayer();
     return GameState::getState("dashboard");
 }
