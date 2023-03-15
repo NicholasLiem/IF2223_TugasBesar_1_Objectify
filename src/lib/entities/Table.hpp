@@ -16,4 +16,7 @@ class Table : public InventoryHolder<Card<T,U>>
 		Card<T,U> take(Card<T,U> card) override;
 };
 
+typedef Table<CardSymbol, CangkulNumber> CangkulTable;
+typedef Table<CardColor, CardNumber> MainTable;
+
 #endif // !__TABLE_

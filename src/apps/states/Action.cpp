@@ -35,12 +35,12 @@ Scoreboard::Scoreboard(GameManager& gm) : Action(gm) {}
 
 GameState* Scoreboard::updateState()
 {
-    std::vector<Player<CardColor,CardNumber>> players(gameManager.getPlayers());
+    std::vector<MainPlayer> players(gameManager.getPlayers());
     int i = 1;
     std::cout << "\e[4;93mScoreboard\e[0m\n";
-    for (const Player<CardColor,CardNumber>& p : players) {
-        std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname() << "\e[0m: "
-                  << p.getPoints() << "\n";
+    for (const MainPlayer& p : players) {
+        std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname()
+                  << "\e[0m: " << p.getPoints() << "\n";
     }
     return GameState::getState("dashboard");
 }
@@ -49,7 +49,7 @@ Double::Double(GameManager& gameManager) : Action(gameManager) {}
 
 GameState* Double::updateState()
 {
-    Player<CardColor,CardNumber>& player = gameManager.getCurrentPlayer();
+    MainPlayer& player = gameManager.getCurrentPlayer();
     std::cout << "\e[1;93m" << player.getNickname()
               << "\e[0m melakukan Double!";
     std::cout << " Poin hadiah naik dari " << gameManager.getPot();
@@ -63,7 +63,7 @@ Half::Half(GameManager& gameManager) : Action(gameManager) {}
 
 GameState* Half::updateState()
 {
-    Player<CardColor,CardNumber>& player = gameManager.getCurrentPlayer();
+    MainPlayer& player = gameManager.getCurrentPlayer();
     std::cout << "\e[1;93m" << player.getNickname() << "\e[0m melakukan Half!";
     std::cout << " Poin hadiah turun dari " << gameManager.getPot();
     long currPot = gameManager.getPot();
@@ -88,7 +88,7 @@ QuadrupleAct::QuadrupleAct(GameManager& gameManager) : Action(gameManager) {}
 
 GameState* QuadrupleAct::updateState()
 {
-    Player<CardColor,CardNumber>& player = gameManager.getCurrentPlayer();
+    MainPlayer& player = gameManager.getCurrentPlayer();
     Ability& ability = *gameManager.getAbility(player.getNickname());
     if (!check_ability(ability, "Quadruple Card")) {
         return GameState::getState("dashboard");
@@ -107,12 +107,13 @@ QuarterAct::QuarterAct(GameManager& gameManager) : Action(gameManager) {}
 GameState* QuarterAct::updateState()
 {
 
-    Player<CardColor,CardNumber>& player = gameManager.getCurrentPlayer();
+    MainPlayer& player = gameManager.getCurrentPlayer();
     Ability& ability = *gameManager.getAbility(player.getNickname());
     if (!check_ability(ability, "Quarter Card")) {
         return GameState::getState("dashboard");
     }
-    std::cout << "\e[1;93m" << player.getNickname() << "\e[0m melakukan Quarter!";
+    std::cout << "\e[1;93m" << player.getNickname()
+              << "\e[0m melakukan Quarter!";
     std::cout << " Poin hadiah turun dari " << gameManager.getPot();
     ability.useAbility();
     std::cout << " menjadi " << gameManager.getPot() << "!" << std::endl;
@@ -124,9 +125,9 @@ ReRollAct::ReRollAct(GameManager& gameManager) : Action(gameManager) {}
 
 GameState* ReRollAct::updateState()
 {
-    Player<CardColor,CardNumber>& player = gameManager.getCurrentPlayer();
+    MainPlayer& player = gameManager.getCurrentPlayer();
     Ability& ability = *gameManager.getAbility(player.getNickname());
-    if (!check_ability(ability, "ReRoll Card")) {
+    if (!check_ability(ability, "ReRoll MainPlayerCard")) {
         return GameState::getState("dashboard");
     }
     std::cout << "Melakukan pembuangan kartu yang sedang dimiliki\n";
@@ -145,7 +146,7 @@ ReverseDirAct::ReverseDirAct(GameManager& gameManager) : Action(gameManager) {}
 
 GameState* ReverseDirAct::updateState()
 {
-    Player<CardColor,CardNumber>& player = gameManager.getCurrentPlayer();
+    MainPlayer& player = gameManager.getCurrentPlayer();
     Ability& ability = *gameManager.getAbility(player.getNickname());
     if (!check_ability(ability, "Reverse Direction Card")) {
         return GameState::getState("dashboard");
@@ -154,7 +155,7 @@ GameState* ReverseDirAct::updateState()
               << "\e[0m melakukan Reverse!\n";
     ability.useAbility();
     std::cout << "Sisa urutan giliran ronde ini: ";
-    std::vector<Player<CardColor,CardNumber>>& players = gameManager.getPlayers();
+    std::vector<MainPlayer>& players = gameManager.getPlayers();
     std::cout << "\e[1;93m";
     for (int& x : gameManager.getCurrentRoundTurnQueue()) {
         std::cout << players[x].getNickname() << " ";
@@ -172,18 +173,18 @@ SwapAct::SwapAct(GameManager& gameManager) : Action(gameManager) {}
 
 GameState* SwapAct::updateState()
 {
-    Player<CardColor,CardNumber>& player = gameManager.getCurrentPlayer();
+    MainPlayer& player = gameManager.getCurrentPlayer();
     Ability& ability = *gameManager.getAbility(player.getNickname());
     if (!check_ability(ability, "Swap Card")) {
         return GameState::getState("dashboard");
     }
     std::cout << "\e[1;93m " << player.getNickname()
               << "\e[0m melakukan Swap!\n";
-    std::vector<Player<CardColor,CardNumber>*> players;
+    std::vector<MainPlayer*> players;
 
     int i = 1;
     std::cout << "Silahkan pilih pemain yang kartunya ingin anda tukar:\n";
-    for (Player<CardColor,CardNumber>& p : gameManager.getPlayers()) {
+    for (MainPlayer& p : gameManager.getPlayers()) {
         if (p != player) {
             players.push_back(&p);
             std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname()
@@ -192,11 +193,11 @@ GameState* SwapAct::updateState()
     }
     int target_idx;
     Utils::input_validate(target_idx, 1, 6);
-    Player<CardColor,CardNumber>& target1 = *players[target_idx - 1];
+    MainPlayer& target1 = *players[target_idx - 1];
     players.clear();
     i = 1;
     std::cout << "Silahkan pilih pemain lain yang kartunya ingin anda tukar:\n";
-    for (Player<CardColor,CardNumber>& p : gameManager.getPlayers()) {
+    for (MainPlayer& p : gameManager.getPlayers()) {
         if (p != player && p != target1) {
             players.push_back(&p);
             std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname()
@@ -204,7 +205,7 @@ GameState* SwapAct::updateState()
         }
     }
     Utils::input_validate(target_idx, 1, 5);
-    Player<CardColor,CardNumber>& target2 = *players[target_idx - 1];
+    MainPlayer& target2 = *players[target_idx - 1];
     std::cout << "Silahkan pilih kartu kanan/kiri \e[1;93m"
               << target1.getNickname() << "\e[0m:\n\t1. Kanan\n\t2. Kiri"
               << std::endl;
@@ -226,7 +227,7 @@ SwitchAct::SwitchAct(GameManager& gameManager) : Action(gameManager) {}
 
 GameState* SwitchAct::updateState()
 {
-    Player<CardColor,CardNumber>& player = gameManager.getCurrentPlayer();
+    MainPlayer& player = gameManager.getCurrentPlayer();
     Ability& ability = *gameManager.getAbility(player.getNickname());
     if (!check_ability(ability, "Switch Card")) {
         return GameState::getState("dashboard");
@@ -236,17 +237,18 @@ GameState* SwitchAct::updateState()
               << "Kartumu sekarang adalah " << player.get(0) << " dan "
               << player.get(1)
               << "\nSilahkan pilih pemain yang kartunya ingin anda tukar:\n";
-    std::vector<Player<CardColor,CardNumber>*> players;
+    std::vector<MainPlayer*> players;
     int i = 1;
-    for (Player<CardColor,CardNumber>& p : gameManager.getPlayers()) {
+    for (MainPlayer& p : gameManager.getPlayers()) {
         if (p != player) {
             players.push_back(&p);
-            std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname() << "\e[0m\n";
+            std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname()
+                      << "\e[0m\n";
         }
     }
     int target_idx;
     Utils::input_validate(target_idx, 1, 6);
-    Player<CardColor,CardNumber>& target = *players[target_idx - 1];
+    MainPlayer& target = *players[target_idx - 1];
     SwitchCard& switchcard = dynamic_cast<SwitchCard&>(ability);
     switchcard.useAbility(target);
     std::cout << "Kedua kartu \e[1;93m" << player.getNickname()
@@ -263,7 +265,7 @@ AbilitylessAct::AbilitylessAct(GameManager& gameManager) : Action(gameManager)
 
 GameState* AbilitylessAct::updateState()
 {
-    Player<CardColor,CardNumber>& player = gameManager.getCurrentPlayer();
+    MainPlayer& player = gameManager.getCurrentPlayer();
     Ability& ability = *gameManager.getAbility(player.getNickname());
     if (!check_ability(ability, "Abilityless Card")) {
         return GameState::getState("dashboard");
@@ -272,7 +274,7 @@ GameState* AbilitylessAct::updateState()
               << "\e[0m akan mematikan kartu ability lawan!\n"
                  "Silahkan pilih pemain yang kartunya ingin dimatikan:\n";
     bool all_used = true;
-    for (const Player<CardColor,CardNumber>& p : gameManager.getPlayers()) {
+    for (const MainPlayer& p : gameManager.getPlayers()) {
         if (p != player && !gameManager.getAbility(p.getNickname())->isUsed()) {
             all_used = false;
             break;
@@ -287,9 +289,9 @@ GameState* AbilitylessAct::updateState()
         gameManager.nextPlayer();
         return GameState::getState("dashboard");
     }
-    std::vector<Player<CardColor,CardNumber>*> players;
+    std::vector<MainPlayer*> players;
     int i = 1;
-    for (Player<CardColor,CardNumber>& p : gameManager.getPlayers()) {
+    for (MainPlayer& p : gameManager.getPlayers()) {
         if (p != player) {
             players.push_back(&p);
             std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname()
@@ -298,7 +300,7 @@ GameState* AbilitylessAct::updateState()
     }
     int target_idx;
     Utils::input_validate(target_idx, 1, 6);
-    Player<CardColor,CardNumber>& target = *players[target_idx - 1];
+    MainPlayer& target = *players[target_idx - 1];
     Ability& target_ability = *gameManager.getAbility(target.getNickname());
     if (target_ability.isUsed()) {
         std::cout << "Kartu ability \e[1;93m" << target.getNickname()

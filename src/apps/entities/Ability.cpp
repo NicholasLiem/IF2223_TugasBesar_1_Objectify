@@ -34,7 +34,7 @@ Ability::Ability(GameManager& game, std::string name) : game(game), name(name)
     this->muted = false;
 }
 
-void Ability::setOwner(Player<CardColor,CardNumber>* player)
+void Ability::setOwner(MainPlayer* player)
 {
     owner = player;
 }
@@ -78,7 +78,7 @@ ReRollCard::ReRollCard(GameManager& game) : Ability(game, "ReRoll Card") {}
 
 void ReRollCard::useAbility()
 {
-    std::vector<Card<CardColor,CardNumber>> oldCards = this->owner->takeAll();
+    std::vector<MainCard> oldCards = this->owner->takeAll();
     owner->put(this->game.deck.takeCard());
     owner->put(this->game.deck.takeCard());
     this->used = true;
@@ -118,11 +118,11 @@ SwapCard::SwapCard(GameManager& game) : Ability(game, "Swap Card") {}
 
 void SwapCard::useAbility() {}
 
-void SwapCard::useAbility(Player<CardColor,CardNumber>& target1, Player<CardColor,CardNumber>& target2, int CardIdx1,
+void SwapCard::useAbility(MainPlayer& target1, MainPlayer& target2, int CardIdx1,
                           int CardIdx2)
 {
-    Card<CardColor,CardNumber> target1Card = target1.get(CardIdx1);
-    Card<CardColor,CardNumber> target2Card = target2.get(CardIdx2);
+    MainCard target1Card = target1.get(CardIdx1);
+    MainCard target2Card = target2.get(CardIdx2);
 
     target1.take(target1Card);
     target1.put(target2Card);
@@ -136,10 +136,10 @@ SwitchCard::SwitchCard(GameManager& game) : Ability(game, "Switch Card") {}
 
 void SwitchCard::useAbility() {}
 
-void SwitchCard::useAbility(Player<CardColor,CardNumber>& target)
+void SwitchCard::useAbility(MainPlayer& target)
 {
-    std::vector<Card<CardColor,CardNumber>> Player1 = this->owner->takeAll();
-    std::vector<Card<CardColor,CardNumber>> Player2 = target.takeAll();
+    std::vector<MainCard> Player1 = this->owner->takeAll();
+    std::vector<MainCard> Player2 = target.takeAll();
 
     for (auto& i : Player2) {
         this->owner->put(i);
@@ -158,7 +158,7 @@ AbilitylessCard::AbilitylessCard(GameManager& game)
 
 void AbilitylessCard::useAbility() {}
 
-void AbilitylessCard::useAbility(Player<CardColor,CardNumber>& target)
+void AbilitylessCard::useAbility(MainPlayer& target)
 {
     Ability& ability = *game.getAbility(target.getNickname());
     ability.mute();

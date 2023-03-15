@@ -6,34 +6,40 @@
 #include "GameState.hpp"
 #include "Utils.hpp"
 
-
 #include <iostream>
 #include <string>
 #include <vector>
 
-CangkulDashboard::CangkulDashboard(CangkulGameManager& gm) : GameState(false), gameManager(gm) {
+CangkulDashboard::CangkulDashboard(CangkulGameManager& gm)
+    : GameState(false), gameManager(gm)
+{
 }
 
-GameState* CangkulDashboard::updateState(){
+GameState* CangkulDashboard::updateState()
+{
     cout << "Ronde ke-" << gameManager.getCurrentRound() << endl;
     return GameState::getState("end");
 }
 
-CangkulPlayerTurn::CangkulPlayerTurn(CangkulGameManager& game) : GameState(false), gameManager(game) {
+CangkulPlayerTurn::CangkulPlayerTurn(CangkulGameManager& game)
+    : GameState(false), gameManager(game)
+{
 }
 
-GameState* CangkulPlayerTurn::updateState(){
-    const vector<Card<CardSymbol, CangkulNumber>> tableCard = gameManager.table.takeAll();
-    const vector<Card<CardSymbol, CangkulNumber>> playerCard = gameManager.getCurrentPlayer().takeAll();
-    Player<CardSymbol, CangkulNumber>& currentPlayer = gameManager.getCurrentPlayer();
-    Card<CardSymbol, CangkulNumber> tableCardCurrent = tableCard[0];
+GameState* CangkulPlayerTurn::updateState()
+{
+    const vector<CangkulCard> tableCard = gameManager.table.takeAll();
+    CangkulCard tableCardCurrent = tableCard[0];
+
+    CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
+    const vector<CangkulCard> playerCard = currentPlayer.takeAll();
 
     cout << "Kartu di meja: " << tableCardCurrent << endl;
 
-    cout << "Kartumu: \n"; 
+    cout << "Kartumu: \n";
     currentPlayer.printInventory();
 
-    if (!currentPlayer.hasTypeCard(tableCardCurrent)){
+    if (!currentPlayer.hasTypeCard(tableCardCurrent)) {
         return GameState::getState("draw card");
     } else {
         cout << "Pilih kartu yang mau dikeluarkan: \n";
@@ -58,16 +64,21 @@ GameState* CangkulPlayerTurn::updateState(){
     return GameState::getState("dashboard");
 }
 
-CangkulPlayerRegistration::CangkulPlayerRegistration(CangkulGameManager& gameManager) : GameState(false), gameManager(gameManager) {}
+CangkulPlayerRegistration::CangkulPlayerRegistration(
+    CangkulGameManager& gameManager)
+    : GameState(false), gameManager(gameManager)
+{
+}
 
-GameState* CangkulPlayerRegistration::updateState(){
+GameState* CangkulPlayerRegistration::updateState()
+{
     std::string first;
     for (int i = 1; i <= 4;) {
         std::string name;
         std::cout << "Masukkan nickname player " << i << ": ";
         std::cin >> name;
         try {
-            gameManager.registerPlayer(Player<CardSymbol, CangkulNumber>(name));
+            gameManager.registerPlayer(CangkulPlayer(name));
             std::cout << "Player " << i
                       << " \e[1;93m" + name + "\e[0m telah terdaftar!"
                       << std::endl;
@@ -85,25 +96,38 @@ GameState* CangkulPlayerRegistration::updateState(){
     return GameState::getState("player turn");
 }
 
-CangkulConclusion::CangkulConclusion(CangkulGameManager& gm) : GameState(false), gameManager(gm) {}
+CangkulConclusion::CangkulConclusion(CangkulGameManager& gm)
+    : GameState(false), gameManager(gm)
+{
+}
 
-GameState* CangkulConclusion::updateState(){
+GameState* CangkulConclusion::updateState()
+{
     cout << "aaaa";
     return GameState::getState("player turn");
 }
 
-CangkulPilihKartu::CangkulPilihKartu(CangkulGameManager& gm) : GameState(false), gameManager(gm) {}
+CangkulPilihKartu::CangkulPilihKartu(CangkulGameManager& gm)
+    : GameState(false), gameManager(gm)
+{
+}
 
-GameState *CangkulPilihKartu::updateState(){
+GameState* CangkulPilihKartu::updateState()
+{
     cout << "Pilih Kartu: ";
     return GameState::getState("player turn");
 }
 
-CangkulDrawCard::CangkulDrawCard(CangkulGameManager& gm) : GameState(false), gameManager(gm) {}
+CangkulDrawCard::CangkulDrawCard(CangkulGameManager& gm)
+    : GameState(false), gameManager(gm)
+{
+}
 
-GameState *CangkulDrawCard::updateState(){
-    Player<CardSymbol, CangkulNumber>& currentPlayer = gameManager.getCurrentPlayer();
+GameState* CangkulDrawCard::updateState()
+{
+    CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
     currentPlayer.put(gameManager.deck.takeCard());
-    cout << "Player " << gameManager.getCurrentPlayer().getNickname() << " mengambil kartu!" << endl;
+    cout << "Player " << gameManager.getCurrentPlayer().getNickname()
+         << " mengambil kartu!" << endl;
     return GameState::getState("player turn");
 }

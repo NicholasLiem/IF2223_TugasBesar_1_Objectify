@@ -22,9 +22,9 @@ enum class CardNumber {
     Thirteen = 13,
 };
 
-enum class CardSymbol{ Diamond, Club, Heart, Spade };
+enum class CardSymbol { Diamond, Club, Heart, Spade };
 
-enum class CangkulNumber{
+enum class CangkulNumber {
     Two = 2,
     Three = 3,
     Four = 4,
@@ -40,41 +40,48 @@ enum class CangkulNumber{
     Fourteen = 14,
 };
 
+std::ostream& operator<<(std::ostream& out, const CardColor& color);
+std::ostream& operator<<(std::ostream& out, const CardNumber& number);
+std::ostream& operator<<(std::ostream& out, const CardSymbol& symbol);
+std::ostream& operator<<(std::ostream& out, const CangkulNumber& number);
+
 template <class T, class U>
 class Card : public Valuable
 {
   public:
     Card(const T color, const U number);
     Card(const int color, const int number);
-    Card(const Card<T,U>& other);
+    Card(const Card<T, U>& other);
 
     float value() const;
     T getColor() const;
 
     U getNumber() const;
-  
-    Card<T,U>& operator=(const Card<T,U>& other);
 
-    bool operator==(const Card<T,U>& other);
+    Card<T, U>& operator=(const Card<T, U>& other);
 
-    template <class T2,class U2>
-    friend bool operator==(const Card<T2,U2>& card1, const Card<T2,U2>& card2);
-    friend bool operator==(const Card<CardColor,CardNumber>& card1, const Card<CardColor,CardNumber>& card2);
+    bool operator==(const Card<T, U>& other);
 
+    friend bool operator==(const Card<T, U>& card1, const Card<T, U>& card2)
+    {
+        return card1.getNumber() == card2.getNumber();
+    }
 
-    template <class T2,class U2>
-    friend bool operator<(const Card<T2,U2>& card1, const Card<T2,U2>& card2);
-    friend bool operator<(const Card<CardColor,CardNumber>& card1, const Card<CardColor,CardNumber>& card2);
+    friend bool operator<(const Card<T, U>& card1, const Card<T, U>& card2)
+    {
+        return card1.value() < card2.value();
+    }
 
+    friend bool operator>(const Card<T, U>& card1, const Card<T, U>& card2)
+    {
+        return card1.value() > card2.value();
+    }
 
-    template <class T2,class U2>
-    friend bool operator>(const Card<T2,U2>& card1, const Card<T2,U2>& card2);
-    friend bool operator>(const Card<CardColor,CardNumber>& card1, const Card<CardColor,CardNumber>& card2);
-
-
-    template <class T2,class U2>
-    friend std::ostream& operator<<(std::ostream& out, const Card<T2,U2>& card);
-    friend std::ostream& operator<<(std::ostream& out, const Card<CardColor,CardNumber>& card);
+    friend std::ostream& operator<<(std::ostream& out, const Card<T, U>& card)
+    {
+        out << card.getNumber() << " " << card.getColor();
+        return out;
+    }
 
     friend std::ostream& operator<<(std::ostream& os, const Card<CardSymbol,CangkulNumber>& card);
 
@@ -82,5 +89,8 @@ class Card : public Valuable
     T color;
     U number;
 };
+
+typedef Card<CardColor, CardNumber> MainCard;
+typedef Card<CardSymbol, CangkulNumber> CangkulCard;
 
 #endif // !__CARD_

@@ -1,67 +1,61 @@
-#include "../../lib/entities/Card.hpp"
+#include "Card.hpp"
 
 #include <iostream>
 using namespace std;
 
 template <class T, class U>
-Card<T,U>::Card(const T color, const U number)
+Card<T, U>::Card(const T color, const U number)
 {
     this->color = color;
     this->number = number;
 }
 
 template <class T, class U>
-Card<T,U>::Card(const int color, const int number)
+Card<T, U>::Card(const int color, const int number)
 {
     this->color = static_cast<T>(color);
     this->number = static_cast<U>(number);
 }
 
-
 template <class T, class U>
-Card<T,U>::Card(const Card<T,U>& other)
+Card<T, U>::Card(const Card<T, U>& other)
 {
     this->color = other.color;
     this->number = other.number;
 }
 
-
 template <class T, class U>
-float Card<T,U>::value() const
+float Card<T, U>::value() const
 {
     return int(number) + int(color) * 0.03;
 }
 
 template <class T, class U>
-T Card<T,U>::getColor() const
+T Card<T, U>::getColor() const
 {
     return color;
 }
 
 template <class T, class U>
-U Card<T,U>::getNumber() const
+U Card<T, U>::getNumber() const
 {
     return number;
 }
 
 template <class T, class U>
-bool Card<T,U>::operator==(const Card& card1){
+bool Card<T, U>::operator==(const Card& card1)
+{
     return (this->getNumber() == card1.getNumber());
 }
 
 template <class T, class U>
-bool operator==(const Card<T,U>& card1, const Card<T,U>& card2)
-{
-    return (card1.getNumber() == card2.getNumber());
-}
-
-bool operator==(const Card<CardColor,CardNumber>& card1, const Card<CardColor,CardNumber>& card2)
+bool operator==(const Card<T, U>& card1, const Card<T, U>& card2)
 {
     return (card1.getNumber() == card2.getNumber());
 }
 
 template <class T, class U>
-Card<T,U>& Card<T,U>::operator=(const Card<T,U>& other)
+Card<T, U>& Card<T, U>::operator=(const Card<T, U>& other)
 {
     this->color = other.color;
     this->number = other.number;
@@ -69,92 +63,66 @@ Card<T,U>& Card<T,U>::operator=(const Card<T,U>& other)
 }
 
 template <class T, class U>
-bool operator<(const Card<T,U>& card1, const Card<T,U>& card2)
-{
-    return (card1.value() < card2.value());
-}
-
-bool operator<(const Card<CardColor,CardNumber>& card1, const Card<CardColor,CardNumber>& card2)
+bool operator<(const Card<T, U>& card1, const Card<T, U>& card2)
 {
     return (card1.value() < card2.value());
 }
 
 template <class T, class U>
-bool operator>(const Card<T,U>& card1, const Card<T,U>& card2)
+bool operator>(const Card<T, U>& card1, const Card<T, U>& card2)
 {
     return (card1.value() > card2.value());
 }
 
-bool operator>(const Card<CardColor,CardNumber>& card1, const Card<CardColor,CardNumber>& card2)
+std::ostream& operator<<(std::ostream& out, const CardColor& color)
 {
-    return (card1.value() > card2.value());
-}
-template <class T, class U>
-ostream& operator<<(ostream& os, const Card<T,U>& card)
-{
-    T card_num = card.getNumber();
-    U card_color = card.getColor();
-    os << int(card_num) << " ";
-    switch (card_color) {
-    case U::Red:
-        os << "Merah";
-        break;
-    case U::Green:
-        os << "Hijau";
-        break;
-    case U::Blue:
-        os << "Biru";
-        break;
-    case U::Yellow:
-        os << "Kuning";
-        break;
-    }
-    return os;
-}
-
-ostream& operator<<(ostream& os, const Card<CardColor,CardNumber>& card)
-{
-    CardNumber card_num = card.getNumber();
-    CardColor card_color = card.getColor();
-    os << int(card_num) << " ";
-    switch (card_color) {
+    switch (color) {
     case CardColor::Red:
-        os << "Merah";
-        break;
-    case CardColor::Green:
-        os << "Hijau";
-        break;
-    case CardColor::Blue:
-        os << "Biru";
+        out << "Merah";
         break;
     case CardColor::Yellow:
-        os << "Kuning";
+        out << "Kuning";
+        break;
+    case CardColor::Green:
+        out << "Hijau";
+        break;
+    case CardColor::Blue:
+        out << "Biru";
         break;
     }
-    return os;
+    return out;
 }
 
-ostream& operator<<(ostream& os, const Card<CardSymbol,CangkulNumber>& card)
+std::ostream& operator<<(std::ostream& out, const CardNumber& number)
 {
-    CangkulNumber card_num = card.getNumber();
-    CardSymbol card_sym = card.getColor();
-    os << int(card_num) << " ";
-    switch (card_sym) {
+    out << int(number);
+    return out;
+}
+
+std::ostream& operator<<(std::ostream& out, const CardSymbol& symbol)
+{
+    switch (symbol) {
     case CardSymbol::Diamond:
-        os << "Diamond";
+        out << "Diamond";
         break;
     case CardSymbol::Club:
-        os << "Club";
+        out << "Club";
         break;
     case CardSymbol::Heart:
-        os << "Heart";
+        out << "Heart";
         break;
     case CardSymbol::Spade:
-        os << "Spade";
+        out << "Spade";
         break;
     }
-    return os;
+    return out;
 }
 
-template class Card<CardColor,CardNumber>;
-template class Card<CardSymbol,CangkulNumber>;
+std::ostream& operator<<(std::ostream& out, const CangkulNumber& number)
+{
+    out << int(number);
+    return out;
+}
+
+template class Card<CardColor, CardNumber>;
+template class Card<CardSymbol, CangkulNumber>;

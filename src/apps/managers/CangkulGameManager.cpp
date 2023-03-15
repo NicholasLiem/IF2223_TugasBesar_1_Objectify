@@ -46,13 +46,13 @@ void CangkulGameManager::fillDeck()
     }
 }
 
-void CangkulGameManager::registerPlayer(Player<CardSymbol, CangkulNumber> player)
+void CangkulGameManager::registerPlayer(CangkulPlayer player)
 {
     if (players.size() == 4) {
         throw "Jumlah player sudah ada 4";
     }
 
-    for (const Player<CardSymbol, CangkulNumber>& p : players) {
+    for (const CangkulPlayer& p : players) {
         if (p == player) {
             throw "Player dengan nama " + player.getNickname() +
                 " sudah terdaftar. Silahkan masukkan nama yang lain";
@@ -78,12 +78,12 @@ void CangkulGameManager::nextPlayer()
 {
 }
 
-Player<CardSymbol, CangkulNumber>& CangkulGameManager::getCurrentPlayer()
+CangkulPlayer& CangkulGameManager::getCurrentPlayer()
 {
     return players[currentPlayerIndex];
 }
 
-std::vector<Player<CardSymbol, CangkulNumber>>& CangkulGameManager::getPlayers()
+std::vector<CangkulPlayer>& CangkulGameManager::getPlayers()
 {
     return players;
 }
