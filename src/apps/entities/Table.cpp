@@ -1,10 +1,10 @@
 #include "Table.hpp"
 #include <iostream>
 
-
-std::vector<Card> Table::takeAll()
+template <class T,class U>
+std::vector<Card<T,U>> Table<T,U>::takeAll()
 {
-    std::vector<Card> cards;
+    std::vector<Card<T,U>> cards;
     for (auto card : this->inventory)
     {
         cards.push_back(card);
@@ -13,12 +13,14 @@ std::vector<Card> Table::takeAll()
     return cards;
 }
 
-void Table::put(Card card)
+template <class T,class U>
+void Table<T,U>::put(Card<T,U> card)
 {
     this->inventory.push_back(card);
 }
 
-Card Table::take(Card card)
+template <class T,class U>
+Card<T,U> Table<T,U>::take(Card<T,U> card)
 {
     for (auto it = this->inventory.begin(); it != this->inventory.end(); it++)
     {
@@ -30,3 +32,6 @@ Card Table::take(Card card)
     }
     throw "Card not found";
 }
+
+template class Table<CardColor,CardNumber>;
+template class Table<CardSymbol,CangkulNumber>;

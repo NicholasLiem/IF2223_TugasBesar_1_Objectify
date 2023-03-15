@@ -16,7 +16,7 @@ class Ability;
 class GameManager
 {
   private:
-    std::vector<Player> players;
+    std::vector<Player<CardColor,CardNumber>> players;
     std::vector<int> currentRoundTurnQueue;
     std::vector<int> nextRoundTurnQueue;
     std::map<std::string, Ability*> playerAbilities;
@@ -31,20 +31,20 @@ class GameManager
     void distributeAbilities();
 
   public:
-    Deck<Card> deck;
-    Table table;
+    Deck<Card<CardColor,CardNumber>> deck;
+    Table<CardColor,CardNumber> table;
 
     GameManager();
 
-    Player& getCurrentPlayer();
-    std::vector<Player>& getPlayers();
+    Player<CardColor,CardNumber>& getCurrentPlayer();
+    std::vector<Player<CardColor,CardNumber>>& getPlayers();
     Ability* getAbility(std::string playerNickname);
     long getPot() const;
     int getCurrentRound() const;
     std::vector<int>& getCurrentRoundTurnQueue();
     std::vector<int>& getNextRoundTurnQueue();
 
-    void registerPlayer(Player player);
+    void registerPlayer(Player<CardColor,CardNumber> player);
     void reverseDirection();
     void nextPlayer();
     void setPot(long value);

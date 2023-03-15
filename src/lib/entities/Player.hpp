@@ -6,7 +6,9 @@
 
 #include <string>
 
-class Player : public InventoryHolder<Card>
+
+template <class T, class U>
+class Player : public InventoryHolder<Card<T,U>>
 {
   private:
     std::string nickname;
@@ -14,26 +16,33 @@ class Player : public InventoryHolder<Card>
 
   public:
     Player(std::string nickname);
-    Player(const Player& other);
+    Player(const Player<T,U>& other);
 
     void setPoints(long points);
-    void put(Card card) override;
-    Card take(Card card) override;
-    std::vector<Card> takeAll();
+    void put(Card<T,U> card) override;
+    Card<T,U> take(Card<T,U> card) override;
+    std::vector<Card<T,U>> takeAll();
 
     std::string getNickname() const;
     long getPoints() const;
-    Card operator-(Card other);
-    void operator+(Card other);
-    bool operator==(const Player& other);
-    bool operator<(const Player& other);
-    bool operator>(const Player& other);
-    Player& operator=(const Player& other);
+    Card<T,U> operator-(Card<T,U> other);
+    void operator+(Card<T,U> other);
+    bool operator==(const Player<T,U>& other);
+    bool operator<(const Player<T,U>& other);
+    bool operator>(const Player<T,U>& other);
+    Player<T,U>& operator=(const Player<T,U>& other);
 
-    friend bool operator==(const Player& a, const Player& b);
-    friend bool operator< (const Player& a, const Player& b);
-    friend bool operator> (const Player& a, const Player& b);
-    friend bool operator!=(const Player& a, const Player& b);
+    template <class T2,class U2>
+    friend bool operator==(const Player<T2,U2>& a, const Player<T2,U2>& b);
+    friend bool operator==(const Player<CardColor,CardNumber>& a, const Player<CardColor,CardNumber>& b);
+
+    template <class T2,class U2>
+    friend bool operator< (const Player<T2,U2>& a, const Player<T2,U2>& b);
+    template <class T2,class U2>
+    friend bool operator> (const Player<T2,U2>& a, const Player<T2,U2>& b);
+    template <class T2,class U2>
+    friend bool operator!=(const Player<T2,U2>& a, const Player<T2,U2>& b);
+    friend bool operator!=(const Player<CardColor,CardNumber>& a, const Player<CardColor,CardNumber>& b);
 };
 
 #endif // !__PLAYER_
