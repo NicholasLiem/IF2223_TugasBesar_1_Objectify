@@ -45,7 +45,7 @@ int main()
     GameManager gameManager;
 
     GameState::registerState("dashboard", new Dashboard(gameManager));
-    GameState::registerState("player turn", new PlayerTurn);
+    GameState::registerState("player turn", new PlayerTurn(gameManager));
     GameState::registerState("next", new Next(gameManager));
     GameState::registerState("player registration",
                              new PlayerRegistration(gameManager));

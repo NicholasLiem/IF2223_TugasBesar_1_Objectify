@@ -21,4 +21,20 @@ class InvalidActionException : public std::exception
     const std::string msg;
 };
 
+class AccessAbilityException : public std::exception{
+  public:
+    AccessAbilityException(std::string abilityName)
+        : msg("Belum boleh melakukan kemampuan " + abilityName)
+    {
+    }
+
+    const char* what() const throw()
+    {
+        return msg.c_str();
+    }
+
+    private:
+      const std::string msg;
+};
+
 #endif // !__EXCEPTIONS_

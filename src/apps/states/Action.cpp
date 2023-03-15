@@ -120,6 +120,7 @@ QuarterAct::QuarterAct(GameManager& gameManager) : Action(gameManager) {}
 
 GameState* QuarterAct::updateState()
 {
+
     Player& player = gameManager.getCurrentPlayer();
     Ability& ability = *gameManager.getAbility(player.getNickname());
     if (!check_ability(ability, "Quarter Card")) {

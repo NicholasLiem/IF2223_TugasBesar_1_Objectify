@@ -2,7 +2,7 @@
 
 #include "Ability.hpp"
 #include "Player.hpp"
-
+#include <iostream>
 #include <algorithm>
 #include <vector>
 
@@ -104,6 +104,8 @@ void GameManager::distributeAbilities()
     for (Player& player : players) {
         Ability* ability = abilities.get(i);
         playerAbilities[player.getNickname()] = ability;
+        std::cout << player.getNickname() << " mendapatkan ability "
+            << ability->getName() << std::endl;
         ability->setOwner(&player);
         i++;
     }

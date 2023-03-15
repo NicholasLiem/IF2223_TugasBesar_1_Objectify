@@ -17,8 +17,10 @@ class Dashboard : public GameState
 
 class PlayerTurn : public GameState
 {
+  private:
+    GameManager& gameManager;
   public:
-    PlayerTurn();
+    PlayerTurn(GameManager& gm);
 
     GameState* updateState();
 };
