@@ -2,16 +2,29 @@
 
 #include "Ability.hpp"
 #include "Player.hpp"
+#include "Utils.hpp"
 
 #include <algorithm>
+#include <cctype>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
 
-GameManager::GameManager(std::string configPath)
+GameManager::GameManager()
 {
-    configFilePath = configPath;
+    std::string ans;
+    std::cout << "Baca file konfigurasi? (y/N) ";
+    std::getline(std::cin, ans);
+    while (std::tolower(ans[0]) != 'y' && std::tolower(ans[0]) != 'n' &&
+           ans != "") {
+        std::cout << "Jawaban tidak valid!\nBaca file konfigurasi? (Y/n) ";
+        std::getline(std::cin, ans);
+    }
+    if (std::tolower(ans[0]) == 'y') {
+        std::cout << "Masukkan filepath: ";
+        std::getline(std::cin, configFilePath);
+    }
     setupGame();
 }
 
@@ -54,10 +67,12 @@ void GameManager::fillDeck()
 {
     if (configFilePath != "") {
         int line = 1;
+        std::ifstream file;
+        file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         try {
-            std::ifstream file(configFilePath);
+            file.open(configFilePath);
             MainCard c(0, 0);
-            while (line <= 52) {
+            while (!file.eof() && line <= 52) {
                 file >> c;
                 for (const MainCard& card : deck.getAll()) {
                     if (card.getNumber() == c.getNumber() &&
@@ -73,8 +88,8 @@ void GameManager::fillDeck()
                       "configuration";
             }
         } catch (const std::ifstream::failure& e) {
-            std::cout << "Error reading file: " << e.what()
-                      << "\nDecided to fill the deck randomly\n";
+            std::cout << "Error reading file"
+                         "\nDecided to fill the deck randomly\n";
             deck.clear();
         } catch (const char* e) {
             std::cout << e << "\nDecided to fill the deck randomly\n";
