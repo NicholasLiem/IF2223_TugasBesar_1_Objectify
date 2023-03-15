@@ -13,7 +13,7 @@
 class CangkulGameManager
 {
   private:
-    std::vector<Player> players;
+    std::vector<Player<CardSymbol, CangkulNumber>> players;
     std::vector<int> currentRoundTurnQueue;
     std::vector<int> nextRoundTurnQueue;
 
@@ -25,16 +25,16 @@ class CangkulGameManager
     void fillDeck();
 
   public:
-    Deck<Card> deck;
-    Table table;
+    Deck<Card<CardSymbol, CangkulNumber>> deck;
+    Table<CardSymbol, CangkulNumber> table;
 
     CangkulGameManager();
 
-    Player& getCurrentPlayer();
-    std::vector<Player>& getPlayers();
+    Player<CardSymbol, CangkulNumber>& getCurrentPlayer();
+    std::vector<Player<CardSymbol, CangkulNumber>>& getPlayers();
     int getCurrentRound() const;
 
-    void registerPlayer(Player player);
+    void registerPlayer(Player<CardSymbol, CangkulNumber> player);
     void nextPlayer();
     void setupGame();
     void reset();

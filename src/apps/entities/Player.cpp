@@ -106,6 +106,12 @@ bool operator==(const Player<CardColor,CardNumber>& a, const Player<CardColor,Ca
 {
     return a.getNickname() == b.getNickname();
 }
+
+bool operator==(const Player<CardSymbol,CangkulNumber>& a, const Player<CardSymbol,CangkulNumber>& b)
+{
+    return a.getNickname() == b.getNickname();
+}
+
 template <class T, class U>
 bool operator<(const Player<T,U>& a, const Player<T,U>& b){
     return a.getPoints() < b.getPoints();
@@ -122,16 +128,17 @@ bool operator!=(const Player<T,U>& a, const Player<T,U>& b)
     return a.getNickname() != b.getNickname();
 }
 
-template<class T, class U>
-bool Player::hasTypeCard(Card<CardColor, CardNumber> tableCard) const{
-    CardColor tableCardType = tableCard.getColor();
-    for (Card card : inventory){
-        if (card.getColor() == tableCardType){
+template <class T, class U>
+bool Player<T,U>::hasTypeCard(Card<T, U> tableCard) const{
+    for (Card<T, U> card : this->inventory){
+        if (card.getColor() == tableCard.getColor()){
             return true;
         }
     }
     return false;
 }
+
+
 bool operator!=(const Player<CardColor,CardNumber>& a, const Player<CardColor,CardNumber>& b)
 {
     return a.getNickname() != b.getNickname();

@@ -42,18 +42,18 @@ void CangkulGameManager::fillDeck()
 {
     for (int tipe = 0; tipe < 4; tipe++) {
         for (int number = 1; number <= 13; number++) {
-            deck.putCard(Card(tipe, number));
+            deck.putCard(Card<CardSymbol, CangkulNumber>(tipe, number));
         }
     }
 }
 
-void CangkulGameManager::registerPlayer(Player player)
+void CangkulGameManager::registerPlayer(Player<CardSymbol, CangkulNumber> player)
 {
     if (players.size() == 4) {
         throw "Jumlah player sudah ada 4";
     }
 
-    for (const Player& p : players) {
+    for (const Player<CardSymbol, CangkulNumber>& p : players) {
         if (p == player) {
             throw "Player dengan nama " + player.getNickname() +
                 " sudah terdaftar. Silahkan masukkan nama yang lain";
@@ -79,12 +79,12 @@ void CangkulGameManager::nextPlayer()
 {
 }
 
-Player& CangkulGameManager::getCurrentPlayer()
+Player<CardSymbol, CangkulNumber>& CangkulGameManager::getCurrentPlayer()
 {
     return players[currentPlayerIndex];
 }
 
-std::vector<Player>& CangkulGameManager::getPlayers()
+std::vector<Player<CardSymbol, CangkulNumber>>& CangkulGameManager::getPlayers()
 {
     return players;
 }

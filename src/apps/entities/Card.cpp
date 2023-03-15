@@ -133,5 +133,28 @@ ostream& operator<<(ostream& os, const Card<CardColor,CardNumber>& card)
     }
     return os;
 }
+
+ostream& operator<<(ostream& os, const Card<CardSymbol,CangkulNumber>& card)
+{
+    CangkulNumber card_num = card.getNumber();
+    CardSymbol card_sym = card.getColor();
+    os << int(card_num) << " ";
+    switch (card_sym) {
+    case CardSymbol::Diamond:
+        os << "Diamond";
+        break;
+    case CardSymbol::Club:
+        os << "Club";
+        break;
+    case CardSymbol::Heart:
+        os << "Hear";
+        break;
+    case CardSymbol::Spade:
+        os << "Spade";
+        break;
+    }
+    return os;
+}
+
 template class Card<CardColor,CardNumber>;
 template class Card<CardSymbol,CangkulNumber>;
