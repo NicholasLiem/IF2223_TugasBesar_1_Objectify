@@ -61,30 +61,28 @@ GameState* PlayerTurn::updateState()
             GameState* nextState = GameState::getState(to_lower(command));
             int round = gameManager.getCurrentRound();
             if (round == 1){
-                if (nextState == GameState::getState("re-roll")
-                    || nextState == GameState::getState("quadruple")
-                    || nextState == GameState::getState("quarter")
-                    || nextState == GameState::getState("reverse")
-                    || nextState == GameState::getState("swapcard")
-                    || nextState == GameState::getState("switch")
-                    || nextState == GameState::getState("abilityless")){
-                        throw AccessAbilityException(command);
+                if (to_lower(command) == "re-roll"
+                    || to_lower(command) == "quadruple"
+                    || to_lower(command) == "quarter"
+                    || to_lower(command) == "reverse"
+                    || to_lower(command) == "swapcard"
+                    || to_lower(command) == "switch"
+                    || to_lower(command) == "abilityless") {
+                    throw AccessAbilityException(command);
                 }
             }
-
             if (dynamic_cast<Action*>(nextState)) {
                 return nextState;
             } else {
                 throw InvalidActionException(command);
             }
-
         } catch (std::out_of_range) {
             throw InvalidActionException(command);
+        } catch (AccessAbilityException& e) {
+            std::cout << e.what() << "\n";
+            return GameState::getState("player turn");
         }
     } catch (InvalidActionException& e) {
-        std::cout << e.what() << "\n";
-        return GameState::getState("player turn");
-    } catch (AccessAbilityException& e) {
         std::cout << e.what() << "\n";
         return GameState::getState("player turn");
     }
