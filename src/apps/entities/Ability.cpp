@@ -99,7 +99,11 @@ QuarterCard::QuarterCard(GameManager& game) : Ability(game, "Quarter Card") {}
 
 void QuarterCard::useAbility()
 {
-    game.setPot(game.getPot() * 0.25);
+    if (game.getPot() >= 4){
+        game.setPot(game.getPot() * 0.25);
+    } else {
+        game.setPot(1);
+    }
     this->used = true;
 }
 
