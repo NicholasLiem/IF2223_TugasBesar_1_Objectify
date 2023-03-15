@@ -8,7 +8,7 @@ class InvalidActionException : public std::exception
 {
   public:
     InvalidActionException(std::string actionName)
-        : msg("Tidak ada aksi bernama " + actionName)
+        : msg("Tidak ada aksi bernama \e[1;93m" + actionName + "\e[0m")
     {
     }
 
@@ -24,7 +24,7 @@ class InvalidActionException : public std::exception
 class AccessAbilityException : public std::exception{
   public:
     AccessAbilityException(std::string abilityName)
-        : msg("Belum boleh melakukan kemampuan " + abilityName)
+        : msg("Belum boleh melakukan kemampuan \e[1;93m" + abilityName + "\e[0m")
     {
     }
 
