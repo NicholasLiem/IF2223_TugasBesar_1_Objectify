@@ -252,8 +252,8 @@ GameState* SwitchAct::updateState()
     SwitchCard& switchcard = dynamic_cast<SwitchCard&>(ability);
     switchcard.useAbility(target);
     std::cout << "Kedua kartu \e[1;93m" << player.getNickname()
-              << "\e[0m telah ditukar dengan " << target.getNickname()
-              << "!\nKartumu sekarang adalah " << player.get(0) << " dan "
+              << "\e[0m telah ditukar dengan \e[1;93m" << target.getNickname()
+              << "\e[0m!\nKartumu sekarang adalah " << player.get(0) << " dan "
               << player.get(1) << std::endl;
     gameManager.nextPlayer();
     return GameState::getState("dashboard");
