@@ -15,7 +15,7 @@ Dashboard::Dashboard(GameManager& gm) : GameState(false), gameManager(gm) {}
 
 GameState* Dashboard::updateState()
 {
-    if (gameManager.getCurrentRound() == 6) {
+    if (gameManager.getCurrentRound() == 7) {
         return GameState::getState("calculation");
     }
     std::cout << "\e[1;93mRonde ke-" << gameManager.getCurrentRound()
