@@ -76,10 +76,13 @@ void CangkulGameManager::setupRound()
     if(currentRound != 1){
         currentPlayerIndex = nextTurnPlayerIndex;
         nextRoundTurnQueue.clear();
+        //  player 0 1 2 3 
+        // Misalkan yang menang 2
+        // 3 1 0
         for(int i = nextTurnPlayerIndex+1; i < 4;i++){
             nextRoundTurnQueue.push_back(i);
         }
-        for(int i = nextTurnPlayerIndex-1; i >= 0; i--){
+        for(int i = 0; i < nextTurnPlayerIndex ; i++){
             nextRoundTurnQueue.push_back(i);
         }
         currentRoundTurnQueue = std::vector<int>(nextRoundTurnQueue);

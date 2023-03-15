@@ -130,6 +130,7 @@ GameState* CangkulPilihKartu::updateState()
     if (!currentPlayer.hasTypeCard(tableCardCurrent)) {
         return GameState::getState("draw card");
     } else {
+        cout << endl;
         cout << "Pilih kartu yang mau dikeluarkan: \n";
         int index;
         std::cout << "> ";

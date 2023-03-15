@@ -18,9 +18,9 @@ int main()
     string game;
     Utils::clear_screen();
     Utils::splash_screen();
-    std::cout << "Apakah anda ingin bermain permainan cangkul? (\e[1;32mYa\e[0m/\e[1;31mTidak\e[0m): \n";
+    std::cout << "Apakah anda ingin memainkan permainan kompetisi Kartu ala Kerajaan Permen? (\e[1;32mYa\e[0m/\e[1;31mTidak\e[0m): \n";
     std::getline(std::cin, game);
-    if (Utils::to_lower(game) != "ya") {
+    if (Utils::to_lower(game) == "ya") {
         GameManager gameManager;
 
         GameState::registerState("dashboard", new Dashboard(gameManager));

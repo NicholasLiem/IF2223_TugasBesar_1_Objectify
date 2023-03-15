@@ -18,7 +18,7 @@ GameState* Dashboard::updateState()
     if (gameManager.getCurrentRound() == 7) {
         return GameState::getState("calculation");
     }
-    Utils::clear_screen();
+    // Utils::clear_screen();
     std::cout << "\e[0;36m==========[ \e[1;36mDashboard\e[0m \e[0;36m]==========\e[0m\n";
     std::cout << "> Ronde ke-\e[1;93m" << gameManager.getCurrentRound()
               << "\e[0m\n> Poin hadiah: " << gameManager.getPot()
@@ -207,6 +207,6 @@ GameState* Conclusion::updateState()
 End::End() : GameState(true) {}
 GameState* End::updateState()
 {
-    std::cout << "Bye.\n";
+    std::cout << "\e[1;93mTerima kasih sudah bermain bersama kami!\e[0m \n";
     return this;
 }
