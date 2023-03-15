@@ -2,12 +2,16 @@
 
 #include "Ability.hpp"
 #include "Player.hpp"
-#include <iostream>
+
 #include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <string>
 #include <vector>
 
-GameManager::GameManager()
+GameManager::GameManager(std::string configPath)
 {
+    configFilePath = configPath;
     setupGame();
 }
 
@@ -36,10 +40,9 @@ void GameManager::setupGame()
     deck.clear();
     pot = 64;
     fillDeck();
-    deck.shuffle();
     if (!players.empty()) {
         Ability::reset();
-        for (Player<CardColor,CardNumber>& p : players) {
+        for (MainPlayer& p : players) {
             p.put(deck.takeCard());
             p.put(deck.takeCard());
         }
@@ -49,19 +52,55 @@ void GameManager::setupGame()
 
 void GameManager::fillDeck()
 {
-    for (int color = 0; color < 4; color++) {
-        for (int number = 1; number <= 13; number++) {
-            deck.putCard(Card<CardColor,CardNumber>(color, number));
+    if (configFilePath != "") {
+        int line = 1;
+        try {
+            std::ifstream file(configFilePath);
+            MainCard c(0, 0);
+            while (line <= 52) {
+                file >> c;
+                for (const MainCard& card : deck.getAll()) {
+                    if (card.getNumber() == c.getNumber() &&
+                        card.getColor() == c.getColor()) {
+                        throw "Configuration error: Card duplication";
+                    }
+                }
+                deck.putCard(c);
+                line++;
+            }
+            if (deck.getAll().size() < 52) {
+                throw "Configuration error: Non-exhaustive card "
+                      "configuration";
+            }
+        } catch (const std::ifstream::failure& e) {
+            std::cout << "Error reading file: " << e.what()
+                      << "\nDecided to fill the deck randomly\n";
+            deck.clear();
+        } catch (const char* e) {
+            std::cout << e << "\nDecided to fill the deck randomly\n";
+            deck.clear();
+        } catch (const std::string& e) {
+            std::cout << e << " at line " << std::to_string(line)
+                      << "\nDecided to fill the deck randomly\n";
+            deck.clear();
         }
+    }
+    if (deck.getAll().empty()) {
+        for (int color = 0; color < 4; color++) {
+            for (int number = 1; number <= 13; number++) {
+                deck.putCard(MainCard(color, number));
+            }
+        }
+        deck.shuffle();
     }
 }
 
-void GameManager::registerPlayer(Player<CardColor,CardNumber> player)
+void GameManager::registerPlayer(MainPlayer player)
 {
     if (players.size() == 7) {
         throw "Jumlah player sudah ada 7";
     }
-    for (const Player<CardColor,CardNumber>& p : players) {
+    for (const MainPlayer& p : players) {
         if (p == player) {
             throw "Player dengan nama " + player.getNickname() +
                 " sudah terdaftar. Silahkan masukkan nama yang lain";
@@ -123,22 +162,22 @@ void GameManager::distributeAbilities()
     Deck<Ability*>& abilities = Ability::getAbilities();
     abilities.shuffle();
     int i = 0;
-    for (Player<CardColor,CardNumber>& player : players) {
+    for (MainPlayer& player : players) {
         Ability* ability = abilities.get(i);
         playerAbilities[player.getNickname()] = ability;
         std::cout << player.getNickname() << " mendapatkan ability "
-            << ability->getName() << std::endl;
+                  << ability->getName() << std::endl;
         ability->setOwner(&player);
         i++;
     }
 }
 
-std::vector<Player<CardColor,CardNumber>>& GameManager::getPlayers()
+std::vector<MainPlayer>& GameManager::getPlayers()
 {
     return players;
 }
 
-Player<CardColor,CardNumber>& GameManager::getCurrentPlayer()
+MainPlayer& GameManager::getCurrentPlayer()
 {
     return players[currentPlayerIndex];
 }

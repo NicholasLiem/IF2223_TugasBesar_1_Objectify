@@ -16,6 +16,7 @@ class Ability;
 class GameManager
 {
   private:
+    std::string configFilePath;
     std::vector<MainPlayer> players;
     std::vector<int> currentRoundTurnQueue;
     std::vector<int> nextRoundTurnQueue;

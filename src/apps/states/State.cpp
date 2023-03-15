@@ -11,17 +11,6 @@
 #include <string>
 #include <vector>
 
-std::string to_lower(std::string s)
-{
-    std::string result;
-    for (auto it = s.begin(); it != s.end(); it++) {
-        result.push_back(std::tolower(*it));
-    }
-    return result;
-}
-
-void print_leaderboard(GameManager& gm) {}
-
 Dashboard::Dashboard(GameManager& gm) : GameState(false), gameManager(gm) {}
 
 GameState* Dashboard::updateState()
@@ -60,16 +49,13 @@ GameState* PlayerTurn::updateState()
 
     try {
         try {
-            GameState* nextState = GameState::getState(to_lower(command));
+            std::string next = Utils::to_lower(command);
+            GameState* nextState = GameState::getState(next);
             int round = gameManager.getCurrentRound();
             if (round == 1) {
-                if (to_lower(command) == "re-roll" ||
-                    to_lower(command) == "quadruple" ||
-                    to_lower(command) == "quarter" ||
-                    to_lower(command) == "reverse" ||
-                    to_lower(command) == "swapcard" ||
-                    to_lower(command) == "switch" ||
-                    to_lower(command) == "abilityless") {
+                if (next == "re-roll" || next == "quadruple" ||
+                    next == "quarter" || next == "reverse" || next == "swap" ||
+                    next == "switch" || next == "abilityless") {
                     throw AccessAbilityException(command);
                 }
             }

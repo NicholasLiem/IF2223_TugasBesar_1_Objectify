@@ -15,8 +15,10 @@ int main()
         }
     }
     for (int i = 0; i < 52; i++) {
-        cout << temp[i].value() << endl;
+        cout << temp[i] << endl;
     }
     cout << temp.size() << endl;
+    cin >> c1;
+    cout << c1;
     return 0;
 }
