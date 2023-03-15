@@ -6,6 +6,15 @@
 
 Deck<Ability*> Ability::abilities;
 
+void Ability::reset()
+{
+    for (Ability* a : abilities.getAll()) {
+        a->muted = false;
+        a->used = false;
+        a->owner = NULL;
+    }
+}
+
 void Ability::registerAbility(Ability* ability)
 {
     abilities.putCard(ability);
@@ -40,8 +49,14 @@ bool Ability::isUsed() const
     return used;
 }
 
-void Ability::setUsed(bool value) {
+void Ability::setUsed(bool value)
+{
     used = value;
+}
+
+void Ability::setMuted(bool value)
+{
+    muted = value;
 }
 
 bool Ability::isMuted() const
@@ -103,7 +118,8 @@ SwapCard::SwapCard(GameManager& game) : Ability(game, "Swap Card") {}
 
 void SwapCard::useAbility() {}
 
-void SwapCard::useAbility(Player& target1, Player& target2, int CardIdx1, int CardIdx2)
+void SwapCard::useAbility(Player& target1, Player& target2, int CardIdx1,
+                          int CardIdx2)
 {
     Card target1Card = target1.get(CardIdx1);
     Card target2Card = target2.get(CardIdx2);

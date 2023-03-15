@@ -2,11 +2,14 @@
 
 #include "Ability.hpp"
 #include "Action.hpp"
+#include "Combo.hpp"
 #include "Exceptions.hpp"
+#include "GameState.hpp"
+#include "Utils.hpp"
 
-#include <cctype>
 #include <iostream>
 #include <string>
+#include <vector>
 
 std::string to_lower(std::string s)
 {
@@ -17,10 +20,15 @@ std::string to_lower(std::string s)
     return result;
 }
 
+void print_leaderboard(GameManager& gm) {}
+
 Dashboard::Dashboard(GameManager& gm) : GameState(false), gameManager(gm) {}
 
 GameState* Dashboard::updateState()
 {
+    if (gameManager.getCurrentRound() == 6) {
+        return GameState::getState("calculation");
+    }
     std::cout << "\e[1;93mRonde ke-" << gameManager.getCurrentRound()
               << "\e[0m\nPoin hadiah: " << gameManager.getPot()
               << "\nKartu di meja:\n";
@@ -29,12 +37,12 @@ GameState* Dashboard::updateState()
         std::cout << "\t" << i++ << ". " << c << "\n";
     }
     const Player& player = gameManager.getCurrentPlayer();
-    std::cout << "Nama pemain: " << player.getNickname()
-              << "\nKartu di tangan:\n\t1. " << player.get(0) << "\n\t2. "
+    std::cout << "Nama pemain: \e[1;93m" << player.getNickname()
+              << "\e[0m\nKartu di tangan:\n\t1. " << player.get(0) << "\n\t2. "
               << player.get(1) << "\n";
     if (gameManager.getAbility(player.getNickname()) != NULL) {
         Ability& ability = *gameManager.getAbility(player.getNickname());
-        std::cout << "Kamu punya \e[4m" << ability.getName() << "\e[0m"
+        std::cout << "Kamu punya \e[1;92m" << ability.getName() << "\e[0m"
                   << std::endl;
     }
     return GameState::getState("player turn");
@@ -97,7 +105,7 @@ GameState* PlayerRegistration::updateState()
         try {
             gameManager.registerPlayer(Player(name));
             std::cout << "Player " << i
-                      << " \e[4m" + name + "\e[0m telah terdaftar!"
+                      << " \e[1;93m" + name + "\e[0m telah terdaftar!"
                       << std::endl;
         } catch (const std::string& exception) {
             std::cout << exception << "\n";
@@ -108,6 +116,107 @@ GameState* PlayerRegistration::updateState()
         }
         i++;
     }
-    std::cout << "Giliran pertama diambil oleh " << first << std::endl;
+    std::cout << "Giliran pertama diambil oleh \e[1;93m" << first << "\e[0m"
+              << std::endl;
     return GameState::getState("dashboard");
+}
+
+CardCalculation::CardCalculation(GameManager& gm)
+    : GameState(false), gameManager(gm)
+{
+}
+
+GameState* CardCalculation::updateState()
+{
+    std::cout << "\e[1;93mSaatnya perhitungan kartu!\e[0m\n";
+    std::vector<Combo*>& combos = Combo::getCombos();
+    std::vector<Combo*> playerCombos;
+    std::vector<Player>& players = gameManager.getPlayers();
+    std::vector<Card> tableCards = gameManager.table.takeAll();
+    for (Player& p : players) {
+        std::vector<Card> playerCards = p.takeAll();
+        Combo* strongestCombo = new HighCard;
+        float value = 0;
+        for (Combo* combo : combos) {
+            if (combo->isThereCombo(playerCards, tableCards)) {
+                if (combo->value() > value) {
+                    Combo* tmp = strongestCombo;
+                    strongestCombo = combo->clone();
+                    delete tmp;
+                }
+            }
+        }
+        playerCombos.push_back(strongestCombo);
+    }
+    std::cout << "Daftar combo yang dimiliki pemain:\n";
+    int i = 1;
+    for (Player& p : players) {
+        std::cout << "\t" << i << ". \e[1;93m" << p.getNickname() << "\e[0m: ";
+        Combo& combo = *playerCombos[i - 1];
+        Utils::forEach(combo.getCards(),
+                       [](const Card& c) { std::cout << c << ", "; });
+        std::cout << "\e[1;91m" << combo.getName() << "\e[0m\n";
+        i++;
+    }
+    std::cout << "Pemilik combo terkuat adalah ";
+    float max = playerCombos[0]->value();
+    int winnerIdx = 0;
+    for (int i = 0; i < players.size(); i++) {
+        if (playerCombos[i]->value() > max) {
+            max = playerCombos[i]->value();
+            winnerIdx = i;
+        }
+    }
+    Player& winner = players[winnerIdx];
+    std::cout << "\e[1;93m" << winner.getNickname() << "\e[0m\n";
+    winner.setPoints(winner.getPoints() + gameManager.getPot());
+    // clean up
+    for (auto c : playerCombos) {
+        delete c;
+    }
+    if (Utils::filter_vector<Player>(players, [](const Player& p) {
+            return p.getPoints() >= (1l << 32);
+        }).empty()) {
+        gameManager.setupGame();
+        return GameState::getState("dashboard");
+    } else {
+        return GameState::getState("conclusion");
+    }
+}
+
+Conclusion::Conclusion(GameManager& gm) : GameState(false), gameManager(gm) {}
+
+GameState* Conclusion::updateState()
+{
+    std::cout
+        << "\e[1;91mPermainan berakhir.\e[0m\n\e[4;93mLeaderboard:\e[0m\n";
+    std::vector<Player> players(gameManager.getPlayers());
+    std::sort(players.begin(), players.end(),
+              [](const Player& a, const Player& b) {
+                  return a.getPoints() > b.getPoints();
+              });
+    int i = 1;
+    for (const Player& p : players) {
+        std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname()
+                  << "\e[0m: " << p.getPoints() << "\n";
+    }
+    std::cout << "Permainan dimenangkan oleh \e[1;93m"
+              << players[0].getNickname()
+              << "\e[0m.\nLanjut?\n\t1. Main lagi\n\t2. Exit\n";
+    int cont;
+    Utils::input_validate(cont, 1, 2);
+    if (cont == 1) {
+        gameManager.reset();
+        Ability::reset();
+        return GameState::getState("player registration");
+    } else {
+        return GameState::getState("end");
+    }
+}
+
+End::End() : GameState(true) {}
+GameState* End::updateState()
+{
+    std::cout << "Bye.\n";
+    return this;
 }

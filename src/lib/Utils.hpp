@@ -2,6 +2,7 @@
 #define __UTILS_
 
 #include <functional>
+#include <iostream>
 #include <vector>
 
 class Utils
@@ -55,6 +56,19 @@ class Utils
     {
         for (auto&& x : container) {
             action(x);
+        }
+    }
+
+    template <class Type>
+    static void input_validate(Type&& var, int lower, int upper)
+    {
+        std::cout << "> ";
+        std::string temp;
+        while (!(std::cin >> var) || var < lower || var > upper) {
+            std::cout << "Masukan tidak valid!\n";
+            std::cout << "> ";
+            std::cin.clear();
+            std::getline(std::cin, temp);
         }
     }
 };

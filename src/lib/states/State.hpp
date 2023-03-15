@@ -36,4 +36,33 @@ class PlayerRegistration : public GameState
     GameState* updateState() override;
 };
 
+class CardCalculation : public GameState
+{
+  private:
+    GameManager& gameManager;
+
+  public:
+    CardCalculation(GameManager& gm);
+
+    GameState* updateState() override;
+};
+
+class Conclusion : public GameState
+{
+  private:
+    GameManager& gameManager;
+
+  public:
+    Conclusion(GameManager& gm);
+
+    GameState* updateState() override;
+};
+
+class End : public GameState
+{
+  public:
+    End();
+    GameState* updateState() override;
+};
+
 #endif // __STATE_

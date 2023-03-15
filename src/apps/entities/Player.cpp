@@ -42,7 +42,7 @@ std::string Player::getNickname() const
     return nickname;
 }
 
-int Player::getPoints() const
+long Player::getPoints() const
 {
     return points;
 }
@@ -52,6 +52,26 @@ std::vector<Card> Player::takeAll()
     std::vector<Card> ret(inventory);
     clear();
     return ret;
+}
+
+Card Player::operator-(Card other){
+    return Player::take(other);
+}
+
+void Player::operator+(Card other){
+    Player::put(other);
+}
+
+bool Player::operator==(const Player& other){
+    return (this->getNickname() == other.getNickname());
+}
+
+bool Player::operator<(const Player& other){
+    return this->getPoints() < other.getPoints();
+}
+
+bool Player::operator>(const Player& other){
+    return this->getPoints() > other.getPoints();
 }
 
 Player& Player::operator=(const Player& other)
@@ -66,6 +86,14 @@ bool operator==(const Player& a, const Player& b)
 {
     return a.getNickname() == b.getNickname();
 }
+
+bool operator<(const Player& a, const Player& b){
+    return a.getPoints() < b.getPoints();
+}
+
+bool operator>(const Player&a, const Player& b){
+    return a.getPoints() > b.getPoints();
+};
 
 bool operator!=(const Player& a, const Player& b)
 {

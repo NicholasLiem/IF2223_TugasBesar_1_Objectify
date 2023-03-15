@@ -45,5 +45,15 @@ void Deck<T>::putCard(T card)
     this->inventory.push_back(card);
 }
 
+template <class T>
+T Deck<T>::operator-(){
+    return Deck::takeCard();
+}
+
+template<class T>
+void Deck<T>::operator+(T card){
+    Deck::putCard(card);
+}
+
 template class Deck<Card>;
 template class Deck<Ability*>;

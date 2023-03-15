@@ -8,19 +8,42 @@
 
 GameManager::GameManager()
 {
+    setupGame();
+}
+
+void GameManager::reset()
+{
+    nextRoundTurnQueue.clear();
+    currentRoundTurnQueue.clear();
+    playerAbilities.clear();
+    table.clear();
+    deck.clear();
+    players.clear();
+    setupGame();
+}
+
+void GameManager::setupGame()
+{
     currentRound = 1;
-    currentPlayerIndex = 0;
-    nextRoundFirstPlayerIndex = 1;
-    reversedDirection = false;
+    if (nextRoundTurnQueue.empty()) {
+        currentPlayerIndex = 0;
+        nextRoundFirstPlayerIndex = 1;
+    } else if (deck.getAll().empty()) {
+        setupRound();
+    }
+    table.clear();
+    playerAbilities.clear();
+    deck.clear();
     pot = 64;
     fillDeck();
     deck.shuffle();
-}
-
-GameManager::~GameManager()
-{
-    for (auto p : playerAbilities) {
-        delete p.second;
+    if (!players.empty()) {
+        Ability::reset();
+        for (Player& p : players) {
+            p.put(deck.takeCard());
+            p.put(deck.takeCard());
+        }
+        table.put(deck.takeCard());
     }
 }
 
@@ -56,7 +79,6 @@ void GameManager::reverseDirection()
 {
     std::reverse(currentRoundTurnQueue.begin(), currentRoundTurnQueue.end());
     std::reverse(nextRoundTurnQueue.begin() + 1, nextRoundTurnQueue.end());
-    reversedDirection = !reversedDirection;
 }
 
 void GameManager::nextPlayer()
