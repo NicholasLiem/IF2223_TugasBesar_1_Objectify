@@ -20,7 +20,7 @@ GameManager::GameManager()
 void GameManager::setConfig()
 {
     std::string ans;
-    std::cout << "Baca file konfigurasi? (y/N) ";
+    std::cout << "Baca file konfigurasi? (y/N): ";
     std::getline(std::cin, ans);
     while (std::tolower(ans[0]) != 'y' && std::tolower(ans[0]) != 'n' &&
            ans != "") {

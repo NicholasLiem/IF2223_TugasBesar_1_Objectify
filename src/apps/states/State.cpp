@@ -19,7 +19,8 @@ GameState* Dashboard::updateState()
         return GameState::getState("calculation");
     }
     // Utils::clear_screen();
-    std::cout << "\e[0;36m==========[ \e[1;36mDashboard\e[0m \e[0;36m]==========\e[0m\n";
+    std::cout << "\e[0;36m==========[ \e[1;36mDashboard\e[0m "
+                 "\e[0;36m]==========\e[0m\n";
     std::cout << "> Ronde ke-\e[1;93m" << gameManager.getCurrentRound()
               << "\e[0m\n> Poin hadiah: " << gameManager.getPot()
               << "\n> Kartu di meja:\n";
@@ -30,8 +31,8 @@ GameState* Dashboard::updateState()
     std::cout << "\e[0;36m=================================\e[0m\n";
     const MainPlayer& player = gameManager.getCurrentPlayer();
     std::cout << "> Nama pemain: \e[1;93m" << player.getNickname()
-              << "\e[0m\n> Kartu di tangan:\n\t1. " << player.get(0) << "\n\t2. "
-              << player.get(1) << "\n";
+              << "\e[0m\n> Kartu di tangan:\n\t1. " << player.get(0)
+              << "\n\t2. " << player.get(1) << "\n";
     if (gameManager.getAbility(player.getNickname()) != NULL) {
         Ability& ability = *gameManager.getAbility(player.getNickname());
         std::cout << "Kamu punya \e[1;92m" << ability.getName() << "\e[0m"
@@ -159,7 +160,8 @@ GameState* CardCalculation::updateState()
     MainPlayer& winner = players[winnerIdx];
     std::cout << "\e[1;93m" << winner.getNickname() << "\e[0m\n";
     winner.setPoints(winner.getPoints() + gameManager.getPot());
-    std::cout << "Point yang dimenangkan sebesar " << gameManager.getPot() << std::endl;
+    std::cout << "Point yang dimenangkan sebesar " << gameManager.getPot()
+              << std::endl;
     // clean up
     for (auto c : playerCombos) {
         delete c;
@@ -178,8 +180,9 @@ Conclusion::Conclusion(GameManager& gm) : GameState(false), gameManager(gm) {}
 
 GameState* Conclusion::updateState()
 {
+    std::cout << "\e[1;91mPermainan berakhir.\e[0m\n";
     std::cout
-        << "\e[1;91mPermainan berakhir.\e[0m\n\e[4;93mLeaderboard:\e[0m\n";
+        << "\e[0;36m==========[\e[1;36m Leaderboard \e[0;36m]=========\e[0m\n";
     std::vector<MainPlayer> players(gameManager.getPlayers());
     std::sort(players.begin(), players.end(),
               [](const MainPlayer& a, const MainPlayer& b) {

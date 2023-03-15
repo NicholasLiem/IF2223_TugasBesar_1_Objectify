@@ -37,7 +37,8 @@ GameState* Scoreboard::updateState()
 {
     std::vector<MainPlayer> players(gameManager.getPlayers());
     int i = 1;
-    std::cout << "\e[4;93mScoreboard\e[0m\n";
+    std::cout
+        << "\e[0;36m==========[\e[1;36m Scoreboard \e[0;36m]=========\e[0m\n";
     for (const MainPlayer& p : players) {
         std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname()
                   << "\e[0m: " << p.getPoints() << "\n";
@@ -65,8 +66,9 @@ GameState* Half::updateState()
     MainPlayer& player = gameManager.getCurrentPlayer();
     std::cout << "\e[1;93m" << player.getNickname() << "\e[0m melakukan Half!";
     long currPot = gameManager.getPot();
-    if (currPot == 1){
-        std::cout << " Sayangnya poin hadiah sudah bernilai 1. Poin hadiah tidak berubah..\n";
+    if (currPot == 1) {
+        std::cout << " Sayangnya poin hadiah sudah bernilai 1. Poin hadiah "
+                     "tidak berubah..\n";
     } else {
         std::cout << " Poin hadiah turun dari " << currPot;
         gameManager.setPot(currPot / 2);
@@ -114,8 +116,10 @@ GameState* QuarterAct::updateState()
     }
     std::cout << "\e[1;93m" << player.getNickname()
               << "\e[0m melakukan Quarter!";
-    if (gameManager.getPot() == 1){
-        std::cout << " Sayangnya poin hadiah sudah bernilai 1. Poin hadiah tidak berubah.. Yah, sayang penggunaan kartu ini sia-sia!\n";
+    if (gameManager.getPot() == 1) {
+        std::cout
+            << " Sayangnya poin hadiah sudah bernilai 1. Poin hadiah tidak "
+               "berubah.. Yah, sayang penggunaan kartu ini sia-sia!\n";
         ability.useAbility();
     } else {
         std::cout << " Poin hadiah turun dari " << gameManager.getPot();
