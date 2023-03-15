@@ -17,6 +17,11 @@ class Utils
         return result;
     }
 
+    static void clear_screen()
+    {
+        std::cout << "\033[2J\033[1;1H";
+    }
+
     template <class T>
     static std::vector<T> filter_vector(const std::vector<T>& vec,
                                         std::function<bool(const T&)> predicate)

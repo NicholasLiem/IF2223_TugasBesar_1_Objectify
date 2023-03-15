@@ -22,11 +22,13 @@ GameState* CangkulDashboard::updateState()
 
     CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
     vector<CangkulCard>& playerCard = currentPlayer.getInventory();
-    cout << "========[ Dashboard ]========" << endl;
-    cout << "Kartu di meja: " << tableCardCurrent << endl;
-    cout << "Tipe Kartu Sekarang: " << tableCardCurrent.getColor() << endl;
-    cout << "Nilai Kartu Tertinggi: " << gameManager.getNilaiKartuTertinggi() << endl;
-    cout << "============================" << endl;
+    Utils::clear_screen();
+    cout << "\e[0;36m==========[ \e[1;36mDashboard\e[0m \e[1;36m]==========\e[0m" << endl;
+    cout << "> Kartu di meja: \e[1;93m" << tableCardCurrent << "\e[0m" << endl;
+    cout << "> Tipe Kartu Sekarang: \e[1;93m" << tableCardCurrent.getColor() << "\e[0m" << endl;
+    cout << "> Nilai Kartu Tertinggi: \e[1;93m" << gameManager.getNilaiKartuTertinggi() << "\e[0m" << endl;
+    cout << "> Giliran: \e[1;93m" << gameManager.getCurrentPlayer().getNickname() << "\e[0m" << endl;
+    cout << "\e[0;36m=================================\e[0m" << endl;
     return GameState::getState("player turn");
 }
 
@@ -41,7 +43,7 @@ GameState* CangkulPlayerTurn::updateState()
     CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
     vector<CangkulCard>& playerCard = currentPlayer.getInventory();
 
-    cout << "Kartumu " << "\e[1;93m("  << currentPlayer.getNickname() << ")\e[0m" << ": \n";
+    cout << "Daftar Kartu " << "\e[1;93m("  << currentPlayer.getNickname() << ")\e[0m" << ": \n";
     currentPlayer.printInventory();
 
     return GameState::getState("pilih kartu");
@@ -140,8 +142,8 @@ GameState* CangkulDrawCard::updateState()
 
     while(!currentPlayer.hasTypeCard(tableCardCurrent)){
         currentPlayer.put(gameManager.deck.takeCard());
-        cout << "Player " << gameManager.getCurrentPlayer().getNickname()
-             << " mengambil kartu!" << endl;
+        // cout << "Player " << gameManager.getCurrentPlayer().getNickname()
+        //      << " mengambil kartu!" << endl;
     }
     return GameState::getState("dashboard");
 }
