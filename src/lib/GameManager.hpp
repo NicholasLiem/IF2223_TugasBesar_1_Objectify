@@ -17,7 +17,7 @@ class GameManager
 {
   private:
     std::string configFilePath;
-    std::vector<Player<CardColor, CardNumber>> players;
+    std::vector<MainPlayer> players;
     std::vector<int> currentRoundTurnQueue;
     std::vector<int> nextRoundTurnQueue;
     std::map<std::string, Ability*> playerAbilities;

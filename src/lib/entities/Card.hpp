@@ -84,7 +84,11 @@ class Card : public Valuable
         return out;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const Card<CardSymbol,CangkulNumber>& card);
+    friend std::ostream&
+    operator<<(std::ostream& os, const Card<CardSymbol, CangkulNumber>& card);
+
+    friend std::istream& operator>>(std::istream& in,
+                                     Card<CardColor, CardNumber>& card);
 
   private:
     T color;

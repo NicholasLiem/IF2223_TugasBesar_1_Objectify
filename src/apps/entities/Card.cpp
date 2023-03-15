@@ -1,6 +1,8 @@
 #include "Card.hpp"
 #include "Utils.hpp"
 
+#include "Utils.hpp"
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -76,7 +78,7 @@ bool operator>(const Card<T, U>& card1, const Card<T, U>& card2)
     return (card1.value() > card2.value());
 }
 
-std::ostream& operator<<(std::ostream& out, const CardColor& color)
+ostream& operator<<(ostream& out, const CardColor& color)
 {
     switch (color) {
     case CardColor::Red:
@@ -124,6 +126,51 @@ std::ostream& operator<<(std::ostream& out, const CangkulNumber& number)
 {
     out << int(number);
     return out;
+}
+
+istream& operator>>(istream& in, CardColor& color)
+{
+    string line;
+    in >> line;
+    string str_color = Utils::to_lower(line);
+    if (str_color == "merah") {
+        color = CardColor::Red;
+    } else if (str_color == "kuning") {
+        color = CardColor::Yellow;
+    } else if (str_color == "biru") {
+        color = CardColor::Blue;
+    } else if (str_color == "hijau") {
+        color = CardColor::Green;
+    } else {
+        throw "Invalid card color: " + line;
+    }
+    return in;
+}
+
+istream& operator>>(istream& in, CardNumber& number)
+{
+    int num;
+    in >> num;
+    if (num < 1 || num > 13) {
+        throw "Invalid card number: " + to_string(num);
+    } else {
+        number = static_cast<CardNumber>(num);
+    }
+    return in;
+}
+
+istream& operator>>(istream& in, MainCard& card)
+{
+    CardNumber number;
+    CardColor color;
+    try {
+        in >> number >> color;
+        card.number = number;
+        card.color = color;
+    } catch (const string& e) {
+        throw "Error parsing string: " + string(e);
+    }
+    return in;
 }
 
 template class Card<CardColor, CardNumber>;

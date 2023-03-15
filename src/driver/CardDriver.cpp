@@ -18,7 +18,7 @@ int main()
         cout << temp[i] << endl;
     }
     cout << temp.size() << endl;
-    // std::cin >> c1;
-    // cout << c1;
+    cin >> c1;
+    cout << c1;
     return 0;
 }

@@ -77,10 +77,10 @@ void GameManager::fillDeck()
         file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         try {
             file.open(configFilePath);
-            Card<CardColor, CardNumber> c(0, 0);
+            MainCard c(0, 0);
             while (!file.eof() && line <= 52) {
                 file >> c;
-                for (const Card<CardColor, CardNumber>& card : deck.getAll()) {
+                for (const MainCard& card : deck.getAll()) {
                     if (card.getNumber() == c.getNumber() &&
                         card.getColor() == c.getColor()) {
                         throw "Configuration error: Card duplication";
@@ -109,19 +109,19 @@ void GameManager::fillDeck()
     if (deck.getAll().empty()) {
         for (int color = 0; color < 4; color++) {
             for (int number = 1; number <= 13; number++) {
-                deck.putCard(Card<CardColor, CardNumber>(color, number));
+                deck.putCard(MainCard(color, number));
             }
         }
         deck.shuffle();
     }
 }
 
-void GameManager::registerPlayer(Player<CardColor,CardNumber> player)
+void GameManager::registerPlayer(MainPlayer player)
 {
     if (players.size() == 7) {
         throw "Jumlah player sudah ada 7";
     }
-    for (const Player<CardColor,CardNumber>& p : players) {
+    for (const MainPlayer& p : players) {
         if (p == player) {
             throw "Player dengan nama " + player.getNickname() +
                 " sudah terdaftar. Silahkan masukkan nama yang lain";
@@ -183,7 +183,7 @@ void GameManager::distributeAbilities()
     Deck<Ability*>& abilities = Ability::getAbilities();
     abilities.shuffle();
     int i = 0;
-    for (Player<CardColor,CardNumber>& player : players) {
+    for (MainPlayer& player : players) {
         Ability* ability = abilities.get(i);
         playerAbilities[player.getNickname()] = ability;
         std::cout << player.getNickname() << " mendapatkan ability "
@@ -193,12 +193,12 @@ void GameManager::distributeAbilities()
     }
 }
 
-std::vector<Player<CardColor,CardNumber>>& GameManager::getPlayers()
+std::vector<MainPlayer>& GameManager::getPlayers()
 {
     return players;
 }
 
-Player<CardColor,CardNumber>& GameManager::getCurrentPlayer()
+MainPlayer& GameManager::getCurrentPlayer()
 {
     return players[currentPlayerIndex];
 }
