@@ -36,7 +36,6 @@ class GameManager
     Table table;
 
     GameManager();
-    GameManager(std::string configFilePath = "");
 
     Player& getCurrentPlayer();
     std::vector<Player>& getPlayers();
