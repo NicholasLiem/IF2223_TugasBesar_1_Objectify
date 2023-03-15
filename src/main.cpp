@@ -1,13 +1,12 @@
 #include "Ability.hpp"
 #include "Action.hpp"
+#include "CangkulGameManager.hpp"
+#include "CangkulState.hpp"
 #include "Card.hpp"
 #include "Combo.hpp"
 #include "GameManager.hpp"
 #include "GameState.hpp"
 #include "State.hpp"
-
-#include "CangkulGameManager.hpp"
-#include "CangkulState.hpp"
 
 #include <map>
 #include <string>
@@ -15,20 +14,17 @@
 
 int main()
 {
-<<<<<<< HEAD
     string game;
     std::cout << "Pilih game yang ingin dimainkan (permainankartu/cangkul): \n";
     std::cin >> game;
-    if (game != "cangkul"){
+    if (game != "cangkul") {
         GameManager gameManager;
-=======
-    GameManager gameManager;
->>>>>>> 4d8c369 (Make configuration optional)
 
         GameState::registerState("dashboard", new Dashboard(gameManager));
         GameState::registerState("player turn", new PlayerTurn(gameManager));
         GameState::registerState("next", new Next(gameManager));
-        GameState::registerState("player registration", new PlayerRegistration(gameManager));
+        GameState::registerState("player registration",
+                                 new PlayerRegistration(gameManager));
         GameState::registerState("reverse", new ReverseDirAct(gameManager));
         GameState::registerState("re-roll", new ReRollAct(gameManager));
         GameState::registerState("double", new Double(gameManager));
@@ -37,9 +33,11 @@ int main()
         GameState::registerState("quadruple", new QuadrupleAct(gameManager));
         GameState::registerState("switch", new SwitchAct(gameManager));
         GameState::registerState("swap", new SwapAct(gameManager));
-        GameState::registerState("abilityless", new AbilitylessAct(gameManager));
+        GameState::registerState("abilityless",
+                                 new AbilitylessAct(gameManager));
         GameState::registerState("scoreboard", new Scoreboard(gameManager));
-        GameState::registerState("calculation", new CardCalculation(gameManager));
+        GameState::registerState("calculation",
+                                 new CardCalculation(gameManager));
         GameState::registerState("conclusion", new Conclusion(gameManager));
         GameState::registerState("end", new End);
 
@@ -66,6 +64,8 @@ int main()
         while (!state->isEnd()) {
             state = state->updateState();
         }
+        // final state
+        state->updateState();
 
         GameState::clearStates();
         Ability::clearAbilities();
@@ -73,11 +73,15 @@ int main()
     } else {
         CangkulGameManager gameManager;
 
-        GameState::registerState("dashboard", new CangkulDashboard(gameManager));
-        GameState::registerState("player turn", new CangkulPlayerTurn(gameManager));
-        GameState::registerState("player registration", new CangkulPlayerRegistration(gameManager));
+        GameState::registerState("dashboard",
+                                 new CangkulDashboard(gameManager));
+        GameState::registerState("player turn",
+                                 new CangkulPlayerTurn(gameManager));
+        GameState::registerState("player registration",
+                                 new CangkulPlayerRegistration(gameManager));
         GameState::registerState("draw card", new CangkulDrawCard(gameManager));
-        GameState::registerState("conclusion", new CangkulConclusion(gameManager));
+        GameState::registerState("conclusion",
+                                 new CangkulConclusion(gameManager));
         GameState::registerState("end", new End);
 
         GameState* state = GameState::getState("player registration");
@@ -85,6 +89,8 @@ int main()
         while (!state->isEnd()) {
             state = state->updateState();
         }
+        // final state
+        state->updateState();
 
         GameState::clearStates();
     }
