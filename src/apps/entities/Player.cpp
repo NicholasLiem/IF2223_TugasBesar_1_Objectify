@@ -1,8 +1,8 @@
 #include "Player.hpp"
 
 #include <algorithm>
-#include <vector>
 #include <iostream>
+#include <vector>
 
 template <class T, class U>
 Player<T, U>::Player(std::string nickname)
@@ -15,7 +15,7 @@ template <class T, class U>
 Player<T, U>::Player(const Player& other)
 {
     nickname = other.nickname;
-    this->inventory = other.inventory;
+    inventory = other.inventory;
     points = other.points;
 }
 
@@ -28,16 +28,16 @@ void Player<T, U>::setPoints(long points)
 template <class T, class U>
 void Player<T, U>::put(Card<T, U> card)
 {
-    this->inventory.push_back(card);
+    inventory.push_back(card);
 }
 
 template <class T, class U>
 Card<T, U> Player<T, U>::take(Card<T, U> card)
 {
-    auto it = std::find(this->inventory.begin(), this->inventory.end(), card);
+    auto it = std::find(inventory.begin(), inventory.end(), card);
     if (it != this->inventory.end()) {
         Card<T, U> ret = *it;
-        this->inventory.erase(it);
+        inventory.erase(it);
         return ret;
     } else {
         throw "Card not found";
@@ -59,8 +59,8 @@ long Player<T, U>::getPoints() const
 template <class T, class U>
 std::vector<Card<T, U>> Player<T, U>::takeAll()
 {
-    std::vector<Card<T, U>> ret(this->inventory);
-    ret.clear();
+    std::vector<Card<T, U>> ret(inventory);
+    inventory.clear();
     return ret;
 }
 
@@ -68,7 +68,7 @@ template <class T, class U>
 bool Player<T, U>::hasTypeCard(Card<T, U> tableCard) const
 {
     T tableCardType = tableCard.getColor();
-    for (auto card : this->inventory) {
+    for (auto card : inventory) {
         if (card.getColor() == tableCardType) {
             return true;
         }
@@ -77,9 +77,10 @@ bool Player<T, U>::hasTypeCard(Card<T, U> tableCard) const
 }
 
 template <class T, class U>
-void Player<T, U>::printInventory(){
+void Player<T, U>::printInventory()
+{
     int count = 1;
-    for (Card<T, U> card : this->inventory){
+    for (Card<T, U> card : inventory) {
         std::cout << "[" << count << "] " << card << std::endl;
         count++;
     }

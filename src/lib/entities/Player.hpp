@@ -9,6 +9,8 @@
 template <class T, class U>
 class Player : public InventoryHolder<Card<T, U>>
 {
+    using InventoryHolder<Card<T, U>>::inventory;
+
   private:
     std::string nickname;
     long points;
