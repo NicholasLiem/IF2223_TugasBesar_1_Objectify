@@ -80,8 +80,8 @@ template <class T, class U>
 void Player<T, U>::printInventory()
 {
     int count = 1;
-    for (Card<T, U> card : inventory) {
-        std::cout << "[" << count << "] " << card << std::endl;
+    for(int i = 0; i < inventory.size(); i++) {
+        std::cout << count << ". " << this->inventory[i] << std::endl;
         count++;
     }
 }

@@ -24,6 +24,8 @@ class Player : public InventoryHolder<Card<T, U>>
     Card<T, U> take(Card<T, U> card) override;
     std::vector<Card<T, U>> takeAll();
 
+    void printInventory();
+
     std::string getNickname() const;
     long getPoints() const;
 
@@ -66,7 +68,7 @@ class Player : public InventoryHolder<Card<T, U>>
     }
 
     bool hasTypeCard(Card<T, U> card) const;
-    void printInventory();
+    
 };
 
 typedef Player<CardColor, CardNumber> MainPlayer;

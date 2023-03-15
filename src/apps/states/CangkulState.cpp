@@ -28,15 +28,13 @@ CangkulPlayerTurn::CangkulPlayerTurn(CangkulGameManager& game)
 
 GameState* CangkulPlayerTurn::updateState()
 {
-    const vector<CangkulCard> tableCard = gameManager.table.takeAll();
+    vector<CangkulCard>& tableCard = gameManager.table.getInventory();
     CangkulCard tableCardCurrent = tableCard[0];
 
     CangkulPlayer& currentPlayer = gameManager.getCurrentPlayer();
-    const vector<CangkulCard> playerCard = currentPlayer.takeAll();
+    vector<CangkulCard>& playerCard = currentPlayer.getInventory();
 
     cout << "Kartu di meja: " << tableCardCurrent << endl;
-
-    cout << "Kartumu: \n";
     currentPlayer.printInventory();
 
     if (!currentPlayer.hasTypeCard(tableCardCurrent)) {
@@ -46,17 +44,13 @@ GameState* CangkulPlayerTurn::updateState()
         int index;
         std::cout << "> ";
         std::cin >> index;
-        try{
-            Card<CardSymbol, CangkulNumber> card = playerCard[index+1];
-            if (card.getColor() == tableCardCurrent.getColor()){
-                gameManager.table.put(currentPlayer.take(playerCard[index+1]));
-                return GameState::getState("dashboard");
-            } else {
-                cout << "Kartu yang dipilih tidak sesuai dengan tipe kartu di meja" << endl;
-                return GameState::getState("player turn");
-            }
-        } catch (const std::string& exception) {
-            std::cout << exception << "\n";
+        Card<CardSymbol, CangkulNumber> card = playerCard[index-1];
+        cout << "TERPILIH:" << card;
+        if (card.getColor() == tableCardCurrent.getColor()){
+            gameManager.table.put(currentPlayer.take(playerCard[index-1]));
+            return GameState::getState("dashboard");
+        } else {
+            cout << "Kartu yang dipilih tidak sesuai dengan tipe kartu di meja" << endl;
             return GameState::getState("player turn");
         }
     }

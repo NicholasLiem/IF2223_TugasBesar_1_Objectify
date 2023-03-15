@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <iostream>
 
 template <class T>
 class InventoryHolder
@@ -23,6 +24,9 @@ class InventoryHolder
         inventory.clear();
     };
 
+    virtual std::vector<T>& getInventory(){
+        return inventory;
+    }
   protected:
     std::vector<T> inventory;
 };
