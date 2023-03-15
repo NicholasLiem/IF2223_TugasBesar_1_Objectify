@@ -37,4 +37,20 @@ class AccessAbilityException : public std::exception{
       const std::string msg;
 };
 
+class InvalidCardException : public std::exception{
+  public:
+    InvalidCardException()
+        : msg("Kartu yang dipilih tidak sesuai dengan kartu di meja!")
+    {
+    }
+
+    const char* what() const throw()
+    {
+        return msg.c_str();
+    }
+
+    private:
+      const std::string msg;
+};
+
 #endif // !__EXCEPTIONS_

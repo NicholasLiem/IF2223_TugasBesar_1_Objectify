@@ -74,7 +74,22 @@ void CangkulGameManager::registerPlayer(CangkulPlayer player)
 
 void CangkulGameManager::setupRound()
 {
-
+    // Masuk babak yang lebih besar dari 1
+    if(currentRound != 1){
+        currentPlayerIndex = nextTurnPlayerIndex;
+        nextRoundTurnQueue.clear();
+        for(int i = nextTurnPlayerIndex+1; i < 4;i++){
+            nextRoundTurnQueue.push_back(i);
+        }
+        for(int i = nextTurnPlayerIndex-1; i >= 0; i--){
+            nextRoundTurnQueue.push_back(i);
+        }
+        currentRoundTurnQueue = std::vector<int>(nextRoundTurnQueue);
+    }else{
+        for(int i = 1; i < 4; i++){
+            currentRoundTurnQueue.push_back(i);
+        }
+    }
 }
 
 int CangkulGameManager::getNextTurnPlayerIndex(){
@@ -99,7 +114,13 @@ void CangkulGameManager::setNilaiKartuTertinggi(int nilai){
 
 void CangkulGameManager::nextPlayer()
 {
-    currentPlayerIndex++;
+    if(currentRoundTurnQueue.empty()){
+        currentRound++;
+        setupRound();
+    }else{
+        currentPlayerIndex = currentRoundTurnQueue[0];
+        currentRoundTurnQueue = std::vector<int>(currentRoundTurnQueue.begin()+1,currentRoundTurnQueue.end());
+    }
 }
 
 CangkulPlayer& CangkulGameManager::getCurrentPlayer()

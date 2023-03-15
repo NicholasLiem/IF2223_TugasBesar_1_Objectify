@@ -123,16 +123,24 @@ GameState* CangkulPilihKartu::updateState()
         int index;
         std::cout << "> ";
         std::cin >> index;
-        CangkulCard card = playerCard[index-1];
-        if (card.getColor() == tableCardCurrent.getColor()){
-            if (int (card.getNumber()) > gameManager.getNilaiKartuTertinggi()){
-                gameManager.setNilaiKartuTertinggi(int (card.getNumber()));
-                gameManager.setNextTurnPlayerIndex(gameManager.getCurrentPlayerIndex());
+        try
+        {
+            CangkulCard card = playerCard[index-1];
+            if (card.getColor() == tableCardCurrent.getColor()){
+                if (int (card.getNumber()) > gameManager.getNilaiKartuTertinggi()){
+                    gameManager.setNilaiKartuTertinggi(int (card.getNumber()));
+                    gameManager.setNextTurnPlayerIndex(gameManager.getCurrentPlayerIndex());
+                }
+                cout << "Kartu yang dikeluaran adalah : " << card << endl;
+                gameManager.table.put(currentPlayer.take(card));
+            } else {
+               throw InvalidCardException();
             }
-            cout << "Kartu yang dikeluaran adalah : " << card << endl;
-            gameManager.table.put(currentPlayer.take(card));
-        } else {
-            cout << "Kartu yang dipilih tidak sesuai dengan tipe kartu di meja!" << endl;
+        }
+        catch(InvalidCardException& e)
+        {
+            std::cout << e.what() << '\n';
+            return GameState::getState("player turn");
         }
     }
     return GameState::getState("next turn");

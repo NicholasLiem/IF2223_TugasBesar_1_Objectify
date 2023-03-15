@@ -19,7 +19,6 @@ class CangkulGameManager
 
     int currentPlayerIndex;
     int currentRound;
-
     int nextRoundFirstPlayerIndex;
     int nextTurnPlayerIndex;
     int nilaiKartuTertinggi;
