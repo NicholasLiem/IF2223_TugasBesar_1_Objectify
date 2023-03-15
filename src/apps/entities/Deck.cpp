@@ -52,7 +52,7 @@ T Deck<T>::operator-(){
 
 template<class T>
 void Deck<T>::operator+(T card){
-    Deck::putCard();
+    Deck::putCard(card);
 }
 
 template class Deck<Card>;

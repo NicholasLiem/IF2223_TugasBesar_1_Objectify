@@ -101,7 +101,7 @@ GameState* PlayerRegistration::updateState()
         }
         i++;
     }
-    std::cout << "Giliran pertama diambil oleh \[1;93m" << first << "\e[0m"
+    std::cout << "Giliran pertama diambil oleh \e[1;93m" << first << "\e[0m"
               << std::endl;
     return GameState::getState("dashboard");
 }
