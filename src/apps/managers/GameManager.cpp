@@ -61,7 +61,7 @@ void GameManager::setupGame()
     fillDeck();
     if (!players.empty()) {
         Ability::reset();
-        for (Player& p : players) {
+        for (MainPlayer& p : players) {
             p.put(deck.takeCard());
             p.put(deck.takeCard());
         }
@@ -77,10 +77,10 @@ void GameManager::fillDeck()
         file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         try {
             file.open(configFilePath);
-            Card c(0, 0);
+            Card<CardColor, CardNumber> c(0, 0);
             while (!file.eof() && line <= 52) {
                 file >> c;
-                for (const Card& card : deck.getAll()) {
+                for (const Card<CardColor, CardNumber>& card : deck.getAll()) {
                     if (card.getNumber() == c.getNumber() &&
                         card.getColor() == c.getColor()) {
                         throw "Configuration error: Card duplication";
@@ -109,19 +109,19 @@ void GameManager::fillDeck()
     if (deck.getAll().empty()) {
         for (int color = 0; color < 4; color++) {
             for (int number = 1; number <= 13; number++) {
-                deck.putCard(Card(color, number));
+                deck.putCard(Card<CardColor, CardNumber>(color, number));
             }
         }
         deck.shuffle();
     }
 }
 
-void GameManager::registerPlayer(Player player)
+void GameManager::registerPlayer(Player<CardColor,CardNumber> player)
 {
     if (players.size() == 7) {
         throw "Jumlah player sudah ada 7";
     }
-    for (const Player& p : players) {
+    for (const Player<CardColor,CardNumber>& p : players) {
         if (p == player) {
             throw "Player dengan nama " + player.getNickname() +
                 " sudah terdaftar. Silahkan masukkan nama yang lain";
@@ -183,7 +183,7 @@ void GameManager::distributeAbilities()
     Deck<Ability*>& abilities = Ability::getAbilities();
     abilities.shuffle();
     int i = 0;
-    for (Player& player : players) {
+    for (Player<CardColor,CardNumber>& player : players) {
         Ability* ability = abilities.get(i);
         playerAbilities[player.getNickname()] = ability;
         std::cout << player.getNickname() << " mendapatkan ability "
@@ -193,12 +193,12 @@ void GameManager::distributeAbilities()
     }
 }
 
-std::vector<Player>& GameManager::getPlayers()
+std::vector<Player<CardColor,CardNumber>>& GameManager::getPlayers()
 {
     return players;
 }
 
-Player& GameManager::getCurrentPlayer()
+Player<CardColor,CardNumber>& GameManager::getCurrentPlayer()
 {
     return players[currentPlayerIndex];
 }

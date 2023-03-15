@@ -5,14 +5,18 @@
 #include "InventoryHolder.hpp"
 #include <vector>
 
-class Table : public InventoryHolder<Card>
+template <class T, class U>
+class Table : public InventoryHolder<Card<T,U>>
 {
 	public:
-		std::vector<Card> takeAll();
-		void put(Card card) override;
+		std::vector<Card<T,U>> takeAll();
+		void put(Card<T,U> card) override;
 	
 	private:
-		Card take(Card card) override;
+		Card<T,U> take(Card<T,U> card) override;
 };
+
+typedef Table<CardSymbol, CangkulNumber> CangkulTable;
+typedef Table<CardColor, CardNumber> MainTable;
 
 #endif // !__TABLE_

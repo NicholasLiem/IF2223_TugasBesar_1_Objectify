@@ -6,7 +6,8 @@
 
 #include <string>
 
-class Player : public InventoryHolder<Card>
+template <class T, class U>
+class Player : public InventoryHolder<Card<T, U>>
 {
   private:
     std::string nickname;
@@ -14,26 +15,59 @@ class Player : public InventoryHolder<Card>
 
   public:
     Player(std::string nickname);
-    Player(const Player& other);
+    Player(const Player<T, U>& other);
 
     void setPoints(long points);
-    void put(Card card) override;
-    Card take(Card card) override;
-    std::vector<Card> takeAll();
+    void put(Card<T, U> card) override;
+    Card<T, U> take(Card<T, U> card) override;
+    std::vector<Card<T, U>> takeAll();
 
     std::string getNickname() const;
     long getPoints() const;
-    Card operator-(Card other);
-    void operator+(Card other);
-    bool operator==(const Player& other);
-    bool operator<(const Player& other);
-    bool operator>(const Player& other);
-    Player& operator=(const Player& other);
 
-    friend bool operator==(const Player& a, const Player& b);
-    friend bool operator< (const Player& a, const Player& b);
-    friend bool operator> (const Player& a, const Player& b);
-    friend bool operator!=(const Player& a, const Player& b);
+    Card<T, U> operator-(Card<T, U> other)
+    {
+        return take(other);
+    }
+
+    void operator+(Card<T, U> other)
+    {
+        put(other);
+    }
+
+    Player<T, U>& operator=(const Player<T, U>& other)
+    {
+        this->inventory = other.inventory;
+        this->nickname = other.nickname;
+        this->points = other.points;
+        return *this;
+    }
+
+    friend bool operator==(const Player<T, U>& a, const Player<T, U>& b)
+    {
+        return a.getNickname() == b.getNickname();
+    }
+
+    friend bool operator<(const Player<T, U>& a, const Player<T, U>& b)
+    {
+        return a.getPoints() < b.getPoints();
+    }
+
+    friend bool operator>(const Player<T, U>& a, const Player<T, U>& b)
+    {
+        return a.getPoints() > b.getPoints();
+    }
+
+    friend bool operator!=(const Player<T, U>& a, const Player<T, U>& b)
+    {
+        return a.getNickname() != b.getNickname();
+    }
+
+    bool hasTypeCard(Card<T, U> card) const;
+    void printInventory();
 };
+
+typedef Player<CardColor, CardNumber> MainPlayer;
+typedef Player<CardSymbol, CangkulNumber> CangkulPlayer;
 
 #endif // !__PLAYER_

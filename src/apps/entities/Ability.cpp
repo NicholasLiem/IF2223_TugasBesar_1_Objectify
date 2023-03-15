@@ -34,7 +34,7 @@ Ability::Ability(GameManager& game, std::string name) : game(game), name(name)
     this->muted = false;
 }
 
-void Ability::setOwner(Player* player)
+void Ability::setOwner(MainPlayer* player)
 {
     owner = player;
 }
@@ -78,7 +78,7 @@ ReRollCard::ReRollCard(GameManager& game) : Ability(game, "ReRoll Card") {}
 
 void ReRollCard::useAbility()
 {
-    std::vector<Card> oldCards = this->owner->takeAll();
+    std::vector<MainCard> oldCards = this->owner->takeAll();
     owner->put(this->game.deck.takeCard());
     owner->put(this->game.deck.takeCard());
     this->used = true;
@@ -122,11 +122,11 @@ SwapCard::SwapCard(GameManager& game) : Ability(game, "Swap Card") {}
 
 void SwapCard::useAbility() {}
 
-void SwapCard::useAbility(Player& target1, Player& target2, int CardIdx1,
+void SwapCard::useAbility(MainPlayer& target1, MainPlayer& target2, int CardIdx1,
                           int CardIdx2)
 {
-    Card target1Card = target1.get(CardIdx1);
-    Card target2Card = target2.get(CardIdx2);
+    MainCard target1Card = target1.get(CardIdx1);
+    MainCard target2Card = target2.get(CardIdx2);
 
     target1.take(target1Card);
     target1.put(target2Card);
@@ -140,10 +140,10 @@ SwitchCard::SwitchCard(GameManager& game) : Ability(game, "Switch Card") {}
 
 void SwitchCard::useAbility() {}
 
-void SwitchCard::useAbility(Player& target)
+void SwitchCard::useAbility(MainPlayer& target)
 {
-    std::vector<Card> Player1 = this->owner->takeAll();
-    std::vector<Card> Player2 = target.takeAll();
+    std::vector<MainCard> Player1 = this->owner->takeAll();
+    std::vector<MainCard> Player2 = target.takeAll();
 
     for (auto& i : Player2) {
         this->owner->put(i);
@@ -162,7 +162,7 @@ AbilitylessCard::AbilitylessCard(GameManager& game)
 
 void AbilitylessCard::useAbility() {}
 
-void AbilitylessCard::useAbility(Player& target)
+void AbilitylessCard::useAbility(MainPlayer& target)
 {
     Ability& ability = *game.getAbility(target.getNickname());
     ability.mute();

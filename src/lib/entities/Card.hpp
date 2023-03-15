@@ -23,38 +23,75 @@ enum class CardNumber {
     Thirteen = 13,
 };
 
+enum class CardSymbol { Diamond, Club, Heart, Spade };
+
+enum class CangkulNumber {
+    Two = 2,
+    Three = 3,
+    Four = 4,
+    Five = 5,
+    Six = 6,
+    Seven = 7,
+    Eight = 8,
+    Nine = 9,
+    Ten = 10,
+    Eleven = 11,
+    Twelve = 12,
+    Thirteen = 13,
+    Fourteen = 14,
+};
+
+std::ostream& operator<<(std::ostream& out, const CardColor& color);
+std::ostream& operator<<(std::ostream& out, const CardNumber& number);
+std::ostream& operator<<(std::ostream& out, const CardSymbol& symbol);
+std::ostream& operator<<(std::ostream& out, const CangkulNumber& number);
+
+template <class T, class U>
 class Card : public Valuable
 {
   public:
-    Card(const CardColor color, const CardNumber number);
+    Card(const T color, const U number);
     Card(const int color, const int number);
-    Card(const Card& other);
+    Card(const Card<T, U>& other);
 
     float value() const;
-    CardColor getColor() const;
+    T getColor() const;
 
-    CardNumber getNumber() const;
-  
-    Card& operator=(const Card& other);
+    U getNumber() const;
 
-    bool operator==(const Card& other);
-    friend bool operator==(const Card& card1, const Card& card2);
+    Card<T, U>& operator=(const Card<T, U>& other);
 
-    friend bool operator<(const Card& card1, const Card& card2);
+    bool operator==(const Card<T, U>& other);
 
-    friend bool operator>(const Card& card1, const Card& card2);
+    friend bool operator==(const Card<T, U>& card1, const Card<T, U>& card2)
+    {
+        return card1.getNumber() == card2.getNumber();
+    }
 
-    friend std::ostream& operator<<(std::ostream& out, const Card& card);
-    friend std::istream& operator>>(std::istream& in, Card& card);
+    friend bool operator<(const Card<T, U>& card1, const Card<T, U>& card2)
+    {
+        return card1.value() < card2.value();
+    }
 
-    friend std::ostream& operator<<(std::ostream& out, const CardColor& color);
-    friend std::ostream& operator<<(std::ostream& out, const CardNumber& number);
-    friend std::istream& operator>>(std::istream& in, CardColor& color);
-    friend std::istream& operator>>(std::istream& in, CardNumber& number);
+    friend bool operator>(const Card<T, U>& card1, const Card<T, U>& card2)
+    {
+        return card1.value() > card2.value();
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, const Card<T, U>& card)
+    {
+        out << card.getNumber() << " " << card.getColor();
+        return out;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Card<CardSymbol,CangkulNumber>& card);
 
   private:
-    CardColor color;
-    CardNumber number;
+    T color;
+    U number;
 };
+
+typedef Card<CardColor, CardNumber> MainCard;
+typedef Card<CardSymbol, CangkulNumber> CangkulCard;
 
 #endif // !__CARD_

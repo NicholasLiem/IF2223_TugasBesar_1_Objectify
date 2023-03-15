@@ -12,7 +12,7 @@ Combo::Combo(string name) : name(name) {}
 
 Combo::Combo(const Combo& other) : name(other.name), cards(other.cards) {}
 
-vector<Card> Combo::getCards() const
+vector<MainCard> Combo::getCards() const
 {
     return cards;
 }
@@ -41,17 +41,17 @@ vector<Combo*>& Combo::getCombos()
 }
 
 // Implementation of additional functions
-bool compareCards(const Card& a, const Card& b)
+bool compareCards(const MainCard& a, const MainCard& b)
 {
     return a > b;
 }
 
-bool compareColor(const Card& a, const Card& b)
+bool compareColor(const MainCard& a, const MainCard& b)
 {
     return a.getColor() > b.getColor();
 }
 
-bool isMember(vector<Card>& cards, Card card)
+bool isMember(vector<MainCard>& cards, MainCard card)
 {
     for (int i = 0; i < cards.size(); i++) {
         if (cards[i].value() == card.value()) {
@@ -61,7 +61,7 @@ bool isMember(vector<Card>& cards, Card card)
     return false;
 }
 
-bool foundPlayerCard(vector<Card>& temp, vector<Card>& player)
+bool foundPlayerCard(vector<MainCard>& temp, vector<MainCard>& player)
 {
     for (int j = 0; j < 2; j++) {
         if (isMember(temp, player[j])) {
@@ -71,22 +71,22 @@ bool foundPlayerCard(vector<Card>& temp, vector<Card>& player)
     return false;
 }
 
-bool isGreen(const Card& c)
+bool isGreen(const MainCard& c)
 {
     return c.getColor() == CardColor::Green;
 }
 
-bool isBlue(const Card& c)
+bool isBlue(const MainCard& c)
 {
     return c.getColor() == CardColor::Blue;
 }
 
-bool isYellow(const Card& c)
+bool isYellow(const MainCard& c)
 {
     return c.getColor() == CardColor::Yellow;
 }
 
-bool isRed(const Card& c)
+bool isRed(const MainCard& c)
 {
     return c.getColor() == CardColor::Red;
 }
@@ -96,8 +96,8 @@ HighCard::HighCard() : Combo("HighCard") {}
 
 HighCard::HighCard(const HighCard& other) : Combo(other) {}
 
-bool HighCard::isThereCombo(vector<Card>& player, vector<Card>& table)
-{  
+bool HighCard::isThereCombo(vector<MainCard>& player, vector<MainCard>& table)
+{
     cards.clear();
     if (player.size() > 0) {
         this->cards.push_back(player[0]);
@@ -121,8 +121,8 @@ float HighCard::value() const
 Pair::Pair() : Combo("Pair") {}
 Pair::Pair(const Pair& other) : Combo(other) {}
 
-bool Pair::isThereCombo(vector<Card>& player, vector<Card>& table)
-{  
+bool Pair::isThereCombo(vector<MainCard>& player, vector<MainCard>& table)
+{
     cards.clear();
     std::sort(player.begin(), player.end(), compareCards);
     if (player[0] == player[1]) {
@@ -162,8 +162,8 @@ float Pair::value() const
 TwoPair::TwoPair() : Combo("TwoPair") {}
 TwoPair::TwoPair(const TwoPair& other) : Combo(other) {}
 
-bool TwoPair::isThereCombo(vector<Card>& player, vector<Card>& table)
-{  
+bool TwoPair::isThereCombo(vector<MainCard>& player, vector<MainCard>& table)
+{
     cards.clear();
     if (player[0] == player[1]) {
         for (int i = 0; i < 5; i++) {
@@ -218,8 +218,9 @@ float TwoPair::value() const
 ThreeOfAKind::ThreeOfAKind() : Combo("ThreeOfAKind") {}
 ThreeOfAKind::ThreeOfAKind(const ThreeOfAKind& other) : Combo(other) {}
 
-bool ThreeOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
-{  
+bool ThreeOfAKind::isThereCombo(vector<MainCard>& player,
+                                vector<MainCard>& table)
+{
     cards.clear();
     if (player[0] == player[1]) {
         for (int i = 0; i < 5; i++) {
@@ -268,17 +269,17 @@ float ThreeOfAKind::value() const
 Straight::Straight() : Combo("Straight") {}
 Straight::Straight(const Straight& other) : Combo(other) {}
 
-bool Straight::isThereCombo(vector<Card>& player, vector<Card>& table)
-{  
+bool Straight::isThereCombo(vector<MainCard>& player, vector<MainCard>& table)
+{
     cards.clear();
-    vector<Card> allCards = player;
+    vector<MainCard> allCards = player;
     allCards.insert(allCards.end(), table.begin(), table.end());
     sort(allCards.begin(), allCards.end(), compareCards);
 
     int straightCount = 1;
     int currentRank = int(allCards[0].getNumber());
 
-    vector<Card> temp;
+    vector<MainCard> temp;
     temp.push_back(allCards[0]);
     for (int i = 1; i < 7; i++) {
         if (int(allCards[i].getNumber()) == currentRank - 1) {
@@ -330,17 +331,18 @@ float Straight::value() const
 Flush::Flush() : Combo("Flush") {}
 Flush::Flush(const Flush& other) : Combo(other) {}
 
-bool Flush::isThereCombo(vector<Card>& player, vector<Card>& table)
-{  
+bool Flush::isThereCombo(vector<MainCard>& player, vector<MainCard>& table)
+{
     cards.clear();
-    vector<Card> allCards = player;
+    vector<MainCard> allCards = player;
     allCards.insert(allCards.end(), table.begin(), table.end());
     sort(allCards.begin(), allCards.end(), compareCards);
 
-    vector<Card> green = Utils::filter_vector<Card>(allCards, isGreen);
-    vector<Card> blue = Utils::filter_vector<Card>(allCards, isBlue);
-    vector<Card> yellow = Utils::filter_vector<Card>(allCards, isYellow);
-    vector<Card> red = Utils::filter_vector<Card>(allCards, isRed);
+    vector<MainCard> green = Utils::filter_vector<MainCard>(allCards, isGreen);
+    vector<MainCard> blue = Utils::filter_vector<MainCard>(allCards, isBlue);
+    vector<MainCard> yellow =
+        Utils::filter_vector<MainCard>(allCards, isYellow);
+    vector<MainCard> red = Utils::filter_vector<MainCard>(allCards, isRed);
 
     if (green.size() > 4) {
         cards.insert(cards.begin(), green.begin(), green.begin() + 5);
@@ -419,18 +421,18 @@ Combo* Flush::clone()
 FullHouse::FullHouse() : Combo("FullHouse") {}
 FullHouse::FullHouse(const FullHouse& other) : Combo(other) {}
 
-bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
-{  
+bool FullHouse::isThereCombo(vector<MainCard>& player, vector<MainCard>& table)
+{
     cards.clear();
-    vector<Card> allCards = player;
+    vector<MainCard> allCards = player;
     allCards.insert(allCards.end(), table.begin(), table.end());
     sort(allCards.begin(), allCards.end(), compareCards);
 
     bool foundPair = false;
     bool foundTriplet = false;
 
-    vector<Card> temp1;
-    vector<Card> temp2;
+    vector<MainCard> temp1;
+    vector<MainCard> temp2;
     for (int i = 0; i < 5; i++) {
         if (allCards[i] == allCards[i + 1] &&
             allCards[i + 1] == allCards[i + 2]) {
@@ -447,7 +449,7 @@ bool FullHouse::isThereCombo(vector<Card>& player, vector<Card>& table)
             i += 1;
         }
         if (foundPair && foundTriplet) {
-            vector<Card> temp = temp1;
+            vector<MainCard> temp = temp1;
             temp.insert(temp.end(), temp2.begin(), temp2.end());
             if (foundPlayerCard(temp, player)) {
                 cards.insert(cards.end(), temp.begin(), temp.end());
@@ -479,8 +481,9 @@ Combo* FullHouse::clone()
 FourOfAKind::FourOfAKind() : Combo("FourOfAKind") {}
 FourOfAKind::FourOfAKind(const FourOfAKind& other) : Combo(other) {}
 
-bool FourOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
-{  
+bool FourOfAKind::isThereCombo(vector<MainCard>& player,
+                               vector<MainCard>& table)
+{
     cards.clear();
     if (player[0] == player[1]) {
         int count = 0;
@@ -492,7 +495,7 @@ bool FourOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
         if (count == 2) {
             int num = int(player[0].getNumber());
             for (int i = 0; i < 4; i++) {
-                cards.push_back(Card(i, num));
+                cards.push_back(MainCard(i, num));
             }
             return true;
         }
@@ -507,7 +510,7 @@ bool FourOfAKind::isThereCombo(vector<Card>& player, vector<Card>& table)
             if (count == 3) {
                 int num = int(player[j].getNumber());
                 for (int i = 0; i < 4; i++) {
-                    cards.push_back(Card(i, num));
+                    cards.push_back(MainCard(i, num));
                 }
                 return true;
             }
@@ -532,17 +535,19 @@ Combo* FourOfAKind::clone()
 StraightFlush::StraightFlush() : Combo("StraightFlush") {}
 StraightFlush::StraightFlush(const StraightFlush& other) : Combo(other) {}
 
-bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
-{  
+bool StraightFlush::isThereCombo(vector<MainCard>& player,
+                                 vector<MainCard>& table)
+{
     cards.clear();
-    vector<Card> allCards;
+    vector<MainCard> allCards;
     allCards.insert(allCards.end(), table.begin(), table.end());
     allCards.insert(allCards.end(), player.begin(), player.end());
 
-    vector<Card> green = Utils::filter_vector<Card>(allCards, isGreen);
-    vector<Card> blue = Utils::filter_vector<Card>(allCards, isBlue);
-    vector<Card> yellow = Utils::filter_vector<Card>(allCards, isYellow);
-    vector<Card> red = Utils::filter_vector<Card>(allCards, isRed);
+    vector<MainCard> green = Utils::filter_vector<MainCard>(allCards, isGreen);
+    vector<MainCard> blue = Utils::filter_vector<MainCard>(allCards, isBlue);
+    vector<MainCard> yellow =
+        Utils::filter_vector<MainCard>(allCards, isYellow);
+    vector<MainCard> red = Utils::filter_vector<MainCard>(allCards, isRed);
 
     allCards.clear();
     if (green.size() < 5 && blue.size() < 5 && yellow.size() < 5 &&
@@ -571,7 +576,7 @@ bool StraightFlush::isThereCombo(vector<Card>& player, vector<Card>& table)
     // Mengurutkan seluruh kartu yang ada dan diurutkan  (12,11,10,9,8,7) -> 7
     // kartu player, sisanya meja
     sort(allCards.begin(), allCards.end(), compareCards);
-    vector<Card> temp;
+    vector<MainCard> temp;
     temp.push_back(allCards[0]);
     int straightCount = 1;
     int currentRank = (int)allCards[0].getNumber();

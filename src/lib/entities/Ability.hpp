@@ -19,7 +19,7 @@ class Ability
 
   protected:
     GameManager& game;
-    Player* owner;
+    MainPlayer* owner;
     const std::string name;
     bool used;
     bool muted;
@@ -28,7 +28,7 @@ class Ability
     Ability(GameManager& game, std::string name);
     virtual ~Ability() = default;
     std::string getName() const;
-    Player* getOwner();
+    MainPlayer* getOwner();
     virtual void useAbility() = 0;
 
     static Deck<Ability*>& getAbilities();
@@ -38,7 +38,7 @@ class Ability
     void mute();
     void setUsed(bool value);
     void setMuted(bool value);
-    void setOwner(Player* player);
+    void setOwner(MainPlayer* player);
     bool isMuted() const;
     bool isUsed() const;
 };
@@ -75,7 +75,7 @@ class SwapCard : public Ability
 {
   public:
     SwapCard(GameManager&);
-    void useAbility(Player&, Player&, int, int);
+    void useAbility(MainPlayer&, MainPlayer&, int, int);
 
   private:
     void useAbility() override;
@@ -85,7 +85,7 @@ class SwitchCard : public Ability
 {
   public:
     SwitchCard(GameManager&);
-    void useAbility(Player&);
+    void useAbility(MainPlayer&);
 
   private:
     void useAbility() override;
@@ -95,7 +95,7 @@ class AbilitylessCard : public Ability
 {
   public:
     AbilitylessCard(GameManager&);
-    void useAbility(Player&);
+    void useAbility(MainPlayer&);
 
   private:
     void useAbility() override;

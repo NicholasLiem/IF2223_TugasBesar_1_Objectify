@@ -17,7 +17,7 @@ class GameManager
 {
   private:
     std::string configFilePath;
-    std::vector<Player> players;
+    std::vector<Player<CardColor, CardNumber>> players;
     std::vector<int> currentRoundTurnQueue;
     std::vector<int> nextRoundTurnQueue;
     std::map<std::string, Ability*> playerAbilities;
@@ -33,20 +33,20 @@ class GameManager
     void distributeAbilities();
 
   public:
-    Deck<Card> deck;
-    Table table;
+    Deck<MainCard> deck;
+    MainTable table;
 
     GameManager();
 
-    Player& getCurrentPlayer();
-    std::vector<Player>& getPlayers();
+    MainPlayer& getCurrentPlayer();
+    std::vector<MainPlayer>& getPlayers();
     Ability* getAbility(std::string playerNickname);
     long getPot() const;
     int getCurrentRound() const;
     std::vector<int>& getCurrentRoundTurnQueue();
     std::vector<int>& getNextRoundTurnQueue();
 
-    void registerPlayer(Player player);
+    void registerPlayer(MainPlayer player);
     void reverseDirection();
     void nextPlayer();
     void setPot(long value);

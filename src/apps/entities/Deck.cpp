@@ -46,14 +46,17 @@ void Deck<T>::putCard(T card)
 }
 
 template <class T>
-T Deck<T>::operator-(){
+T Deck<T>::operator-()
+{
     return Deck::takeCard();
 }
 
-template<class T>
-void Deck<T>::operator+(T card){
+template <class T>
+void Deck<T>::operator+(T card)
+{
     Deck::putCard(card);
 }
 
-template class Deck<Card>;
+template class Deck<Card<CardSymbol, CangkulNumber>>;
+template class Deck<Card<CardColor, CardNumber>>;
 template class Deck<Ability*>;

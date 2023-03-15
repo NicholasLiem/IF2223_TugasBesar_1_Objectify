@@ -22,10 +22,10 @@ GameState* Dashboard::updateState()
               << "\e[0m\nPoin hadiah: " << gameManager.getPot()
               << "\nKartu di meja:\n";
     int i = 1;
-    for (const Card& c : gameManager.table.getAll()) {
+    for (const MainCard& c : gameManager.table.getAll()) {
         std::cout << "\t" << i++ << ". " << c << "\n";
     }
-    const Player& player = gameManager.getCurrentPlayer();
+    const MainPlayer& player = gameManager.getCurrentPlayer();
     std::cout << "Nama pemain: \e[1;93m" << player.getNickname()
               << "\e[0m\nKartu di tangan:\n\t1. " << player.get(0) << "\n\t2. "
               << player.get(1) << "\n";
@@ -89,7 +89,7 @@ GameState* PlayerRegistration::updateState()
         std::cout << "Masukkan nickname player " << i << ": ";
         std::cin >> name;
         try {
-            gameManager.registerPlayer(Player(name));
+            gameManager.registerPlayer(MainPlayer(name));
             std::cout << "Player " << i
                       << " \e[1;93m" + name + "\e[0m telah terdaftar!"
                       << std::endl;
@@ -117,10 +117,10 @@ GameState* CardCalculation::updateState()
     std::cout << "\e[1;93mSaatnya perhitungan kartu!\e[0m\n";
     std::vector<Combo*>& combos = Combo::getCombos();
     std::vector<Combo*> playerCombos;
-    std::vector<Player>& players = gameManager.getPlayers();
-    std::vector<Card> tableCards = gameManager.table.takeAll();
-    for (Player& p : players) {
-        std::vector<Card> playerCards = p.takeAll();
+    std::vector<MainPlayer>& players = gameManager.getPlayers();
+    std::vector<MainCard> tableCards = gameManager.table.takeAll();
+    for (MainPlayer& p : players) {
+        std::vector<MainCard> playerCards = p.takeAll();
         Combo* strongestCombo = new HighCard;
         float value = 0;
         for (Combo* combo : combos) {
@@ -136,11 +136,11 @@ GameState* CardCalculation::updateState()
     }
     std::cout << "Daftar combo yang dimiliki pemain:\n";
     int i = 1;
-    for (Player& p : players) {
+    for (MainPlayer& p : players) {
         std::cout << "\t" << i << ". \e[1;93m" << p.getNickname() << "\e[0m: ";
         Combo& combo = *playerCombos[i - 1];
         Utils::forEach(combo.getCards(),
-                       [](const Card& c) { std::cout << c << ", "; });
+                       [](const MainCard& c) { std::cout << c << ", "; });
         std::cout << "\e[1;91m" << combo.getName() << "\e[0m\n";
         i++;
     }
@@ -153,7 +153,7 @@ GameState* CardCalculation::updateState()
             winnerIdx = i;
         }
     }
-    Player& winner = players[winnerIdx];
+    MainPlayer& winner = players[winnerIdx];
     std::cout << "\e[1;93m" << winner.getNickname() << "\e[0m\n";
     winner.setPoints(winner.getPoints() + gameManager.getPot());
     std::cout << "Point yang dimenangkan sebesar " << gameManager.getPot() << std::endl;
@@ -161,7 +161,7 @@ GameState* CardCalculation::updateState()
     for (auto c : playerCombos) {
         delete c;
     }
-    if (Utils::filter_vector<Player>(players, [](const Player& p) {
+    if (Utils::filter_vector<MainPlayer>(players, [](const MainPlayer& p) {
             return p.getPoints() >= (1l << 32);
         }).empty()) {
         gameManager.setupGame();
@@ -177,13 +177,13 @@ GameState* Conclusion::updateState()
 {
     std::cout
         << "\e[1;91mPermainan berakhir.\e[0m\n\e[4;93mLeaderboard:\e[0m\n";
-    std::vector<Player> players(gameManager.getPlayers());
+    std::vector<MainPlayer> players(gameManager.getPlayers());
     std::sort(players.begin(), players.end(),
-              [](const Player& a, const Player& b) {
+              [](const MainPlayer& a, const MainPlayer& b) {
                   return a.getPoints() > b.getPoints();
               });
     int i = 1;
-    for (const Player& p : players) {
+    for (const MainPlayer& p : players) {
         std::cout << "\t" << i++ << ". \e[1;93m" << p.getNickname()
                   << "\e[0m: " << p.getPoints() << "\n";
     }
