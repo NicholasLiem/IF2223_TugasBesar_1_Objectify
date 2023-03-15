@@ -59,6 +59,9 @@ int main()
     GameState::registerState("swap", new SwapAct(gameManager));
     GameState::registerState("abilityless", new AbilitylessAct(gameManager));
     GameState::registerState("scoreboard", new Scoreboard(gameManager));
+    GameState::registerState("calculation", new CardCalculation(gameManager));
+    GameState::registerState("conclusion", new Conclusion(gameManager));
+    GameState::registerState("end", new End);
 
     Ability::registerAbility(new QuadrupleCard(gameManager));
     Ability::registerAbility(new QuarterCard(gameManager));
@@ -87,5 +90,6 @@ int main()
     GameState::clearStates();
     Ability::clearAbilities();
     Combo::clearCombos();
+
     return 0;
 }
