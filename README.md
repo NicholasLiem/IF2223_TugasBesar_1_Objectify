@@ -4,5 +4,7 @@ Proyek ini adalah tugas besar dari mata kuliah Pemrograman Berorientasi Objek ya
 ## **Cara Menjalankan Program**
 1. Klon repositori ini <br>
 `$ git clone https://github.com/NicholasLiem/IF2223_TugasBesar_1_Objectify/ `
-2. Jalankan program pada folder ini <br>
+2. Jalankan make file untuk membentuk binary file <br>
 `$ make`
+3. Jalankan program pada folder ini <br>
+`$ ./bin/main`
