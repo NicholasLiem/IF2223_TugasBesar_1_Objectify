@@ -339,6 +339,8 @@ GameState* HelpCommand::updateState()
     std::cout << "\t 9. \e[1;93mSWITCH\e[0m: Menukar kartu yang sedang dipegang dengan kartu lawan" << std::endl;
     std::cout << "\t10. \e[1;93mSWAP\e[0m: Menukar kartu 2 lawan" << std::endl;
     std::cout << "\t11. \e[1;93mABILITYLESS\e[0m: Mematikan kemampuan kartu lawan" << std::endl;
+    std::cout << "\t11. \e[1;93mDASHBOARD\e[0m: Melihat dashboard permainan" << std::endl;
+
     std::cout << std::endl;
     std::cout << "Lakukan perintah: " << std::endl;
     return GameState::getState("player turn");

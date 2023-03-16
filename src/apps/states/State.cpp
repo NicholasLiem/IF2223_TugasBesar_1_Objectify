@@ -64,6 +64,7 @@ GameState* PlayerTurn::updateState()
                 }
             }
             if (next == "dashboard"){
+                Utils::clear_screen();
                 return GameState::getState("dashboard");
             }
             if (dynamic_cast<Action*>(nextState)) {
@@ -96,8 +97,9 @@ GameState* PlayerRegistration::updateState()
     std::cout << "\e[1;93mPendaftaran pemain\e[0m\n" << std::endl;
     for (int i = 1; i <= 7;) {
         std::string name;
-        std::cout << "Masukkan nickname player " << i << ": ";
+        std::cout << "\nMasukkan nickname player " << i << ": ";
         std::cin >> name;
+        std::cout << std::endl;
         try {
             gameManager.registerPlayer(MainPlayer(name));
             std::cout << "Player " << i

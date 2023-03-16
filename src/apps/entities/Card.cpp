@@ -82,16 +82,16 @@ ostream& operator<<(ostream& out, const CardColor& color)
 {
     switch (color) {
     case CardColor::Red:
-        out << "Merah";
+        out << "\e[1;31mMerah\e[0m";
         break;
     case CardColor::Yellow:
-        out << "Kuning";
+        out << "\e[1;33mKuning\e[0m";
         break;
     case CardColor::Green:
-        out << "Hijau";
+        out << "\e[1;32mHijau\e[0m";
         break;
     case CardColor::Blue:
-        out << "Biru";
+        out << "\e[1;34mBiru\e[0m";
         break;
     }
     return out;
@@ -107,16 +107,16 @@ std::ostream& operator<<(std::ostream& out, const CardSymbol& symbol)
 {
     switch (symbol) {
     case CardSymbol::Diamond:
-        out << "Diamond";
+        out << "\e[1;31m♦\e[0m Diamond";
         break;
     case CardSymbol::Club:
-        out << "Club";
+        out << "\e[1;30m♣\e[0m Club";
         break;
     case CardSymbol::Heart:
-        out << "Heart";
+        out << "\e[1;31m♥\e[0m Heart";
         break;
     case CardSymbol::Spade:
-        out << "Spade";
+        out << "\e[1;30m♠\e[0m Spade";
         break;
     }
     return out;

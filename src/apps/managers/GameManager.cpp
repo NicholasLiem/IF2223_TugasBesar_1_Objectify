@@ -24,7 +24,7 @@ void GameManager::setConfig()
     std::getline(std::cin, ans);
     while (std::tolower(ans[0]) != 'y' && std::tolower(ans[0]) != 'n' &&
            ans != "") {
-        std::cout << "Jawaban tidak valid!\nBaca file konfigurasi? (Y/n) ";
+        std::cout << "Jawaban tidak valid!\nBaca file konfigurasi? (y/N) ";
         std::getline(std::cin, ans);
     }
     if (std::tolower(ans[0]) == 'y') {
