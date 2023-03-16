@@ -320,3 +320,17 @@ GameState* AbilitylessAct::updateState()
               << "\e[0m telah dimatikan." << std::endl;
     return GameState::getState("next");
 }
+
+HelpCommand::HelpCommand(GameManager& gm) : Action(gameManager) {}
+
+GameState* HelpCommand::updateState()
+{
+    Utils::clear_screen();
+    std::cout << "\e[1;93mDaftar perintah:\e[0m\n";
+    std::cout << "\t1. \e[1;93mhelp\e[0m: menampilkan daftar perintah\n";
+    // Isi di sini
+    std::cout << std::endl;
+    std::cout << "Lakukan perintah: " << std::endl;
+    return GameState::getState("player turn");
+}
+

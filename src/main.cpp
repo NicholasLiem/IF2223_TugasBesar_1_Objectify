@@ -20,7 +20,9 @@ int main()
     Utils::splash_screen();
     std::cout << "Apakah anda ingin memainkan permainan kompetisi Kartu ala "
                  "Kerajaan Permen? (\e[1;32mYa\e[0m/\e[1;31mTidak\e[0m): \n";
+    std::cout << "> ";
     std::getline(std::cin, game);
+    std::cout << std::endl;
     if (Utils::to_lower(game) == "ya") {
         GameManager gameManager;
 
@@ -43,6 +45,7 @@ int main()
         GameState::registerState("calculation",
                                  new CardCalculation(gameManager));
         GameState::registerState("conclusion", new Conclusion(gameManager));
+        GameState::registerState("help", new HelpCommand(gameManager));
         GameState::registerState("end", new End);
 
         Ability::registerAbility(new QuadrupleCard(gameManager));

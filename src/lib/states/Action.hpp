@@ -106,4 +106,13 @@ class AbilitylessAct : public Action
     GameState* updateState() override;
 };
 
+class HelpCommand : public Action
+{
+
+  public:
+    HelpCommand(GameManager& gm);
+
+    GameState* updateState() override;
+};
+
 #endif // !__ACTION_

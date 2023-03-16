@@ -63,6 +63,9 @@ GameState* PlayerTurn::updateState()
                     throw AccessAbilityException(command);
                 }
             }
+            if (next == "dashboard"){
+                return GameState::getState("dashboard");
+            }
             if (dynamic_cast<Action*>(nextState)) {
                 return nextState;
             } else {
@@ -88,6 +91,9 @@ PlayerRegistration::PlayerRegistration(GameManager& gameManager)
 GameState* PlayerRegistration::updateState()
 {
     std::string first;
+    Utils::clear_screen();
+    std::cout << std::endl;
+    std::cout << "\e[1;93mPendaftaran pemain\e[0m\n" << std::endl;
     for (int i = 1; i <= 7;) {
         std::string name;
         std::cout << "Masukkan nickname player " << i << ": ";
